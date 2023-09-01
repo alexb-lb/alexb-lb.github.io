@@ -1,7 +1,7 @@
 var SVG_CARET_RIGHT =
   '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#333333" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><polyline points="96 48 176 128 96 208" fill="none" stroke="#333333" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline></svg>';
 
-var renderCookieConsent = async function () {
+var renderCookieConsent = function () {
   var VISITOR_ID = "_lb_fp";
   var LOCAL_STORAGE_KEY = "lb-cookie-consent";
 
@@ -133,32 +133,54 @@ var renderCookieConsent = async function () {
   };
 
   // API requests
-  var fetchDomainInfo = async function () {
-    var response = await fetch(
-      webAppUrl + "/api/cookie-consent/domain?domainName=" + clientDomain
-    );
-    var domain = await response.json();
-    domain.banner = domain.banner || {};
-    domain.banner.layout = {};
-    try {
-      domain.banner.layout = JSON.parse(domain.banner.rawJSON);
-    } catch (e) {
-      return console.log("Cannot parse banner JSON");
-    }
+  var httpRequest = function (params) {
+    var method = params.method || "GET";
+    var url = params.url || "";
+    var body = params.body;
+    var xhr = new XMLHttpRequest();
 
-    return domain;
+    return new Promise(function (res, rej) {
+      xhr.open(method, url, true);
+      xhr.onload = res;
+      xhr.onerror = rej;
+      if (body) xhr.send(body);
+    });
   };
 
-  var postCookieConsent = function ({
-    consentAccepted,
-    consentRejected,
-    headers = {},
-  }) {
+  var fetchDomainInfo = function () {
+    // var response = await fetch(
+    //   webAppUrl + "/api/cookie-consent/domain?domainName=" + clientDomain
+    // );
+    // var domain = await response.json();
+    // domain.banner = domain.banner || {};
+    // domain.banner.layout = {};
+    // try {
+    //   domain.banner.layout = JSON.parse(domain.banner.rawJSON);
+    // } catch (e) {
+    //   return console.log("Cannot parse banner JSON");
+    // }
+
+    // return domain;
+
+    const payload = {
+      url: webAppUrl + "/api/cookie-consent/domain?domainName=" + clientDomain,
+    };
+    return httpRequest(payload).then(function (data) {
+      console.log(data);
+      return data;
+    });
+  };
+
+  var postCookieConsent = function (data) {
     if (!domain) return;
 
-    fetch(webAppUrl + "/api/cookie-consent/response", {
+    var consentAccepted = data.consentAccepted || [];
+    var consentRejected = data.consentRejected || [];
+    var headers = data.headers || {};
+
+    const payload = {
+      url: webAppUrl + "/api/cookie-consent/response",
       method: "POST",
-      credentials: "include",
       body: JSON.stringify({
         status: "active",
         domain: clientDomain,
@@ -173,7 +195,9 @@ var renderCookieConsent = async function () {
         consentInfo: { consentAccepted, consentRejected },
       }),
       headers,
-    });
+    };
+
+    return httpRequest(payload);
   };
 
   // DOM handlers
@@ -709,10 +733,14 @@ var renderCookieConsent = async function () {
     essentialsWhiteList.push(cleanUrlString(webAppUrl));
   }
 
-  domain = await fetchDomainInfo();
-
-  if (domain) {
-    initScriptBlocking(domain);
-    initHandlers(domain);
-  }
+  fetchDomainInfo()
+    .then(function (domain) {
+      if (domain) {
+        initScriptBlocking(domain);
+        initHandlers(domain);
+      }
+    })
+    .catch(function (e) {
+      return console.log("cannot fetch cookie-consent domain information");
+    });
 };
