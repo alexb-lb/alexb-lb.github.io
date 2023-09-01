@@ -323,7 +323,10 @@ var renderCookieConsent = function () {
         });
         window.yett && window.yett.unblock(regExpArr);
 
-        postCookieConsent({ consentAccepted, consentRejected });
+        postCookieConsent({
+          consentAccepted: consentAccepted,
+          consentRejected: consentRejected,
+        });
         hideBanner();
       }
       if (e.target && e.target.id === "lb-cookie-consent-open-preferences") {
