@@ -187,8 +187,6 @@ var renderCookieConsent = function () {
     xhr.open(method, url);
     xhr.onreadystatechange = function () {
       if (xhr.readyState === 4 && xhr.status === 200) {
-        console.log("onreadystatechange");
-        console.log(xhr.responseText);
         callback(xhr.responseText);
       }
     };
@@ -200,12 +198,10 @@ var renderCookieConsent = function () {
       url: webAppUrl + "/api/cookie-consent/domain?domainName=" + clientDomain,
     };
     return httpRequest(payload, function (data) {
-      console.log("response:");
-      console.log(data);
-      domain = data;
-      domain.banner = domain.banner || {};
-      domain.banner.layout = {};
       try {
+        domain = JSON.parse(data);
+        domain.banner = domain.banner || {};
+        domain.banner.layout = {};
         domain.banner.layout = JSON.parse(domain.banner.rawJSON);
       } catch (e) {
         return console.log("Cannot parse banner JSON");
