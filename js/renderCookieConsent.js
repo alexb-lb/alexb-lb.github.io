@@ -540,7 +540,7 @@ var renderCookieConsent = function () {
     );
   };
 
-  var renderPreferences = function (banner, showByDefault = false) {
+  var renderPreferences = function (banner, showByDefault) {
     var categories = domain.categories || [];
     if (!banner) return;
     var layout = banner && banner.layout;
