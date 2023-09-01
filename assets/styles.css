@@ -145,7 +145,6 @@
 }
 
 .cookie-consent-banner-preferences .banner-header {
-  font-size: 16px;
   font-weight: 600;
   color: #1b2229;
 }
@@ -156,7 +155,6 @@
 }
 
 .cookie-consent-banner-preferences .preferences-banner-body .description {
-  font-size: 12px;
   font-weight: 400;
   color: #1b2229;
 }
@@ -167,7 +165,10 @@
   overflow-y: auto;
 }
 
-.cookie-consent-banner-preferences .preferences-banner-body .cookie-categories .category {
+.cookie-consent-banner-preferences
+  .preferences-banner-body
+  .cookie-categories
+  .category {
   border: 1px solid #eceef1;
   padding: 14px;
   cursor: pointer;
@@ -180,7 +181,11 @@
   border-bottom: none;
 }
 
-.cookie-consent-banner-preferences .preferences-banner-body .cookie-categories .category .icon-box {
+.cookie-consent-banner-preferences
+  .preferences-banner-body
+  .cookie-categories
+  .category
+  .icon-box {
   display: none;
 }
 
@@ -193,7 +198,11 @@
   margin-right: 6px;
 }
 
-.cookie-consent-banner-preferences .preferences-banner-body .cookie-categories .category .row,
+.cookie-consent-banner-preferences
+  .preferences-banner-body
+  .cookie-categories
+  .category
+  .row,
 .cookie-consent-banner-preferences .icon-box {
   display: flex;
   flex-flow: row nowrap;
@@ -339,7 +348,7 @@
 }
 
 .lb-toggle-label:after {
-  content: '';
+  content: "";
   position: absolute;
   top: 1px;
   left: 2px;
@@ -404,7 +413,7 @@
 }
 
 .lb-checkbox-mark:after {
-  content: '';
+  content: "";
   position: absolute;
   display: none;
 }
