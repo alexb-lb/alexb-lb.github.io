@@ -184,7 +184,6 @@ var renderCookieConsent = function () {
 
     var xhr = new XMLHttpRequest();
 
-    console.log(xhr);
     xhr.open(method, url);
     xhr.onreadystatechange = function () {
       if (xhr.readyState === 4 && xhr.status === 200) {
