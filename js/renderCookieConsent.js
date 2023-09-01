@@ -629,47 +629,22 @@ var renderCookieConsent = function () {
               return getCookieHtml(c);
             }).join("")) || "" + "</div>";
 
+      // prettier-ignore
       var html =
         '\
-      <div class="category ' + !optOut
-          ? "accepted"
-          : "" +
-            '" id="' +
-            id +
-            '">\
-        <div class="row category-name">\
-          ' +
-            categoryCookies.length
-          ? htmlCaret
-          : "" +
-            '\
-          <div\
-            class="title"\
-            style="color: #' +
-            categorySettings
-          ? categorySettings.colorTitle
-          : "000" +
-            ';"\
-          >' +
-            name +
-            "</div>\
-          " +
-            showToggle
-          ? renderToggle(checkboxPayload)
-          : renderCheckbox(checkboxPayload) +
-            "\
-        </div>\
-        " +
-            description
-          ? htmlDescription
-          : "" +
-              "\
-        " +
-              categoryCookies && categoryCookies.length
-          ? htmlCategoryCookies
-          : "" +
-            "\
-      </div>";
+          <div class="category ' + !optOut ? "accepted" : "" + '"\
+               id="' + id + '">\
+            <div class="row category-name">\
+              ' + categoryCookies.length ? htmlCaret : "" + '\
+              <div\
+                class="title"\
+                style="color: #' + categorySettings ? categorySettings.colorTitle : "000" + ';"\
+              >' + name + '</div>\
+              ' + showToggle ? renderToggle(checkboxPayload) : renderCheckbox(checkboxPayload) + '\
+            </div>\
+            ' + description ? htmlDescription : "" + '\
+            ' + categoryCookies && categoryCookies.length ? htmlCategoryCookies : "" + '\
+          </div>';
       return html;
     };
 
