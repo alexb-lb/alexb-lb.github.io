@@ -24,7 +24,32 @@ const renderCookieConsent = async () => {
   // utils
   const cleanUrlString = (domain) =>
     domain.replace(/https?:\/\//i, "").replace(/^(\.+)/g, "");
+  const getPrettyExpires = (expires = 0) => {
+    if (!expires) return "--";
+    const date = new Date(expires * 1000);
 
+    const day = date.getDate();
+    const months = [
+      "Jan",
+      "Feb",
+      "Mar",
+      "Apr",
+      "May",
+      "Jun",
+      "Jul",
+      "Aug",
+      "Sep",
+      "Oct",
+      "Nov",
+      "Dec",
+    ];
+    const month = date.getMonth();
+    const year = date.getFullYear();
+    const hours = date.getHours();
+    const minutes = date.getMinutes();
+
+    return `${day} ${months[month]} ${year}, ${hours}:${minutes}`;
+  };
   const getBrowserName = () => {
     let userAgentString = navigator.userAgent;
     let chromeAgent = userAgentString.indexOf("Chrome") > -1;
@@ -52,13 +77,11 @@ const renderCookieConsent = async () => {
       ? "Chrome"
       : "";
   };
-
   const isMobile = () => {
     const regex =
       /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
     return regex.test(window.navigator?.userAgent);
   };
-
   const getBrowserLang = () => {
     return window.navigator?.language || "";
   };
@@ -450,9 +473,7 @@ const renderCookieConsent = async () => {
             </div>
             <div class="row">\
               <div class="label">Expires:</div>
-              <div class="value">${new Date(
-                cookie.expires
-              ).toDateString()}</div>
+              <div class="value">${getPrettyExpires(cookie.expires)}</div>
             </div>
             ${cookie.description ? cookieDescription : ""}
           </div>`;
