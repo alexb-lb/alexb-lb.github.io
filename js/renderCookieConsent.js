@@ -164,21 +164,47 @@ var renderCookieConsent = function () {
   };
 
   // API requests
-  var httpRequest = function (params) {
+  // var httpRequest = function (params) {
+  //   var method = params.method || "GET";
+  //   var url = params.url || "";
+  //   var body = params.body;
+  //   var xhr = new XMLHttpRequest();
+
+  //   return new Promise(function (res, rej) {
+  //     xhr.open(method, url, true);
+  //     xhr.onload = res;
+  //     xhr.onerror = rej;
+  //     if (body) xhr.send(body);
+  //   });
+  // };
+  var httpRequest = function (params, callback) {
     var method = params.method || "GET";
     var url = params.url || "";
     var body = params.body;
+
     var xhr = new XMLHttpRequest();
 
-    return new Promise(function (res, rej) {
-      xhr.open(method, url, true);
-      xhr.onload = res;
-      xhr.onerror = rej;
-      if (body) xhr.send(body);
-    });
+    xhr.open(method, url);
+    if (body) {
+      xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+      xhr.send(JSON.stringify(body));
+    }
+
+    xhr.onreadystatechange = function () {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        console.log(xhr.responseText);
+        console.log(callback(xhr.responseText));
+        // try {
+        //   domain.banner.layout = JSON.parse(domain.banner.rawJSON);
+        // } catch (e) {
+        //   return console.log("Cannot parse banner JSON");
+        // }
+        // callback(JSON.parse(xhr.responseText));
+      }
+    };
   };
 
-  var fetchDomainInfo = function () {
+  var fetchDomainInfo = function (callback) {
     // var response = await fetch(
     //   webAppUrl + "/api/cookie-consent/domain?domainName=" + clientDomain
     // );
@@ -196,9 +222,9 @@ var renderCookieConsent = function () {
     const payload = {
       url: webAppUrl + "/api/cookie-consent/domain?domainName=" + clientDomain,
     };
-    return httpRequest(payload).then(function (data) {
+    return httpRequest(payload, function (data) {
       console.log(data);
-      return data;
+      callback(data);
     });
   };
 
@@ -748,14 +774,10 @@ var renderCookieConsent = function () {
     essentialsWhiteList.push(cleanUrlString(webAppUrl));
   }
 
-  fetchDomainInfo()
-    .then(function (domain) {
-      if (domain) {
-        initScriptBlocking(domain);
-        initHandlers(domain);
-      }
-    })
-    .catch(function (e) {
-      return console.log("cannot fetch cookie-consent domain information");
-    });
+  fetchDomainInfo(function (domain) {
+    if (domain) {
+      initScriptBlocking(domain);
+      initHandlers(domain);
+    }
+  });
 };
