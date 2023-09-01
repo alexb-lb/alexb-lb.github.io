@@ -540,9 +540,14 @@ var renderCookieConsent = function () {
               '+ showAccept ? acceptButton :  "" + ' \
             </div>\
           </div>\
-        </div>\
-        '+ renderPreferences(banner, showPreferencesOnly)
-    );
+        </div>')
+
+    document
+      .querySelector("body")
+      .insertAdjacentHTML(
+        "beforeend",
+        renderPreferences(banner, showPreferencesOnly)
+      );
   };
 
   var renderPreferences = function (banner, showByDefault) {
