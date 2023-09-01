@@ -26,7 +26,7 @@ const renderCookieConsent = async () => {
     domain.replace(/https?:\/\//i, "").replace(/^(\.+)/g, "");
 
   const getBrowserName = function () {
-    const userAgent = window.userAgent;
+    const userAgent = window.navigator.userAgent;
 
     const isOpera =
       (!!window.opr && !!opr.addons) ||
