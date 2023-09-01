@@ -200,6 +200,8 @@ var renderCookieConsent = function () {
       url: webAppUrl + "/api/cookie-consent/domain?domainName=" + clientDomain,
     };
     return httpRequest(payload, function (data) {
+      console.log("response:");
+      console.log(data);
       domain = data;
       domain.banner = domain.banner || {};
       domain.banner.layout = {};
