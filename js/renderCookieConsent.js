@@ -335,12 +335,18 @@ var renderCookieConsent = function () {
         hideBanner();
       }
       if (e.target && e.target.id === "lb-cookie-consent-open-preferences") {
-        document
-          .querySelector(".cookie-consent-banner-container")
-          .classList.add("hidden");
-        document
-          .querySelector(".cookie-consent-banner-preferences")
-          .classList.remove("hidden");
+        const banner = document.querySelector(
+          ".cookie-consent-banner-container"
+        );
+        if (banner && banner.classList) {
+          banner.classList.add("hidden");
+        }
+        const preferences = document.querySelector(
+          ".cookie-consent-banner-preferencesr"
+        );
+        if (preferences && preferences.classList) {
+          preferences.classList.remove("hidden");
+        }
       }
     });
 
