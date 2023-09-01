@@ -165,9 +165,9 @@ var renderCookieConsent = function () {
   var mergeObjects = function (obj1, obj2) {
     var merged = obj1;
 
-    for (var key in obj2[i]) {
-      if (!obj2[i].hasOwnProperty(key)) continue;
-      merged[key] = obj2[i][key];
+    for (var key in obj2) {
+      if (!obj2.hasOwnProperty(key)) continue;
+      merged[key] = obj2[key];
     }
 
     return merged;
