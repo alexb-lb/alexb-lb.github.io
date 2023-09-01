@@ -507,7 +507,7 @@ var renderCookieConsent = function () {
           class="\
             cookie-consent-banner-container \
             ' + layout && layout.type + ' \
-            ' + layout && layout.position ? layout.position.join(" ") : "" + '\
+            ' + (layout && layout.position ? layout.position.join(' ') : '') + '\
             ' + (showPreferencesOnly ? 'hidden' : '') + '"\
            id="lb-cookie-consent-banner"\
         >\
