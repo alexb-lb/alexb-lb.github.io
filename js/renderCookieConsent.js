@@ -162,21 +162,18 @@ var renderCookieConsent = function () {
       return j[v];
     });
   };
+  var mergeObjects = function (obj1, obj2) {
+    var merged = obj1;
+
+    for (var key in obj2[i]) {
+      if (!obj2[i].hasOwnProperty(key)) continue;
+      merged[key] = obj2[i][key];
+    }
+
+    return merged;
+  };
 
   // API requests
-  // var httpRequest = function (params) {
-  //   var method = params.method || "GET";
-  //   var url = params.url || "";
-  //   var body = params.body;
-  //   var xhr = new XMLHttpRequest();
-
-  //   return new Promise(function (res, rej) {
-  //     xhr.open(method, url, true);
-  //     xhr.onload = res;
-  //     xhr.onerror = rej;
-  //     if (body) xhr.send(body);
-  //   });
-  // };
   var httpRequest = function (params, callback) {
     var method = params.method || "GET";
     var url = params.url || "";
@@ -496,7 +493,7 @@ var renderCookieConsent = function () {
       banner.consentType === cookieConsentTypes.accept;
 
     var btnCustomize = renderActionButton(
-      Object.assign(mainBanner.actionButton, {
+      mergeObjects(mainBanner.actionButton, {
         id: "lb-cookie-consent-open-preferences",
       })
     );
@@ -564,7 +561,7 @@ var renderCookieConsent = function () {
       banner.consentType === cookieConsentTypes.acceptReject ||
       banner.consentType === cookieConsentTypes.accept;
     var btnSavePreferences = renderActionButton(
-      Object.assign(preferences.actionButton, {
+      mergeObjects(preferences.actionButton, {
         id: "lb-cookie-consent-save-preferences",
       })
     );
