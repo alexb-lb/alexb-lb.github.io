@@ -184,12 +184,8 @@ var renderCookieConsent = function () {
 
     var xhr = new XMLHttpRequest();
 
+    console.log(xhr);
     xhr.open(method, url);
-    if (body) {
-      xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
-      xhr.send(JSON.stringify(body));
-    }
-
     xhr.onreadystatechange = function () {
       if (xhr.readyState === 4 && xhr.status === 200) {
         console.log(xhr.responseText);
@@ -202,6 +198,7 @@ var renderCookieConsent = function () {
         // callback(JSON.parse(xhr.responseText));
       }
     };
+    xhr.send(body);
   };
 
   var fetchDomainInfo = function (callback) {
@@ -775,7 +772,6 @@ var renderCookieConsent = function () {
     essentialsWhiteList.push(cleanUrlString(webAppUrl));
   }
 
-  console.log("init");
   fetchDomainInfo(function (domain) {
     if (domain) {
       console.log("domain", domain);
