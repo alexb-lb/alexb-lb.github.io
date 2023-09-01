@@ -29,7 +29,7 @@ const renderCookieConsent = async () => {
     const userAgent = window.navigator.userAgent;
 
     const isOpera =
-      (!!window.opr && !!opr.addons) ||
+      (!!window.opr && !!window.opr.addons) ||
       !!window.opera ||
       userAgent.indexOf(" OPR/") >= 0;
 
@@ -49,7 +49,9 @@ const renderCookieConsent = async () => {
     const isEdgeChromium = isChrome && userAgent.indexOf("Edg") != -1;
     const isBlink = (isChrome || isOpera) && !!window.CSS;
 
-    return isFirefox
+    return isOpera
+      ? "Opera"
+      : isFirefox
       ? "Firefox"
       : isSafari
       ? "Safari"
