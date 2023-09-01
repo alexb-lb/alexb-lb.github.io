@@ -44,7 +44,7 @@ var renderCookieConsent = function () {
 
   // utils
   var cleanUrlString = function (domain) {
-    domain.replace(/https?:\/\//i, "").replace(/^(\.+)/g, "");
+    return domain.replace(/https?:\/\//i, "").replace(/^(\.+)/g, "");
   };
 
   var getBrowserName = function () {
@@ -257,7 +257,7 @@ var renderCookieConsent = function () {
         hideBanner();
       }
 
-      if (e.targe && e.target.id === "lb-cookie-consent-reject-all") {
+      if (e.target && e.target.id === "lb-cookie-consent-reject-all") {
         window.localStorage.setItem(
           LOCAL_STORAGE_KEY,
           JSON.stringify({ whiteList: essentialsWhiteList })
@@ -385,20 +385,20 @@ var renderCookieConsent = function () {
 
     // prettier-ignore
     return '\
-      <label \
-        class="lb-checkbox-container lb-switch ' + disabled ? 'disabled' : '' + '"\
-        data-category-id="' + id + '"\
+    <label \
+      class="lb-checkbox-container lb-switch ' + (disabled ? 'disabled' : '') + '"\
+      data-category-id="' + id + '"\
+    >\
+      ' + label + '\
+      <input \
+        class="lb-checkbox-input lb-switch-input" \
+        type="checkbox"\
+        id="checkbox-' + id + '"\
+        ' + (checked ? 'checked' : '') + '\
+        ' + (disabled ? 'disabled' : '') + '\
       >\
-        ' + label + '\
-        <input \
-          class="lb-checkbox-input lb-switch-input" \
-          type="checkbox"\
-          id="checkbox-' + id + '"\
-          ' + checked ? 'checked' : '' + '\
-          ' + disabled ? 'disabled' : '' + '\
-        >\
-        <span class="lb-checkbox-mark"></span>\
-      </label>';
+      <span class="lb-checkbox-mark"></span>\
+    </label>';
   };
 
   var renderToggle = function (props) {
@@ -409,21 +409,21 @@ var renderCookieConsent = function () {
 
     // prettier-ignore
     return '\
-      <div class="lb-toggle-container lb-switch" data-category-id="' + id + '">\
-        <input \
-          class="lb-toggle-input lb-switch-input"\
-          type="checkbox" \
-          id="checkbox-' + id +'" \
-          ' + checked ? 'checked' : '' +'\
-          ' + disabled ? 'disabled' : '' +'\
-        />\
-        <label \
-          class="lb-toggle-label ' + disabled ? 'disabled' : '' + '"\
-          for="checkbox-' + id + '"\
-        >\
-          '+ label + '\
-        </label>\
-      </div>';
+    <div class="lb-toggle-container lb-switch" data-category-id="' + id + '">\
+      <input \
+        class="lb-toggle-input lb-switch-input"\
+        type="checkbox" \
+        id="checkbox-' + id +'" \
+        ' + (checked ? 'checked' : '') +'\
+        ' + (disabled ? 'disabled' : '') +'\
+      />\
+      <label \
+        class="lb-toggle-label ' + (disabled ? 'disabled' : '') + '"\
+        for="checkbox-' + id + '"\
+      >\
+        '+ label + '\
+      </label>\
+    </div>';
   };
 
   var renderActionButton = function (props) {
@@ -508,7 +508,7 @@ var renderCookieConsent = function () {
             cookie-consent-banner-container \
             ' + layout && layout.type + ' \
             ' + layout && layout.position ? layout.position.join(" ") : "" + '\
-            ' + showPreferencesOnly ? 'hidden' : '' + '"\
+            ' + (showPreferencesOnly ? 'hidden' : '') + '"\
            id="lb-cookie-consent-banner"\
         >\
           <div class="overlay"></div>\
@@ -637,7 +637,7 @@ var renderCookieConsent = function () {
       // prettier-ignore
       var html =
         '\
-          <div class="category ' + !optOut ? 'accepted' : '' + '"\
+          <div class="category ' + (!optOut ? 'accepted' : '') + '"\
                id="' + id + '">\
             <div class="row category-name">\
               ' + categoryCookies.length ? htmlCaret : "" + '\
@@ -663,7 +663,7 @@ var renderCookieConsent = function () {
     var htmlPreferences =
       '\
       <div \
-        class="cookie-consent-banner-preferences ' + showByDefault ? '' : 'hidden' +'" \
+        class="cookie-consent-banner-preferences ' + (showByDefault ? '' : 'hidden') +'" \
         id="cookie-consent-banner-preferences">\
         <div\
           class="banner-header"\
