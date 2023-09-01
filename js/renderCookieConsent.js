@@ -483,7 +483,7 @@ const renderCookieConsent = async () => {
       const showToggle =
         banner?.layout?.preferences?.category?.checkboxType === "toggle";
 
-      const checkboxPayload = {
+      const payload = {
         id: category.id,
         checked: true,
         disabled: !category.optOut,
@@ -497,7 +497,7 @@ const renderCookieConsent = async () => {
       const htmlDescription = `<div class="row category-description">${category?.description}</div>`;
 
       const html = `\
-      <div class="category ${category.optOut ? "accepted" : ""}" id="${
+      <div class="category ${payload.checked ? "accepted" : ""}" id="${
         category.id
       }">\
         <div class="row category-name">\
@@ -510,11 +510,7 @@ const renderCookieConsent = async () => {
           >\
             ${category?.name}\
           </div>\
-          ${
-            showToggle
-              ? renderToggle(checkboxPayload)
-              : renderCheckbox(checkboxPayload)
-          }
+          ${showToggle ? renderToggle(payload) : renderCheckbox(payload)}
         </div>\
         ${category?.description ? htmlDescription : ""}
         <div class="category-cookies">\
