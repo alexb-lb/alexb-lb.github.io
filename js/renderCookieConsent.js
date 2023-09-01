@@ -1,4 +1,5 @@
-var SVG_CARET_RIGHT = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#333333" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><polyline points="96 48 176 128 96 208" fill="none" stroke="#333333" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline></svg>`;
+var SVG_CARET_RIGHT =
+  '<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#333333" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><polyline points="96 48 176 128 96 208" fill="none" stroke="#333333" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline></svg>';
 
 var renderCookieConsent = async function () {
   var VISITOR_ID = "_lb_fp";
@@ -98,8 +99,8 @@ var renderCookieConsent = async function () {
   };
 
   var getCookie = function (name) {
-    var value = `; ${document.cookie}`;
-    var parts = value.split(`; ${name}=`);
+    var value = ";" + document.cookie;
+    var parts = value.split("; " + name + "=");
     if (parts.length === 2) return parts.pop().split(";").shift();
   };
 
@@ -128,13 +129,13 @@ var renderCookieConsent = async function () {
     var hours = date.getHours();
     var minutes = date.getMinutes();
 
-    return `${day} ${month} ${year}, ${hours}:${minutes}`;
+    return day + " " + month + " " + year + ", " + hours + ":" + minutes;
   };
 
   // API requests
   var fetchDomainInfo = async function () {
     var response = await fetch(
-      `${webAppUrl}/api/cookie-consent/domain?domainName=${clientDomain}`
+      webAppUrl + "/api/cookie-consent/domain?domainName=" + clientDomain
     );
     var domain = await response.json();
     domain.banner = domain.banner || {};
@@ -155,7 +156,7 @@ var renderCookieConsent = async function () {
   }) {
     if (!domain) return;
 
-    fetch(`${webAppUrl}/api/cookie-consent/response`, {
+    fetch(webAppUrl + "/api/cookie-consent/response", {
       method: "POST",
       credentials: "include",
       body: JSON.stringify({
@@ -304,112 +305,105 @@ var renderCookieConsent = async function () {
   };
 
   // renderers
-  var renderCheckbox = function ({
-    id = "",
-    label = "",
-    checked = false,
-    disabled = false,
-  }) {
-    return `\
+  var renderCheckbox = function (props) {
+    var id = props.id || "";
+    var label = props.label || "";
+    var checked = props.checked || false;
+    var disabled = props.disabled || false;
+
+    // prettier-ignore
+    return '\
       <label \
-        class="lb-checkbox-container lb-switch ${disabled ? "disabled" : ""}"\
-        data-category-id="${id}"\
+        class="lb-checkbox-container lb-switch ' + disabled ? "disabled" : "" + '"\
+        data-category-id="' + id + '"\
       >\
-        ${label}\
+        ' + label + '\
         <input \
           class="lb-checkbox-input lb-switch-input" \
           type="checkbox"\
-          id="checkbox-${id}"\
-          ${checked ? "checked" : ""}\
-          ${disabled ? "disabled" : ""}\
-        >
+          id="checkbox-' + id + '"\
+          ' + checked ? "checked" : "" + '\
+          ' + disabled ? "disabled" : "" + '\
+        >\
         <span class="lb-checkbox-mark"></span>\
-      </label>`;
+      </label>';
   };
 
-  var renderToggle = function ({
-    id = "",
-    label = "",
-    checked = false,
-    disabled = false,
-  }) {
-    return `\
-      <div class="lb-toggle-container lb-switch" data-category-id="${id}">
+  var renderToggle = function (props) {
+    var id = props.id || "";
+    var label = props.label || "";
+    var checked = props.checked || false;
+    var disabled = props.disabled || false;
+
+    // prettier-ignore
+    return '\
+      <div class="lb-toggle-container lb-switch" data-category-id="' + id + '">\
         <input \
-          class="lb-toggle-input lb-switch-input"
+          class="lb-toggle-input lb-switch-input"\
           type="checkbox" \
-          id="checkbox-${id}" \
-          ${checked ? "checked" : ""}\
-          ${disabled ? "disabled" : ""}\
+          id="checkbox-' + id +'" \
+          ' + checked ? "checked" : "" +'\
+          ' + disabled ? "disabled" : "" +'\
         />\
         <label \
-          class="lb-toggle-label ${disabled ? "disabled" : ""}"\
-          for="checkbox-${id}"\
+          class="lb-toggle-label ' + disabled ? "disabled" : ""+ '"\
+          for="checkbox-' + id + '"\
         >\
-          ${label}\
+          '+ label + '\
         </label>\
-      </div>`;
+      </div>';
   };
 
   var renderActionButton = function (props) {
-    var {
-      id = "",
-      backgroundColor = "FFF",
-      color = "000",
-      borderColor = "FFF",
-      text = "Preferences",
-    } = props || {};
+    var id = props.id || "";
+    var backgroundColor = props.backgroundColor || "FFF";
+    var color = props.color || "000";
+    var borderColor = props.borderColor || "FFF";
+    var text = props.text || "Preferences";
 
-    return `\
+    // prettier-ignore
+    return '\
       <button\
-        id="${id ? id : ""}"\
+        id="'+ id || "" +'"\
         class="btn customize"\
-        style="background-color: #${backgroundColor};\
-        color: #${color};\
-        border-color: #${borderColor};"\
-      >\
-        ${text}\
-      </button>`;
+        style="background-color: #'+ backgroundColor + ';\
+        color: #' + color + ';\
+        border-color: #' + borderColor + ';"\
+      >' + text + '</button>';
   };
 
   var renderRejectButton = function (props) {
-    var {
-      backgroundColor = "FFF",
-      color = "000",
-      borderColor = "FFF",
-      text = "Accept all",
-    } = props || {};
+    var backgroundColor = props.backgroundColor || "FFF";
+    var color = props.color || "000";
+    var borderColor = props.borderColor || "FFF";
+    var text = props.text || "Reject all";
 
-    return `\
+    // prettier-ignore
+    return '\
         <button\
           id="lb-cookie-consent-reject-all"\
           class="btn reject"\
-          style="background-color: #${backgroundColor};\
-          color: #${color};\
-          border-color: #${borderColor};"\
-        >\
-          ${text}\
-        </button>`;
+          style="background-color: #' + backgroundColor + ';\
+          color: #' + color + ';\
+          border-color: #' + borderColor + ';"\
+        >'+ text + '</button>';
   };
 
   var renderAcceptButton = function (props) {
-    var {
-      backgroundColor = "FFF",
-      color = "000",
-      borderColor = "FFF",
-      text = "Accept all",
-    } = props || {};
+    var backgroundColor = props.backgroundColor || "FFF";
+    var color = props.color || "000";
+    var borderColor = props.borderColor || "FFF";
+    var text = props.text || "Accept all";
 
-    return `\
+    // prettier-ignore
+    return '\
         <button\
           id="lb-cookie-consent-accept-all"\
           class="btn accept"\
-          style="background-color: #${backgroundColor};\
-          color: #${color};\
-          border-color: #${borderColor};"\
-        >\
-          ${text}\
-        </button>`;
+          style="background-color: #' + backgroundColor + ';\
+          color: #' + color + ';\
+          border-color: #' + borderColor + ';"\
+        >' + text + '</button>';
   };
 
   var renderBanner = function (banner, showPreferencesOnly = false) {
@@ -433,51 +427,48 @@ var renderCookieConsent = async function () {
     var rejectButton = renderRejectButton(mainBanner.rejectAllButton);
     var acceptButton = renderAcceptButton(mainBanner.acceptAllButton);
 
+    // prettier-ignore
     document.querySelector("body").insertAdjacentHTML(
       "beforeend",
-      `\
-        <div \
+      '<div \
           class="\
-          cookie-consent-banner-container \
-          ${layout && layout.type} \
-          ${layout && layout.position ? layout.position.join(" ") : ""} \
-          ${showPreferencesOnly ? "hidden" : ""} \
-          "id="lb-cookie-consent-banner"\
+            cookie-consent-banner-container \
+            ' + layout && layout.type + ' \
+            ' + layout && layout.position ? layout.position.join(" ") : "" + ' \
+            ' + showPreferencesOnly ? "hidden" : "" + '" \
+          id="lb-cookie-consent-banner"\
         >\
-          <div class="overlay"></div>
+          <div class="overlay"></div>\
           <div \
             class="main-banner"\
-            style="background-color: #${
-              mainBanner && mainBanner.backgroundColor
-            };\
-                   border-color: #${mainBanner && mainBanner.borderColor};"\
+            style="background-color: #' + mainBanner && mainBanner.backgroundColor + ';\
+                   border-color: #' + mainBanner && mainBanner.borderColor + ';"\
           >\
             <div class="main-banner-body">\
               <div\
                 class="policy-text"\
-                style="color: #${mainBanner && mainBanner.bodyTextColor};"\
+                style="color: #' + mainBanner && mainBanner.bodyTextColor + ';"\
               >\
-                ${mainBanner && mainBanner.body}\
+                ' + mainBanner && mainBanner.body + '\
               </div>\
-              <a
-                class="policy-link"
-                href="${mainBanner && mainBanner.policyUrl}"
-                rel="noreferrer"
-                target="_blank"
-                style="color: #${mainBanner && mainBanner.policyTextColor};"\
-              >
-                ${mainBanner && mainBanner.policy}
+              <a \
+                class="policy-link" \
+                href="' + mainBanner && mainBanner.policyUrl + '" \
+                rel="noreferrer"\
+                target="_blank"\
+                style="color: #' + mainBanner && mainBanner.policyTextColor + ';"\
+              >\
+                '+ mainBanner && mainBanner.policy +'\
               </a>\
             </div>\
             <div class="buttons">\
-              ${banner.customizable ? btnCustomize : ""}\
-              ${showReject ? rejectButton : ""}\
-              ${showAccept ? acceptButton : ""}\
+              '+ banner.customizable ? btnCustomize : "" + ' \
+              '+ showReject ? rejectButton :  "" + ' \
+              '+ showAccept ? acceptButton :  "" + ' \
             </div>\
           </div>\
-        </div>
-        ${renderPreferences(banner, showPreferencesOnly)}
-      `
+        </div>\
+        '+ renderPreferences(banner, showPreferencesOnly)
     );
   };
 
@@ -504,126 +495,177 @@ var renderCookieConsent = async function () {
     var rejectButton = renderRejectButton(preferences.rejectAllButton);
     var acceptButton = renderAcceptButton(preferences.acceptAllButton);
 
-    var htmlDescription = `\
+    var htmlDescription =
+      '\
       <div\
         class="description"\
-        style="color: #${preferences && preferences.bodyTextColor};"\
-      >\
-        ${preferences && preferences.body}\
-      </div>
-    `;
+        style="color: #' + preferences &&
+      preferences.bodyTextColor +
+        ';"\
+      >' +
+        preferences &&
+      preferences.body + "</div>";
 
     var getCookieHtml = function (cookie) {
-      var cookieDescription = `\
+      var cookieDescription =
+        '\
       <div class="row">\
-        <div class="label">Description:</div>
-        <div class="value">${cookie.description}</div>
-      </div>`;
+        <div class="label">Description:</div>\
+        <div class="value">' +
+        cookie.description +
+        "</div>\
+      </div>";
 
-      return `\
+      return '\
           <div class="category-cookie">\
             <div class="row">\
               <div class="label">Cookie name:</div>\
-              <div class="value">${cookie.name}</div>\
+              <div class="value">' +
+        cookie.name +
+        '</div>\
             </div>\
             <div class="row">\
               <div class="label">Expires:</div>\
-              <div class="value">${getPrettyDate(cookie.expires)}</div>\
-            </div>\
-            ${cookie.description ? cookieDescription : ""}
-          </div>`;
+              <div class="value">' +
+        getPrettyDate(cookie.expires) +
+        "</div>\
+            </div>" +
+        cookie.description
+        ? cookieDescription
+        : "" + "</div>";
     };
 
     var getCategoryHtml = function (category) {
-      var {
-        id = "",
-        name = "",
-        optOut = false,
-        description = "",
-      } = category || {};
+      var id = category.id || "";
+      var name = category.name || "";
+      var optOut = category.optOut || false;
+      var description = category.description || "";
       var showToggle =
         categorySettings && categorySettings.checkboxType === "toggle";
 
-      var checkboxPayload = { id, checked: !optOut, disabled: !optOut };
+      var checkboxPayload = { id: id, checked: !optOut, disabled: !optOut };
       var categoryCookies = domain.cookies.filter(function (c) {
         return c.cookieCategoryId === id;
       });
 
-      var htmlCaret = `<div class="icon-box">${SVG_CARET_RIGHT}</div>`;
-      var htmlDescription = `<div class="row category-description">${description}</div>`;
+      var htmlCaret = '<div class="icon-box">' + SVG_CARET_RIGHT + "</div>";
+      var htmlDescription =
+        '<div class="row category-description">' + description + "</div>";
 
-      var htmlCategoryCookies = `\
+      var htmlCategoryCookies =
+        '\
         <div class="category-cookies">\
-          ${
-            (categoryCookies &&
-              categoryCookies
-                .map(function (c) {
-                  return getCookieHtml(c);
-                })
-                .join("")) ||
-            ""
-          }\
-        </div>`;
+        ' +
+          (categoryCookies &&
+            categoryCookies
+              .map(function (c) {
+                return getCookieHtml(c);
+              })
+              .join("")) || "" + "</div>";
 
-      var html = `\
-      <div class="category ${!optOut ? "accepted" : ""}" id="${id}">\
+      var html =
+        '\
+      <div class="category ' + !optOut
+          ? "accepted"
+          : "" +
+            '" id="' +
+            id +
+            '">\
         <div class="row category-name">\
-            ${categoryCookies.length ? htmlCaret : ""}\
+          ' +
+            categoryCookies.length
+          ? htmlCaret
+          : "" +
+            '\
           <div\
             class="title"\
-            style="color: #${
-              categorySettings ? categorySettings.colorTitle : "000"
-            };"\
-          >\
-            ${name}\
-          </div>\
-          ${
+            style="color: #' +
+            categorySettings
+          ? categorySettings.colorTitle
+          : "000" +
+            ';"\
+          >' +
+            name +
+            "</div>\
+          " +
             showToggle
-              ? renderToggle(checkboxPayload)
-              : renderCheckbox(checkboxPayload)
-          }
+          ? renderToggle(checkboxPayload)
+          : renderCheckbox(checkboxPayload) +
+            "\
         </div>\
-        ${description ? htmlDescription : ""}
-        ${categoryCookies && categoryCookies.length ? htmlCategoryCookies : ""}
-      </div>\
-      `;
+        " +
+            description
+          ? htmlDescription
+          : "" +
+              "\
+        " +
+              categoryCookies && categoryCookies.length
+          ? htmlCategoryCookies
+          : "" +
+            "\
+      </div>";
       return html;
     };
 
-    var htmlCookieCategories = `\
+    var htmlCookieCategories =
+      '\
       <div class="cookie-categories">\
-        ${
-          categories
-            .map(function (c) {
-              return getCategoryHtml(c);
-            })
-            .join("") || ""
-        }\
-      </div>`;
+        ' +
+        categories
+          .map(function (c) {
+            return getCategoryHtml(c);
+          })
+          .join("") ||
+      "" +
+        "\
+      </div>";
 
-    var htmlPreferences = `\
+    var htmlPreferences =
+      '\
       <div \
-        class="cookie-consent-banner-preferences ${
-          showByDefault ? "" : "hidden"
-        }" \
+        class="cookie-consent-banner-preferences ' + showByDefault
+        ? ""
+        : "hidden" +
+            '" \
         id="cookie-consent-banner-preferences">\
         <div\
           class="banner-header"\
-          style="color: #${preferences.titleTextColor || ""};"\
-        >
-          ${preferences.title || ""}\
-        </div>\
+          style="color: #' +
+            preferences.titleTextColor ||
+          "" +
+            ';"\
+        >' +
+            preferences.title ||
+          "" +
+            '</div>\
         <div class="preferences-banner-body">\
-          ${preferences.body ? htmlDescription : ""}\
-          ${!!categories.length ? htmlCookieCategories : ""}\
-        </div>
-        <div class="buttons">
-          ${showReject ? rejectButton : ""}\
-          ${showAccept ? acceptButton : ""}\
-          ${btnSavePreferences}\
-        </div>
-      </div>\
-    `;
+          ' +
+            preferences.body
+        ? htmlDescription
+        : "" +
+          " \
+          " +
+          !!categories.length
+        ? htmlCookieCategories
+        : "" +
+          '\
+        </div>\
+        <div class="buttons">\
+          ' +
+          showReject
+        ? rejectButton
+        : "" +
+          "\
+          " +
+          showAccept
+        ? acceptButton
+        : "" +
+          "\
+          " +
+          btnSavePreferences +
+          "\
+        </div>\
+      </div>";
 
     return htmlPreferences;
   };

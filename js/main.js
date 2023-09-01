@@ -22,7 +22,7 @@ var initCookieConsent = function() {
 
   var link = document.createElement("link");
   link.rel = "stylesheet";
-  link.href = `./assets/styles.css`;
+  link.href = "./assets/styles.css";
   link.type = "text/css";
   head.appendChild(link);
 
@@ -32,7 +32,7 @@ var initCookieConsent = function() {
 
   var scriptRenderer = document.createElement("script");
   scriptRenderer.type = "text/javascript";
-  scriptRenderer.src = `./js/renderCookieConsent.js`;
+  scriptRenderer.src = "./js/renderCookieConsent.js";
   scriptRenderer.async = true;
   head.appendChild(scriptRenderer);
 
