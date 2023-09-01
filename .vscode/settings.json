@@ -10,5 +10,5 @@
   "editor.rulers": [120],
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.fontSize": 12,
-  "window.zoomLevel": 0
+  "window.zoomLevel": 1
 }
