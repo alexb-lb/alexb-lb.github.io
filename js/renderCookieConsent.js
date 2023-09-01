@@ -464,7 +464,7 @@ const renderCookieConsent = async () => {
 
       const checkboxPayload = {
         id: category.id,
-        checked: category.optOut,
+        checked: true,
         disabled: !category.optOut,
       };
 
@@ -476,7 +476,7 @@ const renderCookieConsent = async () => {
       const htmlDescription = `<div class="row category-description">${category?.description}</div>`;
 
       const html = `\
-      <div class="category ${category.optOut ? "accepted" : ""}" id="${
+      <div class="category ${!category.optOut ? "accepted" : ""}" id="${
         category.id
       }">\
         <div class="row category-name">\
