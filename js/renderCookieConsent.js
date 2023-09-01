@@ -436,7 +436,7 @@ var renderCookieConsent = function () {
     // prettier-ignore
     return '\
       <button\
-        id="'+ id || "" +'"\
+        id="'+ (id || '') +'"\
         class="btn customize"\
         style="background-color: #'+ backgroundColor + ';\
         color: #' + color + ';\
@@ -535,9 +535,9 @@ var renderCookieConsent = function () {
               </a>\
             </div>\
             <div class="buttons">\
-              '+ banner.customizable ? btnCustomize : "" + ' \
-              '+ showReject ? rejectButton :  "" + ' \
-              '+ showAccept ? acceptButton :  "" + ' \
+              '+ (banner.customizable ? btnCustomize : '') + ' \
+              '+ (showReject ? rejectButton :  '') + ' \
+              '+ (showAccept ? acceptButton :  '') + ' \
             </div>\
           </div>\
         </div>')
@@ -594,23 +594,18 @@ var renderCookieConsent = function () {
         "</div>\
       </div>";
 
+      // prettier-ignore
       return '\
           <div class="category-cookie">\
             <div class="row">\
               <div class="label">Cookie name:</div>\
-              <div class="value">' +
-        cookie.name +
-        '</div>\
+              <div class="value">'+ cookie.name + '</div>\
             </div>\
             <div class="row">\
               <div class="label">Expires:</div>\
-              <div class="value">' +
-        getPrettyDate(cookie.expires) +
-        "</div>\
-            </div>" +
-        cookie.description
-        ? cookieDescription
-        : "" + "</div>";
+              <div class="value">' + getPrettyDate(cookie.expires) + '</div>\
+            </div>' + (cookie.description ? cookieDescription : '') + '</div>\
+          </div>';
     };
 
     var getCategoryHtml = function (category) {
@@ -630,39 +625,37 @@ var renderCookieConsent = function () {
       var htmlDescription =
         '<div class="row category-description">' + description + "</div>";
 
+      // prettier-ignore
       var htmlCategoryCookies =
-        '\
-        <div class="category-cookies">\
-        ' +
-          (categoryCookies &&
-            mapArray(categoryCookies, function (c) {
-              return getCookieHtml(c);
-            }).join("")) || "" + "</div>";
+        '<div class="category-cookies">' +
+          ((categoryCookies && mapArray(categoryCookies, function (c) {
+            return getCookieHtml(c);
+          }).join("")) || '') +
+        '</div>';
 
       // prettier-ignore
       var html =
-        '\
-          <div class="category ' + (!optOut ? 'accepted' : '') + '"\
-               id="' + id + '">\
+        '<div class="category ' + (!optOut ? 'accepted' : '') + '"\
+              id="' + id + '">\
             <div class="row category-name">\
-              ' + categoryCookies.length ? htmlCaret : "" + '\
+              ' + (categoryCookies.length ? htmlCaret : '') + '\
               <div\
                 class="title"\
-                style="color: #' + categorySettings ? categorySettings.colorTitle : "000" + ';"\
+                style="color: #' + categorySettings ? categorySettings.colorTitle : '000' + ';"\
               >' + name + '</div>\
-              ' + showToggle ? renderToggle(checkboxPayload) : renderCheckbox(checkboxPayload) + '\
+              ' + (showToggle ? renderToggle(checkboxPayload) : renderCheckbox(checkboxPayload)) + '\
             </div>\
-            ' + description ? htmlDescription : "" + '\
-            ' + categoryCookies && categoryCookies.length ? htmlCategoryCookies : "" + '\
+            ' + (description ? htmlDescription : '') + '\
+            ' + (categoryCookies && categoryCookies.length ? htmlCategoryCookies : '') + '\
           </div>';
       return html;
     };
 
+    // prettier-ignore
     var htmlCookieCategories =
-      '<div class="cookie-categories">' +
-        mapArray(categories, function (c) {
-          return getCategoryHtml(c);
-        }).join("") || "" + "</div>";
+      '<div class="cookie-categories">' + mapArray(categories, function (c) {
+         return getCategoryHtml(c);
+        }).join('') || '' + '</div>';
 
     // prettier-ignore
     var htmlPreferences =
@@ -675,11 +668,11 @@ var renderCookieConsent = function () {
           style="color: #' + preferences.titleTextColor || "" +';"\
         >' + preferences.title || "" +'</div>\
         <div class="preferences-banner-body">\
-          ' + preferences.body ? htmlDescription : "" + '\
-          ' + !!categories.length ? htmlCookieCategories : "" + '\
+          ' + (preferences.body ? htmlDescription : '') + '\
+          ' + (!!categories.length ? htmlCookieCategories : '') + '\
         </div>\
-        <div class="buttons">' + showReject ? rejectButton : "" +'\
-          '+ showAccept ? acceptButton : "" + '\
+        <div class="buttons">' + (showReject ? rejectButton : '') +'\
+          '+ (showAccept ? acceptButton : '') + '\
           '+ btnSavePreferences + '\
         </div>\
       </div>';
