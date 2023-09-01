@@ -579,26 +579,18 @@ var renderCookieConsent = function () {
     var rejectButton = renderRejectButton(preferences.rejectAllButton);
     var acceptButton = renderAcceptButton(preferences.acceptAllButton);
 
+    // prettier-ignore
     var htmlDescription =
-      '\
-      <div\
-        class="description"\
-        style="color: #' + preferences &&
-      preferences.bodyTextColor +
-        ';"\
-      >' +
-        preferences &&
-      preferences.body + "</div>";
+      '<div class="description" style="color: #' + preferences && preferences.bodyTextColor + ';">' +
+        preferences && preferences.body + '</div>';
 
+    // prettier-ignore
     var getCookieHtml = function (cookie) {
       var cookieDescription =
-        '\
-      <div class="row">\
-        <div class="label">Description:</div>\
-        <div class="value">' +
-        cookie.description +
-        "</div>\
-      </div>";
+        '<div class="row">\
+          <div class="label">Description:</div>\
+          <div class="value">' + cookie.description +'</div>\
+        </div>';
 
       // prettier-ignore
       return '\
@@ -671,8 +663,7 @@ var renderCookieConsent = function () {
         id="cookie-consent-banner-preferences">\
         <div\
           class="banner-header"\
-          style="color: #' + preferences.titleTextColor || "" +';"\
-        >' + preferences.title || "" +'</div>\
+          style="color: #' + preferences.titleTextColor || '' +';">' + preferences.title || '' +'</div>\
         <div class="preferences-banner-body">\
           ' + (preferences.body ? htmlDescription : '') + '\
           ' + (!!categories.length ? htmlCookieCategories : '') + '\
