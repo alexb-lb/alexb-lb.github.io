@@ -386,7 +386,7 @@ var renderCookieConsent = function () {
     // prettier-ignore
     return '\
       <label \
-        class="lb-checkbox-container lb-switch ' + disabled ? "disabled" : "" + '"\
+        class="lb-checkbox-container lb-switch ' + disabled ? 'disabled' : '' + '"\
         data-category-id="' + id + '"\
       >\
         ' + label + '\
@@ -394,8 +394,8 @@ var renderCookieConsent = function () {
           class="lb-checkbox-input lb-switch-input" \
           type="checkbox"\
           id="checkbox-' + id + '"\
-          ' + checked ? "checked" : "" + '\
-          ' + disabled ? "disabled" : "" + '\
+          ' + checked ? 'checked' : '' + '\
+          ' + disabled ? 'disabled' : '' + '\
         >\
         <span class="lb-checkbox-mark"></span>\
       </label>';
@@ -414,11 +414,11 @@ var renderCookieConsent = function () {
           class="lb-toggle-input lb-switch-input"\
           type="checkbox" \
           id="checkbox-' + id +'" \
-          ' + checked ? "checked" : "" +'\
-          ' + disabled ? "disabled" : "" +'\
+          ' + checked ? 'checked' : '' +'\
+          ' + disabled ? 'disabled' : '' +'\
         />\
         <label \
-          class="lb-toggle-label ' + disabled ? "disabled" : ""+ '"\
+          class="lb-toggle-label ' + disabled ? 'disabled' : '' + '"\
           for="checkbox-' + id + '"\
         >\
           '+ label + '\
@@ -507,9 +507,9 @@ var renderCookieConsent = function () {
           class="\
             cookie-consent-banner-container \
             ' + layout && layout.type + ' \
-            ' + layout && layout.position ? layout.position.join(" ") : "" + ' \
-            ' + showPreferencesOnly ? "hidden" : "" + '" \
-          id="lb-cookie-consent-banner"\
+            ' + layout && layout.position ? layout.position.join(" ") : "" + '\
+            ' + showPreferencesOnly ? 'hidden' : '' + '"\
+           id="lb-cookie-consent-banner"\
         >\
           <div class="overlay"></div>\
           <div \
@@ -637,7 +637,7 @@ var renderCookieConsent = function () {
       // prettier-ignore
       var html =
         '\
-          <div class="category ' + !optOut ? "accepted" : "" + '"\
+          <div class="category ' + !optOut ? 'accepted' : '' + '"\
                id="' + id + '">\
             <div class="row category-name">\
               ' + categoryCookies.length ? htmlCaret : "" + '\
@@ -654,21 +654,16 @@ var renderCookieConsent = function () {
     };
 
     var htmlCookieCategories =
-      '\
-      <div class="cookie-categories">\
-        ' +
+      '<div class="cookie-categories">' +
         mapArray(categories, function (c) {
           return getCategoryHtml(c);
-        }).join("") ||
-      "" +
-        "\
-      </div>";
+        }).join("") || "" + "</div>";
 
     // prettier-ignore
     var htmlPreferences =
       '\
       <div \
-        class="cookie-consent-banner-preferences ' + showByDefault ? "" : "hidden" +'" \
+        class="cookie-consent-banner-preferences ' + showByDefault ? '' : 'hidden' +'" \
         id="cookie-consent-banner-preferences">\
         <div\
           class="banner-header"\
