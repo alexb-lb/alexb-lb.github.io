@@ -188,41 +188,28 @@ var renderCookieConsent = function () {
     xhr.open(method, url);
     xhr.onreadystatechange = function () {
       if (xhr.readyState === 4 && xhr.status === 200) {
-        console.log(xhr.responseText);
-        console.log(callback(xhr.responseText));
-        // try {
-        //   domain.banner.layout = JSON.parse(domain.banner.rawJSON);
-        // } catch (e) {
-        //   return console.log("Cannot parse banner JSON");
-        // }
-        // callback(JSON.parse(xhr.responseText));
+        callback(xhr.responseText);
+      } else {
+        console.log("cannot get cookie consent domain info");
       }
     };
     xhr.send(body);
   };
 
   var fetchDomainInfo = function (callback) {
-    console.log("fetchDomainInfo");
-    // var response = await fetch(
-    //   webAppUrl + "/api/cookie-consent/domain?domainName=" + clientDomain
-    // );
-    // var domain = await response.json();
-    // domain.banner = domain.banner || {};
-    // domain.banner.layout = {};
-    // try {
-    //   domain.banner.layout = JSON.parse(domain.banner.rawJSON);
-    // } catch (e) {
-    //   return console.log("Cannot parse banner JSON");
-    // }
-
-    // return domain;
-
     const payload = {
       url: webAppUrl + "/api/cookie-consent/domain?domainName=" + clientDomain,
     };
     return httpRequest(payload, function (data) {
-      console.log(data);
-      callback(data);
+      domain = data;
+      domain.banner = domain.banner || {};
+      domain.banner.layout = {};
+      try {
+        domain.banner.layout = JSON.parse(domain.banner.rawJSON);
+      } catch (e) {
+        return console.log("Cannot parse banner JSON");
+      }
+      callback(domain);
     });
   };
 
