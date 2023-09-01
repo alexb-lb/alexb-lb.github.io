@@ -664,52 +664,25 @@ var renderCookieConsent = function () {
         "\
       </div>";
 
+    // prettier-ignore
     var htmlPreferences =
       '\
       <div \
-        class="cookie-consent-banner-preferences ' + showByDefault
-        ? ""
-        : "hidden" +
-            '" \
+        class="cookie-consent-banner-preferences ' + showByDefault ? "" : "hidden" +'" \
         id="cookie-consent-banner-preferences">\
         <div\
           class="banner-header"\
-          style="color: #' +
-            preferences.titleTextColor ||
-          "" +
-            ';"\
-        >' +
-            preferences.title ||
-          "" +
-            '</div>\
+          style="color: #' + preferences.titleTextColor || "" +';"\
+        >' + preferences.title || "" +'</div>\
         <div class="preferences-banner-body">\
-          ' +
-            preferences.body
-        ? htmlDescription
-        : "" +
-          " \
-          " +
-          !!categories.length
-        ? htmlCookieCategories
-        : "" +
-          '\
+          ' + preferences.body ? htmlDescription : "" + '\
+          ' + !!categories.length ? htmlCookieCategories : "" + '\
         </div>\
-        <div class="buttons">\
-          ' +
-          showReject
-        ? rejectButton
-        : "" +
-          "\
-          " +
-          showAccept
-        ? acceptButton
-        : "" +
-          "\
-          " +
-          btnSavePreferences +
-          "\
+        <div class="buttons">' + showReject ? rejectButton : "" +'\
+          '+ showAccept ? acceptButton : "" + '\
+          '+ btnSavePreferences + '\
         </div>\
-      </div>";
+      </div>';
 
     return htmlPreferences;
   };
