@@ -727,7 +727,7 @@ var renderCookieConsent = function () {
   var initScriptBlocking = function (domain) {
     var item = window.localStorage.getItem(LOCAL_STORAGE_KEY);
     if (!item) {
-      return renderBanner(domain.banner, showPreferences === "true");
+      return renderBanner(domain.banner, showPreferences);
     }
 
     var parsed = null;
