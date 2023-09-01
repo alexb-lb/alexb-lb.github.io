@@ -242,7 +242,7 @@ var renderCookieConsent = function () {
   // DOM handlers
   var initHandlers = function () {
     document.addEventListener("click", function (e) {
-      if (e.targe && e.target.id === "lb-cookie-consent-accept-all") {
+      if (e.target && e.target.id === "lb-cookie-consent-accept-all") {
         window.yet && window.yett.unblock();
         window.localStorage.setItem(
           LOCAL_STORAGE_KEY,
