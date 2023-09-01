@@ -228,7 +228,7 @@ var renderCookieConsent = function () {
           consentRejected: consentRejected,
         },
       }),
-      headers,
+      headers: headers,
     };
 
     return httpRequest(payload);
