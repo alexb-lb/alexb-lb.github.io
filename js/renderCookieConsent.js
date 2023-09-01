@@ -72,7 +72,7 @@ const renderCookieConsent = async () => {
     let expiresStr = "";
     if (expires) {
       const date = new Date();
-      date.setTime(date.getTime() + expires * 60 * 1000);
+      date.setTime(date.getTime() + expires * 1000);
       expiresStr = "; expires=" + date.toUTCString();
     }
     document.cookie = `${name}=${value}${expiresStr}; path=/`;
