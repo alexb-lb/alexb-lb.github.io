@@ -25,46 +25,31 @@ const renderCookieConsent = async () => {
   const cleanUrlString = (domain) =>
     domain.replace(/https?:\/\//i, "").replace(/^(\.+)/g, "");
 
-  const getBrowserName = function () {
-    const userAgent = window.navigator.userAgent;
+  const getBrowserName = () => {
+    let userAgentString = navigator.userAgent;
+    let chromeAgent = userAgentString.indexOf("Chrome") > -1;
+    let IExplorerAgent =
+      userAgentString.indexOf("MSIE") > -1 ||
+      userAgentString.indexOf("rv:") > -1;
+    let firefoxAgent = userAgentString.indexOf("Firefox") > -1;
+    let safariAgent = userAgentString.indexOf("Safari") > -1;
 
-    const isOpera =
-      (!!window.opr && !!window.opr.addons) ||
-      !!window.opera ||
-      userAgent.indexOf(" OPR/") >= 0;
+    // Discard Safari since it also matches Chrome
+    if (chromeAgent && safariAgent) safariAgent = false;
 
-    const isFirefox = typeof InstallTrigger !== "undefined";
-    const isSafari =
-      /constructor/i.test(window.HTMLElement) ||
-      (function (p) {
-        return p.toString() === "[object SafariRemoteNotification]";
-      })(
-        !window["safari"] ||
-          (typeof safari !== "undefined" && window["safari"].pushNotification)
-      );
-    const isIE = /*@cc_on!@*/ false || !!document.documentMode;
-    const isEdge = !isIE && !!window.StyleMedia;
-    const isChrome =
-      !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
-    const isEdgeChromium = isChrome && userAgent.indexOf("Edg") != -1;
-    const isBlink = (isChrome || isOpera) && !!window.CSS;
+    let operaAgent = userAgentString.indexOf("OP") > -1;
+    if (chromeAgent && operaAgent) chromeAgent = false;
 
-    return isOpera
+    return operaAgent
       ? "Opera"
-      : isFirefox
-      ? "Firefox"
-      : isSafari
+      : safariAgent
       ? "Safari"
-      : isIE
+      : firefoxAgent
+      ? "Firefox"
+      : IExplorerAgent
       ? "IE"
-      : isEdge
-      ? "Edge"
-      : isChrome
+      : chromeAgent
       ? "Chrome"
-      : isEdgeChromium
-      ? "Edge chromium"
-      : isBlink
-      ? "Blink"
       : "";
   };
 
