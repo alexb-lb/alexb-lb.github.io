@@ -205,6 +205,7 @@ var renderCookieConsent = function () {
   };
 
   var fetchDomainInfo = function (callback) {
+    console.log("fetchDomainInfo");
     // var response = await fetch(
     //   webAppUrl + "/api/cookie-consent/domain?domainName=" + clientDomain
     // );
@@ -774,8 +775,10 @@ var renderCookieConsent = function () {
     essentialsWhiteList.push(cleanUrlString(webAppUrl));
   }
 
+  console.log("init");
   fetchDomainInfo(function (domain) {
     if (domain) {
+      console.log("domain", domain);
       initScriptBlocking(domain);
       initHandlers(domain);
     }
