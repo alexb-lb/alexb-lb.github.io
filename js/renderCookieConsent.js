@@ -1,14 +1,14 @@
-const SVG_CARET_RIGHT = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#333333" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><polyline points="96 48 176 128 96 208" fill="none" stroke="#333333" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline></svg>`;
+var SVG_CARET_RIGHT = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#333333" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><polyline points="96 48 176 128 96 208" fill="none" stroke="#333333" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline></svg>`;
 
-const renderCookieConsent = async () => {
-  const VISITOR_ID = "_lb_fp";
-  const LOCAL_STORAGE_KEY = "lb-cookie-consent";
+var renderCookieConsent = async () => {
+  var VISITOR_ID = "_lb_fp";
+  var LOCAL_STORAGE_KEY = "lb-cookie-consent";
 
-  const root = document.getElementById("lb-cookie-consent");
-  let webAppUrl = "";
-  let clientDomain = "";
-  let showPreferences = "";
-  let domain;
+  var root = document.getElementById("lb-cookie-consent");
+  var webAppUrl = "";
+  var clientDomain = "";
+  var showPreferences = "";
+  var domain;
 
   if (root) {
     webAppUrl = root.getAttribute("data-web-app") || "";
@@ -16,18 +16,18 @@ const renderCookieConsent = async () => {
     showPreferences = root.getAttribute("data-preferences-only") || "";
   }
 
-  let userAgent = "";
+  var userAgent = "";
   if (window.navigator && window.navigator.userAgent) {
     userAgent = window.navigator.userAgent;
   }
 
-  const bannerTypes = {
+  var bannerTypes = {
     classic: "classic",
     floating: "floating",
     popup: "popup",
   };
 
-  const bannerPositions = {
+  var bannerPositions = {
     top: "top",
     bottom: "bottom",
     left: "left",
@@ -35,20 +35,20 @@ const renderCookieConsent = async () => {
     center: "center",
   };
 
-  const cookieConsentTypes = {
+  var cookieConsentTypes = {
     accept: "accept",
     reject: "reject",
     acceptReject: "accept-reject",
   };
 
   // utils
-  const cleanUrlString = (domain) =>
+  var cleanUrlString = (domain) =>
     domain.replace(/https?:\/\//i, "").replace(/^(\.+)/g, "");
 
-  const getBrowserName = () => {
+  var getBrowserName = () => {
     if (!userAgent) return "";
 
-    const isOpera =
+    var isOpera =
       (!!window.opr && !!opr.addons) ||
       !!window.opera ||
       userAgent.indexOf(" OPR/") >= 0;
@@ -86,26 +86,26 @@ const renderCookieConsent = async () => {
       : "";
   };
 
-  const isMobile = () => {
-    const regex =
+  var isMobile = () => {
+    var regex =
       /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
     return regex.test(userAgent);
   };
 
-  const getBrowserLang = () => {
+  var getBrowserLang = () => {
     return (window.navigator && window.navigator.language) || "";
   };
 
-  const getCookie = (name) => {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
+  var getCookie = (name) => {
+    var value = `; ${document.cookie}`;
+    var parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop().split(";").shift();
   };
 
-  const getPrettyDate = (incomingDate) => {
+  var getPrettyDate = (incomingDate) => {
     if (!incomingDate) return "--";
 
-    const months = [
+    var months = [
       "Jan",
       "Feb",
       "Mar",
@@ -120,22 +120,22 @@ const renderCookieConsent = async () => {
       "Dec",
     ];
 
-    const date = new Date(+incomingDate * 1000);
-    const day = date.getDate();
-    const month = months[date.getMonth()];
-    const year = date.getFullYear();
-    const hours = date.getHours();
-    const minutes = date.getMinutes();
+    var date = new Date(+incomingDate * 1000);
+    var day = date.getDate();
+    var month = months[date.getMonth()];
+    var year = date.getFullYear();
+    var hours = date.getHours();
+    var minutes = date.getMinutes();
 
     return `${day} ${month} ${year}, ${hours}:${minutes}`;
   };
 
   // API requests
-  const fetchDomainInfo = async () => {
-    const response = await fetch(
+  var fetchDomainInfo = async () => {
+    var response = await fetch(
       `${webAppUrl}/api/cookie-consent/domain?domainName=${clientDomain}`
     );
-    const domain = await response.json();
+    var domain = await response.json();
     domain.banner = domain.banner || {};
     domain.banner.layout = {};
     try {
@@ -147,7 +147,7 @@ const renderCookieConsent = async () => {
     return domain;
   };
 
-  const postCookieConsent = ({
+  var postCookieConsent = ({
     consentAccepted,
     consentRejected,
     headers = {},
@@ -175,7 +175,7 @@ const renderCookieConsent = async () => {
   };
 
   // DOM handlers
-  const initHandlers = () => {
+  var initHandlers = () => {
     document.addEventListener("click", function (e) {
       if (e.targe && e.target.id === "lb-cookie-consent-accept-all") {
         window.yet && window.yett.unblock();
@@ -195,14 +195,14 @@ const renderCookieConsent = async () => {
           LOCAL_STORAGE_KEY,
           JSON.stringify({ whiteList: essentialsWhiteList })
         );
-        const regExpArr = essentialsWhiteList.map(
+        var regExpArr = essentialsWhiteList.map(
           (pattern) => new RegExp(pattern)
         );
         window.yett && window.yett.unblock(regExpArr);
 
-        const consentRejected = domain.cookies
+        var consentRejected = domain.cookies
           .filter((cookie) => {
-            let isMatch = false;
+            var isMatch = false;
             regExpArr.forEach((regExp) => {
               if (cookie.domain.match(regExp)) {
                 isMatch = true;
@@ -217,9 +217,9 @@ const renderCookieConsent = async () => {
         hideBanner();
       }
       if (e.target && e.target.id === "lb-cookie-consent-save-preferences") {
-        const acceptedDomains = [];
-        const consentAccepted = [];
-        const consentRejected = [];
+        var acceptedDomains = [];
+        var consentAccepted = [];
+        var consentRejected = [];
 
         document.querySelectorAll(".category.accepted").forEach((elem) => {
           domain &&
@@ -241,12 +241,12 @@ const renderCookieConsent = async () => {
               });
           });
 
-        const uniqueDomains = [...new Set(acceptedDomains)];
+        var uniqueDomains = [...new Set(acceptedDomains)];
         window.localStorage.setItem(
           LOCAL_STORAGE_KEY,
           JSON.stringify({ whiteList: uniqueDomains })
         );
-        const regExpArr = uniqueDomains.map((pattern) => new RegExp(pattern));
+        var regExpArr = uniqueDomains.map((pattern) => new RegExp(pattern));
         window.yett && window.yett.unblock(regExpArr);
 
         postCookieConsent({ consentAccepted, consentRejected });
@@ -262,12 +262,12 @@ const renderCookieConsent = async () => {
       }
     });
 
-    const preferences = document.getElementById(
+    var preferences = document.getElementById(
       "cookie-consent-banner-preferences"
     );
     if (preferences) {
       preferences.addEventListener("click", function (e) {
-        const category = e.target && e.target.closest(".category.accepted");
+        var category = e.target && e.target.closest(".category.accepted");
         if (category && category.classList) {
           Array.from(category.classList).includes("expanded")
             ? category.classList.remove("expanded")
@@ -276,13 +276,13 @@ const renderCookieConsent = async () => {
       });
 
       preferences.addEventListener("change", function (e) {
-        const container = e.target.closest(".lb-switch");
+        var container = e.target.closest(".lb-switch");
         if (!container) return;
 
-        const categoryId = container.getAttribute("data-category-id");
-        const input = container.querySelector(".lb-switch-input");
-        const isChecked = input && input.checked;
-        const category = document.getElementById(categoryId);
+        var categoryId = container.getAttribute("data-category-id");
+        var input = container.querySelector(".lb-switch-input");
+        var isChecked = input && input.checked;
+        var category = document.getElementById(categoryId);
         if (category && category.classList) {
           if (isChecked) {
             category.classList.add("accepted");
@@ -295,7 +295,7 @@ const renderCookieConsent = async () => {
   };
 
   // renderers
-  const renderCheckbox = ({
+  var renderCheckbox = ({
     id = "",
     label = "",
     checked = false,
@@ -318,7 +318,7 @@ const renderCookieConsent = async () => {
       </label>`;
   };
 
-  const renderToggle = ({
+  var renderToggle = ({
     id = "",
     label = "",
     checked = false,
@@ -342,8 +342,8 @@ const renderCookieConsent = async () => {
       </div>`;
   };
 
-  const renderActionButton = (props) => {
-    const {
+  var renderActionButton = (props) => {
+    var {
       id = "",
       backgroundColor = "FFF",
       color = "000",
@@ -363,8 +363,8 @@ const renderCookieConsent = async () => {
       </button>`;
   };
 
-  const renderRejectButton = (props) => {
-    const {
+  var renderRejectButton = (props) => {
+    var {
       backgroundColor = "FFF",
       color = "000",
       borderColor = "FFF",
@@ -383,8 +383,8 @@ const renderCookieConsent = async () => {
         </button>`;
   };
 
-  const renderAcceptButton = (props) => {
-    const {
+  var renderAcceptButton = (props) => {
+    var {
       backgroundColor = "FFF",
       color = "000",
       borderColor = "FFF",
@@ -403,26 +403,26 @@ const renderCookieConsent = async () => {
         </button>`;
   };
 
-  const renderBanner = (banner, showPreferencesOnly = false) => {
+  var renderBanner = (banner, showPreferencesOnly = false) => {
     if (!banner) return;
-    const layout = banner && banner.layout;
-    const mainBanner = layout && layout.banner;
+    var layout = banner && banner.layout;
+    var mainBanner = layout && layout.banner;
 
     if (!mainBanner) return;
 
-    const showReject =
+    var showReject =
       banner.consentType === cookieConsentTypes.acceptReject ||
       banner.consentType === cookieConsentTypes.reject;
-    const showAccept =
+    var showAccept =
       banner.consentType === cookieConsentTypes.acceptReject ||
       banner.consentType === cookieConsentTypes.accept;
 
-    const btnCustomize = renderActionButton({
+    var btnCustomize = renderActionButton({
       ...(mainBanner.actionButton || {}),
       id: "lb-cookie-consent-open-preferences",
     });
-    const rejectButton = renderRejectButton(mainBanner.rejectAllButton);
-    const acceptButton = renderAcceptButton(mainBanner.acceptAllButton);
+    var rejectButton = renderRejectButton(mainBanner.rejectAllButton);
+    var acceptButton = renderAcceptButton(mainBanner.acceptAllButton);
 
     document.querySelector("body").insertAdjacentHTML(
       "beforeend",
@@ -472,30 +472,30 @@ const renderCookieConsent = async () => {
     );
   };
 
-  const renderPreferences = (banner, showByDefault = false) => {
-    const categories = domain.categories || [];
+  var renderPreferences = (banner, showByDefault = false) => {
+    var categories = domain.categories || [];
     if (!banner) return;
-    const layout = banner && banner.layout;
-    const preferences = layout && layout.preferences;
+    var layout = banner && banner.layout;
+    var preferences = layout && layout.preferences;
     if (!preferences) return;
 
-    const categorySettings = preferences.category;
+    var categorySettings = preferences.category;
 
-    const showReject =
+    var showReject =
       banner.consentType === cookieConsentTypes.acceptReject ||
       banner.consentType === cookieConsentTypes.reject;
-    const showAccept =
+    var showAccept =
       banner.consentType === cookieConsentTypes.acceptReject ||
       banner.consentType === cookieConsentTypes.accept;
 
-    const btnSavePreferences = renderActionButton({
+    var btnSavePreferences = renderActionButton({
       ...(preferences.actionButton || {}),
       id: "lb-cookie-consent-save-preferences",
     });
-    const rejectButton = renderRejectButton(preferences.rejectAllButton);
-    const acceptButton = renderAcceptButton(preferences.acceptAllButton);
+    var rejectButton = renderRejectButton(preferences.rejectAllButton);
+    var acceptButton = renderAcceptButton(preferences.acceptAllButton);
 
-    const htmlDescription = `\
+    var htmlDescription = `\
       <div\
         class="description"\
         style="color: #${preferences && preferences.bodyTextColor};"\
@@ -504,8 +504,8 @@ const renderCookieConsent = async () => {
       </div>
     `;
 
-    const getCookieHtml = (cookie) => {
-      const cookieDescription = `\
+    var getCookieHtml = (cookie) => {
+      var cookieDescription = `\
       <div class="row">\
         <div class="label">Description:</div>
         <div class="value">${cookie.description}</div>
@@ -525,25 +525,25 @@ const renderCookieConsent = async () => {
           </div>`;
     };
 
-    const getCategoryHtml = (category) => {
-      const {
+    var getCategoryHtml = (category) => {
+      var {
         id = "",
         name = "",
         optOut = false,
         description = "",
       } = category || {};
-      const showToggle =
+      var showToggle =
         categorySettings && categorySettings.checkboxType === "toggle";
 
-      const checkboxPayload = { id, checked: !optOut, disabled: !optOut };
-      const categoryCookies = domain.cookies.filter(
+      var checkboxPayload = { id, checked: !optOut, disabled: !optOut };
+      var categoryCookies = domain.cookies.filter(
         (c) => c.cookieCategoryId === id
       );
 
-      const htmlCaret = `<div class="icon-box">${SVG_CARET_RIGHT}</div>`;
-      const htmlDescription = `<div class="row category-description">${description}</div>`;
+      var htmlCaret = `<div class="icon-box">${SVG_CARET_RIGHT}</div>`;
+      var htmlDescription = `<div class="row category-description">${description}</div>`;
 
-      const htmlCategoryCookies = `\
+      var htmlCategoryCookies = `\
         <div class="category-cookies">\
           ${
             (categoryCookies &&
@@ -552,7 +552,7 @@ const renderCookieConsent = async () => {
           }\
         </div>`;
 
-      const html = `\
+      var html = `\
       <div class="category ${!optOut ? "accepted" : ""}" id="${id}">\
         <div class="row category-name">\
             ${categoryCookies.length ? htmlCaret : ""}\
@@ -577,12 +577,12 @@ const renderCookieConsent = async () => {
       return html;
     };
 
-    const htmlCookieCategories = `\
+    var htmlCookieCategories = `\
       <div class="cookie-categories">\
         ${categories.map((c) => getCategoryHtml(c)).join("") || ""}\
       </div>`;
 
-    const htmlPreferences = `\
+    var htmlPreferences = `\
       <div \
         class="cookie-consent-banner-preferences ${
           showByDefault ? "" : "hidden"
@@ -609,23 +609,23 @@ const renderCookieConsent = async () => {
     return htmlPreferences;
   };
 
-  const hideBanner = () => {
-    const banner = document.getElementById("lb-cookie-consent-banner");
+  var hideBanner = () => {
+    var banner = document.getElementById("lb-cookie-consent-banner");
     banner && banner.remove();
-    const preferences = document.getElementById(
+    var preferences = document.getElementById(
       "cookie-consent-banner-preferences"
     );
     preferences && preferences.remove();
   };
 
   // blockers / unblockers
-  const initScriptBlocking = (domain) => {
-    const item = window.localStorage.getItem(LOCAL_STORAGE_KEY);
+  var initScriptBlocking = (domain) => {
+    var item = window.localStorage.getItem(LOCAL_STORAGE_KEY);
     if (!item) {
       return renderBanner(domain.banner, showPreferences === "true");
     }
 
-    let parsed = null;
+    var parsed = null;
     try {
       parsed = JSON.parse(item);
     } catch (e) {
@@ -633,7 +633,7 @@ const renderCookieConsent = async () => {
     }
 
     if (parsed && parsed.whiteList && window.yett) {
-      const regExpArr = parsed.whiteList.map((pattern) => new RegExp(pattern));
+      var regExpArr = parsed.whiteList.map((pattern) => new RegExp(pattern));
       parsed.whiteList.length
         ? window.yett.unblock(regExpArr)
         : window.yett.unblock();
@@ -641,7 +641,7 @@ const renderCookieConsent = async () => {
   };
 
   // init
-  const essentialsWhiteList = ["^/", "^./", window.location.host];
+  var essentialsWhiteList = ["^/", "^./", window.location.host];
   if (webAppUrl) {
     essentialsWhiteList.push(cleanUrlString(webAppUrl));
   }
