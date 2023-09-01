@@ -1,237 +1,23 @@
 /**Yett blocking script  */
-const yettScript = document.getElementById("lb-cookie-consent-yett");
-const domain = yettScript?.getAttribute("data-domain") || "";
-window.YETT_WHITELIST = [/^\//, /^\.\//, new RegExp(window.location.host)];
-if (domain)
-  window.YETT_WHITELIST.push(new RegExp(domain.replace(/https?:\/\//i, "")));
-!(function (e, t) {
-  "object" == typeof exports && "undefined" != typeof module
-    ? t(exports)
-    : "function" == typeof define && define.amd
-    ? define(["exports"], t)
-    : t(
-        ((e = "undefined" != typeof globalThis ? globalThis : e || self).yett =
-          {})
-      );
-})(this, function (e) {
-  "use strict";
-  var t = "javascript/blocked",
-    r = { blacklist: window.YETT_BLACKLIST, whitelist: window.YETT_WHITELIST },
-    i = { blacklisted: [] },
-    n = (e, i) =>
-      e &&
-      (!i || i !== t) &&
-      (!r.blacklist || r.blacklist.some((t) => t.test(e))) &&
-      (!r.whitelist || r.whitelist.every((t) => !t.test(e))),
-    c = function (e) {
-      var t = e.getAttribute("src");
-      return (
-        (r.blacklist && r.blacklist.every((e) => !e.test(t))) ||
-        (r.whitelist && r.whitelist.some((e) => e.test(t)))
-      );
-    },
-    s = new MutationObserver((e) => {
-      for (var r = 0; r < e.length; r++)
-        for (
-          var { addedNodes: c } = e[r],
-            s = function (e) {
-              var r = c[e];
-              if (1 === r.nodeType && "SCRIPT" === r.tagName) {
-                var s = r.src,
-                  o = r.type;
-                if (n(s, o)) {
-                  i.blacklisted.push([r, r.type]), (r.type = t);
-                  r.addEventListener("beforescriptexecute", function e(i) {
-                    r.getAttribute("type") === t && i.preventDefault(),
-                      r.removeEventListener("beforescriptexecute", e);
-                  }),
-                    r.parentElement && r.parentElement.removeChild(r);
-                }
-              }
-            },
-            o = 0;
-          o < c.length;
-          o++
-        )
-          s(o);
-    });
-  function o(e, t) {
-    var r = Object.keys(e);
-    if (Object.getOwnPropertySymbols) {
-      var i = Object.getOwnPropertySymbols(e);
-      t &&
-        (i = i.filter(function (t) {
-          return Object.getOwnPropertyDescriptor(e, t).enumerable;
-        })),
-        r.push.apply(r, i);
-    }
-    return r;
-  }
-  function l(e) {
-    for (var t = 1; t < arguments.length; t++) {
-      var r = null != arguments[t] ? arguments[t] : {};
-      t % 2
-        ? o(Object(r), !0).forEach(function (t) {
-            a(e, t, r[t]);
-          })
-        : Object.getOwnPropertyDescriptors
-        ? Object.defineProperties(e, Object.getOwnPropertyDescriptors(r))
-        : o(Object(r)).forEach(function (t) {
-            Object.defineProperty(e, t, Object.getOwnPropertyDescriptor(r, t));
-          });
-    }
-    return e;
-  }
-  function a(e, t, r) {
-    return (
-      t in e
-        ? Object.defineProperty(e, t, {
-            value: r,
-            enumerable: !0,
-            configurable: !0,
-            writable: !0,
-          })
-        : (e[t] = r),
-      e
-    );
-  }
-  s.observe(document.documentElement, { childList: !0, subtree: !0 });
-  var p = document.createElement,
-    u = {
-      src: Object.getOwnPropertyDescriptor(HTMLScriptElement.prototype, "src"),
-      type: Object.getOwnPropertyDescriptor(
-        HTMLScriptElement.prototype,
-        "type"
-      ),
-    };
-  document.createElement = function () {
-    for (var e = arguments.length, r = new Array(e), i = 0; i < e; i++)
-      r[i] = arguments[i];
-    if ("script" !== r[0].toLowerCase()) return p.bind(document)(...r);
-    var c = p.bind(document)(...r);
-    try {
-      Object.defineProperties(c, {
-        src: l(
-          l({}, u.src),
-          {},
-          {
-            set(e) {
-              n(e, c.type) && u.type.set.call(this, t), u.src.set.call(this, e);
-            },
-          }
-        ),
-        type: l(
-          l({}, u.type),
-          {},
-          {
-            get() {
-              var e = u.type.get.call(this);
-              return e === t || n(this.src, e) ? null : e;
-            },
-            set(e) {
-              var r = n(c.src, c.type) ? t : e;
-              u.type.set.call(this, r);
-            },
-          }
-        ),
-      }),
-        (c.setAttribute = function (e, t) {
-          "type" === e || "src" === e
-            ? (c[e] = t)
-            : HTMLScriptElement.prototype.setAttribute.call(c, e, t);
-        });
-    } catch (e) {
-      console.warn(
-        "Yett: unable to prevent script execution for script src ",
-        c.src,
-        ".\n",
-        'A likely cause would be because you are using a third-party browser extension that monkey patches the "document.createElement" function.'
-      );
-    }
-    return c;
-  };
-  var b = new RegExp("[|\\{}()[\\]^$+*?.]", "g");
-  (e.unblock = function () {
-    for (var e = arguments.length, n = new Array(e), o = 0; o < e; o++)
-      n[o] = arguments[o];
-    n.length < 1
-      ? ((r.blacklist = []), (r.whitelist = []))
-      : (r.blacklist &&
-          (r.blacklist = r.blacklist.filter((e) =>
-            n.every((t) =>
-              "string" == typeof t
-                ? !e.test(t)
-                : t instanceof RegExp
-                ? e.toString() !== t.toString()
-                : void 0
-            )
-          )),
-        r.whitelist &&
-          (r.whitelist = [
-            ...r.whitelist,
-            ...n
-              .map((e) => {
-                if ("string" == typeof e) {
-                  var t = ".*" + e.replace(b, "\\$&") + ".*";
-                  if (r.whitelist.every((e) => e.toString() !== t.toString()))
-                    return new RegExp(t);
-                } else if (
-                  e instanceof RegExp &&
-                  r.whitelist.every((t) => t.toString() !== e.toString())
-                )
-                  return e;
-                return null;
-              })
-              .filter(Boolean),
-          ]));
-    for (
-      var l = document.querySelectorAll('script[type="'.concat(t, '"]')), a = 0;
-      a < l.length;
-      a++
-    ) {
-      var p = l[a];
-      c(p) &&
-        (i.blacklisted.push([p, "application/javascript"]),
-        p.parentElement.removeChild(p));
-    }
-    var u = 0;
-    [...i.blacklisted].forEach((e, t) => {
-      var [r, n] = e;
-      if (c(r)) {
-        for (
-          var s = document.createElement("script"), o = 0;
-          o < r.attributes.length;
-          o++
-        ) {
-          var l = r.attributes[o];
-          "src" !== l.name &&
-            "type" !== l.name &&
-            s.setAttribute(l.name, r.attributes[o].value);
-        }
-        s.setAttribute("src", r.src),
-          s.setAttribute("type", n || "application/javascript"),
-          document.head.appendChild(s),
-          i.blacklisted.splice(t - u, 1),
-          u++;
-      }
-    }),
-      r.blacklist && r.blacklist.length < 1 && s.disconnect();
-  }),
-    Object.defineProperty(e, "__esModule", { value: !0 });
-});
-//# sourceMappingURL=yett.min.modern.js.map
-/** */
+const lbCookieConsentScript = document.getElementById('lb-cookie-consent')
+let domain = ''
+if(lbCookieConsentScript){
+  domain = lbCookieConsentScript.getAttribute('data-domain') || ''
+}
+window.YETT_WHITELIST = [/^\//, /^\.\//, new RegExp(window.location.host)]
+if(domain) window.YETT_WHITELIST.push(new RegExp(domain.replace(/https?:\/\//i, "")))
+!function(t,e){"object"==typeof exports&&"undefined"!=typeof module?e(exports):"function"==typeof define&&define.amd?define(["exports"],e):e((t="undefined"!=typeof globalThis?globalThis:t||self).yett={})}(this,(function(t){"use strict";var e="javascript/blocked",r={blacklist:window.YETT_BLACKLIST,whitelist:window.YETT_WHITELIST},n={blacklisted:[]},i=function(t,n){return t&&(!n||n!==e)&&(!r.blacklist||r.blacklist.some((function(e){return e.test(t)})))&&(!r.whitelist||r.whitelist.every((function(e){return!e.test(t)})))},o=function(t){var e=t.getAttribute("src");return r.blacklist&&r.blacklist.every((function(t){return!t.test(e)}))||r.whitelist&&r.whitelist.some((function(t){return t.test(e)}))},c=new MutationObserver((function(t){for(var r=0;r<t.length;r++)for(var o=t[r].addedNodes,c=function(t){var r=o[t];if(1===r.nodeType&&"SCRIPT"===r.tagName){var c=r.src,l=r.type;if(i(c,l)){n.blacklisted.push([r,r.type]),r.type=e;r.addEventListener("beforescriptexecute",(function t(n){r.getAttribute("type")===e&&n.preventDefault(),r.removeEventListener("beforescriptexecute",t)})),r.parentElement&&r.parentElement.removeChild(r)}}},l=0;l<o.length;l++)c(l)}));function l(t,e){var r=Object.keys(t);if(Object.getOwnPropertySymbols){var n=Object.getOwnPropertySymbols(t);e&&(n=n.filter((function(e){return Object.getOwnPropertyDescriptor(t,e).enumerable}))),r.push.apply(r,n)}return r}function a(t){for(var e=1;e<arguments.length;e++){var r=null!=arguments[e]?arguments[e]:{};e%2?l(Object(r),!0).forEach((function(e){s(t,e,r[e])})):Object.getOwnPropertyDescriptors?Object.defineProperties(t,Object.getOwnPropertyDescriptors(r)):l(Object(r)).forEach((function(e){Object.defineProperty(t,e,Object.getOwnPropertyDescriptor(r,e))}))}return t}function s(t,e,r){return e in t?Object.defineProperty(t,e,{value:r,enumerable:!0,configurable:!0,writable:!0}):t[e]=r,t}function u(t,e){return function(t){if(Array.isArray(t))return t}(t)||function(t,e){var r=null==t?null:"undefined"!=typeof Symbol&&t[Symbol.iterator]||t["@@iterator"];if(null==r)return;var n,i,o=[],c=!0,l=!1;try{for(r=r.call(t);!(c=(n=r.next()).done)&&(o.push(n.value),!e||o.length!==e);c=!0);}catch(t){l=!0,i=t}finally{try{c||null==r.return||r.return()}finally{if(l)throw i}}return o}(t,e)||f(t,e)||function(){throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}()}function p(t){return function(t){if(Array.isArray(t))return y(t)}(t)||function(t){if("undefined"!=typeof Symbol&&null!=t[Symbol.iterator]||null!=t["@@iterator"])return Array.from(t)}(t)||f(t)||function(){throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.")}()}function f(t,e){if(t){if("string"==typeof t)return y(t,e);var r=Object.prototype.toString.call(t).slice(8,-1);return"Object"===r&&t.constructor&&(r=t.constructor.name),"Map"===r||"Set"===r?Array.from(t):"Arguments"===r||/^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(r)?y(t,e):void 0}}function y(t,e){(null==e||e>t.length)&&(e=t.length);for(var r=0,n=new Array(e);r<e;r++)n[r]=t[r];return n}c.observe(document.documentElement,{childList:!0,subtree:!0});var b=document.createElement,d={src:Object.getOwnPropertyDescriptor(HTMLScriptElement.prototype,"src"),type:Object.getOwnPropertyDescriptor(HTMLScriptElement.prototype,"type")};document.createElement=function(){for(var t=arguments.length,r=new Array(t),n=0;n<t;n++)r[n]=arguments[n];if("script"!==r[0].toLowerCase())return b.bind(document).apply(void 0,r);var o=b.bind(document).apply(void 0,r);try{Object.defineProperties(o,{src:a(a({},d.src),{},{set:function(t){i(t,o.type)&&d.type.set.call(this,e),d.src.set.call(this,t)}}),type:a(a({},d.type),{},{get:function(){var t=d.type.get.call(this);return t===e||i(this.src,t)?null:t},set:function(t){var r=i(o.src,o.type)?e:t;d.type.set.call(this,r)}})}),o.setAttribute=function(t,e){"type"===t||"src"===t?o[t]=e:HTMLScriptElement.prototype.setAttribute.call(o,t,e)}}catch(t){console.warn("Yett: unable to prevent script execution for script src ",o.src,".\n",'A likely cause would be because you are using a third-party browser extension that monkey patches the "document.createElement" function.')}return o};var v=new RegExp("[|\\{}()[\\]^$+*?.]","g");t.unblock=function(){for(var t=arguments.length,i=new Array(t),l=0;l<t;l++)i[l]=arguments[l];i.length<1?(r.blacklist=[],r.whitelist=[]):(r.blacklist&&(r.blacklist=r.blacklist.filter((function(t){return i.every((function(e){return"string"==typeof e?!t.test(e):e instanceof RegExp?t.toString()!==e.toString():void 0}))}))),r.whitelist&&(r.whitelist=[].concat(p(r.whitelist),p(i.map((function(t){if("string"==typeof t){var e=".*"+t.replace(v,"\\$&")+".*";if(r.whitelist.every((function(t){return t.toString()!==e.toString()})))return new RegExp(e)}else if(t instanceof RegExp&&r.whitelist.every((function(e){return e.toString()!==t.toString()})))return t;return null})).filter(Boolean)))));for(var a=document.querySelectorAll('script[type="'.concat(e,'"]')),s=0;s<a.length;s++){var f=a[s];o(f)&&(n.blacklisted.push([f,"application/javascript"]),f.parentElement.removeChild(f))}var y=0;p(n.blacklisted).forEach((function(t,e){var r=u(t,2),i=r[0],c=r[1];if(o(i)){for(var l=document.createElement("script"),a=0;a<i.attributes.length;a++){var s=i.attributes[a];"src"!==s.name&&"type"!==s.name&&l.setAttribute(s.name,i.attributes[a].value)}l.setAttribute("src",i.src),l.setAttribute("type",c||"application/javascript"),document.head.appendChild(l),n.blacklisted.splice(e-y,1),y++}})),r.blacklist&&r.blacklist.length<1&&c.disconnect()},Object.defineProperty(t,"__esModule",{value:!0})}));
+//# sourceMappingURL=yett.min.js.map
 
 const initCookieConsent = () => {
   const root = document.getElementById("lb-cookie-consent");
   const webAppUrl = root?.getAttribute("data-web-app") || "";
-  const domain = root?.getAttribute("data-domain") || "";
 
   var head = document.getElementsByTagName("head")[0];
 
   const link = document.createElement("link");
   link.rel = "stylesheet";
-  link.href = `./assets/styles.css`;
+  link.href = `${webAppUrl}/cookie_consent/assets/styles.css`;
   link.type = "text/css";
   head.appendChild(link);
 
@@ -239,7 +25,7 @@ const initCookieConsent = () => {
 
   const scriptRenderer = document.createElement("script");
   scriptRenderer.type = "text/javascript";
-  scriptRenderer.src = `./js/renderCookieConsent.js`;
+  scriptRenderer.src = `${webAppUrl}/cookie_consent/js/renderCookieConsent.js`;
   scriptRenderer.async = true;
   head.appendChild(scriptRenderer);
 

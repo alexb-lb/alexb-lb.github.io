@@ -1,218 +1,264 @@
-const SVG_CARET_RIGHT = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#333333" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><polyline points="96 48 176 128 96 208" fill="none" stroke="#333333" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline></svg>`
+const SVG_CARET_RIGHT = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#333333" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><polyline points="96 48 176 128 96 208" fill="none" stroke="#333333" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline></svg>`;
 
 const renderCookieConsent = async () => {
-  const root = document.getElementById('lb-cookie-consent')
-  const webAppUrl = root?.getAttribute('data-web-app') || ''
-  const clientDomain = root?.getAttribute('data-domain') || ''
-  const showPreferences = root?.getAttribute('data-preferences-only') || ''
-  const VISITOR_ID = '_lb_fp'
-  let domain
+  const root = document.getElementById("lb-cookie-consent");
+  const webAppUrl = root?.getAttribute("data-web-app") || "";
+  const clientDomain = root?.getAttribute("data-domain") || "";
+  const showPreferences = root?.getAttribute("data-preferences-only") || "";
+  const VISITOR_ID = "_lb_fp";
+  let domain;
 
-  const LOCAL_STORAGE_KEY = 'lb-cookie-consent'
+  const LOCAL_STORAGE_KEY = "lb-cookie-consent";
 
   const bannerTypes = {
-    classic: 'classic',
-    floating: 'floating',
-    popup: 'popup'
-  }
+    classic: "classic",
+    floating: "floating",
+    popup: "popup",
+  };
 
   const bannerPositions = {
-    top: 'top',
-    bottom: 'bottom',
-    left: 'left',
-    right: 'right',
-    center: 'center'
-  }
+    top: "top",
+    bottom: "bottom",
+    left: "left",
+    right: "right",
+    center: "center",
+  };
 
   const cookieConsentTypes = {
-    accept: 'accept',
-    reject: 'reject',
-    acceptReject: 'accept-reject'
-  }
+    accept: "accept",
+    reject: "reject",
+    acceptReject: "accept-reject",
+  };
 
   // utils
-  const cleanUrlString = (domain) => domain.replace(/https?:\/\//i, '').replace(/^(\.+)/g, '')
+  const cleanUrlString = (domain) =>
+    domain.replace(/https?:\/\//i, "").replace(/^(\.+)/g, "");
 
-  const getBrowserName = () => {
-    let userAgent = window.navigator?.userAgent || ''
-    let browserName = ''
+  const getBrowserName = function () {
+    if (!userAgent) return "";
 
-    if (userAgent.match(/chrome|chromium|crios/i)) {
-      browserName = 'chrome'
-    } else if (userAgent.match(/firefox|fxios/i)) {
-      browserName = 'firefox'
-    } else if (userAgent.match(/safari/i)) {
-      browserName = 'safari'
-    } else if (userAgent.match(/opr\//i)) {
-      browserName = 'opera'
-    } else if (userAgent.match(/edg/i)) {
-      browserName = 'edge'
-    } else {
-      browserName = 'No browser detection'
-    }
-    return browserName
-  }
+    const isOpera =
+      (!!window.opr && !!opr.addons) ||
+      !!window.opera ||
+      userAgent.indexOf(" OPR/") >= 0;
+
+    const isFirefox = typeof InstallTrigger !== "undefined";
+    const isSafari =
+      /constructor/i.test(window.HTMLElement) ||
+      (function (p) {
+        return p.toString() === "[object SafariRemoteNotification]";
+      })(
+        !window["safari"] ||
+          (typeof safari !== "undefined" && window["safari"].pushNotification)
+      );
+    const isIE = /*@cc_on!@*/ false || !!document.documentMode;
+    const isEdge = !isIE && !!window.StyleMedia;
+    const isChrome =
+      !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
+    const isEdgeChromium = isChrome && userAgent.indexOf("Edg") != -1;
+    const isBlink = (isChrome || isOpera) && !!window.CSS;
+
+    return isFirefox
+      ? "Firefox"
+      : isSafari
+      ? "Safari"
+      : isIE
+      ? "IE"
+      : isEdge
+      ? "Edge"
+      : isChrome
+      ? "Chrome"
+      : isEdgeChromium
+      ? "Edge chromium"
+      : isBlink
+      ? "Blink"
+      : "";
+  };
 
   const isMobile = () => {
-    const regex = /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i
-    return regex.test(window.navigator?.userAgent)
-  }
+    const regex =
+      /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
+    return regex.test(window.navigator?.userAgent);
+  };
 
   const getBrowserLang = () => {
-    return window.navigator?.language || ''
-  }
+    return window.navigator?.language || "";
+  };
 
   function getCookie(name) {
-    const value = `; ${document.cookie}`
-    const parts = value.split(`; ${name}=`)
-    if (parts.length === 2) return parts.pop().split(';').shift()
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) return parts.pop().split(";").shift();
   }
 
   // API requests
   const fetchDomainInfo = async () => {
     const response = await fetch(
       `${webAppUrl}/api/cookie-consent/domain?domainName=${clientDomain}`
-    )
-    const domain = await response.json()
-    domain.banner = domain.banner || {}
-    domain.banner.layout = {}
+    );
+    const domain = await response.json();
+    domain.banner = domain.banner || {};
+    domain.banner.layout = {};
     try {
-      domain.banner.layout = JSON.parse(domain.banner.rawJSON)
+      domain.banner.layout = JSON.parse(domain.banner.rawJSON);
     } catch (e) {
-      return console.log('Cannot parse banner JSON')
+      return console.log("Cannot parse banner JSON");
     }
 
-    return domain
-  }
+    return domain;
+  };
 
-  const postCookieConsent = ({ consentAccepted, consentRejected, headers = {} }) => {
-    if (!domain) return
+  const postCookieConsent = ({
+    consentAccepted,
+    consentRejected,
+    headers = {},
+  }) => {
+    if (!domain) return;
 
     fetch(`${webAppUrl}/api/cookie-consent/response`, {
-      method: 'POST',
-      credentials: 'include',
+      method: "POST",
+      credentials: "include",
       body: JSON.stringify({
-        status: 'active',
+        status: "active",
         domain: clientDomain,
-        networkIP: '',
-        networkFamily: '',
+        networkIP: "",
+        networkFamily: "",
         browserFingerprint: {
-          device: isMobile() ? 'mobile' : 'desktop',
+          device: isMobile() ? "mobile" : "desktop",
           browser: getBrowserName(),
-          location: getBrowserLang()
+          location: getBrowserLang(),
         },
-        browserVisitorId: getCookie(VISITOR_ID) || '',
-        consentInfo: { consentAccepted, consentRejected }
+        browserVisitorId: getCookie(VISITOR_ID) || "",
+        consentInfo: { consentAccepted, consentRejected },
       }),
-      headers
-    })
-  }
+      headers,
+    });
+  };
 
   // DOM handlers
   const initHandlers = () => {
-    document.addEventListener('click', function (e) {
-      if (e.target?.id === 'lb-cookie-consent-accept-all') {
-        window.yett?.unblock()
-        window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify({ whiteList: [] }))
+    document.addEventListener("click", function (e) {
+      if (e.target?.id === "lb-cookie-consent-accept-all") {
+        window.yett?.unblock();
+        window.localStorage.setItem(
+          LOCAL_STORAGE_KEY,
+          JSON.stringify({ whiteList: [] })
+        );
         postCookieConsent({
           consentAccepted: domain.cookies.map((c) => c.name),
-          consentRejected: []
-        })
-        hideBanner()
+          consentRejected: [],
+        });
+        hideBanner();
       }
 
-      if (e.target?.id === 'lb-cookie-consent-reject-all') {
+      if (e.target?.id === "lb-cookie-consent-reject-all") {
         window.localStorage.setItem(
           LOCAL_STORAGE_KEY,
           JSON.stringify({ whiteList: essentialsWhiteList })
-        )
-        const regExpArr = essentialsWhiteList.map((pattern) => new RegExp(pattern))
-        window.yett?.unblock(regExpArr)
+        );
+        const regExpArr = essentialsWhiteList.map(
+          (pattern) => new RegExp(pattern)
+        );
+        window.yett?.unblock(regExpArr);
 
         const consentRejected = domain.cookies
           .filter((cookie) => {
-            let isMatch = false
+            let isMatch = false;
             regExpArr.forEach((regExp) => {
               if (cookie.domain.match(regExp)) {
-                isMatch = true
+                isMatch = true;
               }
-            })
+            });
 
-            return isMatch
+            return isMatch;
           })
-          .map((cookie) => cookie.name)
+          .map((cookie) => cookie.name);
 
-        postCookieConsent({ consentRejected })
-        hideBanner()
+        postCookieConsent({ consentRejected });
+        hideBanner();
       }
-      if (e.target?.id === 'lb-cookie-consent-save-preferences') {
-        const acceptedDomains = []
-        const consentAccepted = []
-        const consentRejected = []
+      if (e.target?.id === "lb-cookie-consent-save-preferences") {
+        const acceptedDomains = [];
+        const consentAccepted = [];
+        const consentRejected = [];
 
-        document.querySelectorAll('.category.accepted').forEach((elem) => {
+        document.querySelectorAll(".category.accepted").forEach((elem) => {
           domain?.cookies.forEach((cookie) => {
             if (cookie.cookieCategoryId === elem.id) {
-              acceptedDomains.push(cleanUrlString(cookie.domain))
-              consentAccepted.push(cookie.name)
+              acceptedDomains.push(cleanUrlString(cookie.domain));
+              consentAccepted.push(cookie.name);
             }
-          })
-        })
-        document.querySelectorAll('.category:not(.accepted)').forEach((elem) => {
-          domain?.cookies.forEach((cookie) => {
-            if (cookie.cookieCategoryId === elem.id) {
-              consentRejected.push(cookie.name)
-            }
-          })
-        })
+          });
+        });
+        document
+          .querySelectorAll(".category:not(.accepted)")
+          .forEach((elem) => {
+            domain?.cookies.forEach((cookie) => {
+              if (cookie.cookieCategoryId === elem.id) {
+                consentRejected.push(cookie.name);
+              }
+            });
+          });
 
-        const uniqueDomains = [...new Set(acceptedDomains)]
-        window.localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify({ whiteList: uniqueDomains }))
-        const regExpArr = uniqueDomains.map((pattern) => new RegExp(pattern))
-        window.yett?.unblock(regExpArr)
+        const uniqueDomains = [...new Set(acceptedDomains)];
+        window.localStorage.setItem(
+          LOCAL_STORAGE_KEY,
+          JSON.stringify({ whiteList: uniqueDomains })
+        );
+        const regExpArr = uniqueDomains.map((pattern) => new RegExp(pattern));
+        window.yett?.unblock(regExpArr);
 
-        postCookieConsent({ consentAccepted, consentRejected })
-        hideBanner()
+        postCookieConsent({ consentAccepted, consentRejected });
+        hideBanner();
       }
-      if (e.target?.id === 'lb-cookie-consent-open-preferences') {
-        document.querySelector('.cookie-consent-banner-container').classList.add('hidden')
-        document.querySelector('.cookie-consent-banner-preferences').classList.remove('hidden')
+      if (e.target?.id === "lb-cookie-consent-open-preferences") {
+        document
+          .querySelector(".cookie-consent-banner-container")
+          .classList.add("hidden");
+        document
+          .querySelector(".cookie-consent-banner-preferences")
+          .classList.remove("hidden");
       }
-    })
+    });
 
     document
-      .getElementById('cookie-consent-banner-preferences')
-      ?.addEventListener('click', function (e) {
-        const category = e.target?.closest('.category.accepted')
+      .getElementById("cookie-consent-banner-preferences")
+      ?.addEventListener("click", function (e) {
+        const category = e.target?.closest(".category.accepted");
         if (category) {
-          Array.from(category?.classList).includes('expanded')
-            ? category.classList.remove('expanded')
-            : category.classList.add('expanded')
+          Array.from(category?.classList).includes("expanded")
+            ? category.classList.remove("expanded")
+            : category.classList.add("expanded");
         }
-      })
+      });
 
     document
-      .getElementById('cookie-consent-banner-preferences')
-      ?.addEventListener('change', function (e) {
-        const container = e.target.closest('.lb-switch')
+      .getElementById("cookie-consent-banner-preferences")
+      ?.addEventListener("change", function (e) {
+        const container = e.target.closest(".lb-switch");
 
-        const categoryId = container?.getAttribute('data-category-id')
-        const isChecked = container?.querySelector('.lb-switch-input')?.checked
-        const category = document.getElementById(categoryId)
+        const categoryId = container?.getAttribute("data-category-id");
+        const isChecked = container?.querySelector(".lb-switch-input")?.checked;
+        const category = document.getElementById(categoryId);
 
         if (isChecked) {
-          category?.classList.add('accepted')
+          category?.classList.add("accepted");
         } else {
-          category?.classList.remove('accepted', 'expanded')
+          category?.classList.remove("accepted", "expanded");
         }
-      })
-  }
+      });
+  };
 
   // renderers
-  const renderCheckbox = ({ id = '', label = '', checked = false, disabled = false }) => {
+  const renderCheckbox = ({
+    id = "",
+    label = "",
+    checked = false,
+    disabled = false,
+  }) => {
     return `\
       <label \
-        class="lb-checkbox-container lb-switch ${disabled ? 'disabled' : ''}"\
+        class="lb-checkbox-container lb-switch ${disabled ? "disabled" : ""}"\
         data-category-id="${id}"\
       >\
         ${label}\
@@ -220,34 +266,39 @@ const renderCookieConsent = async () => {
           class="lb-checkbox-input lb-switch-input" \
           type="checkbox"\
           id="checkbox-${id}"\
-          ${checked ? 'checked' : ''}\
-          ${disabled ? 'disabled' : ''}\
+          ${checked ? "checked" : ""}\
+          ${disabled ? "disabled" : ""}\
         >
         <span class="lb-checkbox-mark"></span>\
-      </label>`
-  }
+      </label>`;
+  };
 
-  const renderToggle = ({ id = '', label = '', checked = false, disabled = false }) => {
+  const renderToggle = ({
+    id = "",
+    label = "",
+    checked = false,
+    disabled = false,
+  }) => {
     return `\
       <div class="lb-toggle-container lb-switch" data-category-id="${id}">
         <input \
           class="lb-toggle-input lb-switch-input"
           type="checkbox" \
           id="checkbox-${id}" \
-          ${checked ? 'checked' : ''}\
-          ${disabled ? 'disabled' : ''}\
+          ${checked ? "checked" : ""}\
+          ${disabled ? "disabled" : ""}\
         />\
         <label \
-          class="lb-toggle-label ${disabled ? 'disabled' : ''}"\
+          class="lb-toggle-label ${disabled ? "disabled" : ""}"\
           for="checkbox-${id}"\
         >\
           ${label}\
         </label>\
-      </div>`
-  }
+      </div>`;
+  };
 
   const renderBanner = (banner, showPreferencesOnly = false) => {
-    if (!banner) return
+    if (!banner) return;
 
     const btnCustomize = `\
       <button\
@@ -258,7 +309,7 @@ const renderCookieConsent = async () => {
         border-color: #${banner?.layout.banner?.actionButton?.borderColor};"\
       >\
         ${banner?.layout.banner?.actionButton?.text}\
-      </button>`
+      </button>`;
 
     const btnReject = `\
       <button\
@@ -269,7 +320,7 @@ const renderCookieConsent = async () => {
         border-color: #${banner?.layout.banner?.rejectAllButton?.borderColor};"\
       >\
         ${banner?.layout.banner?.rejectAllButton?.text}\
-      </button>`
+      </button>`;
 
     const btnAccept = `\
       <button\
@@ -280,16 +331,16 @@ const renderCookieConsent = async () => {
         border-color: #${banner?.layout.banner?.acceptAllButton?.borderColor};"\
       >\
         ${banner?.layout.banner?.acceptAllButton?.text}\
-      </button>`
+      </button>`;
 
-    document.querySelector('body').insertAdjacentHTML(
-      'beforeend',
+    document.querySelector("body").insertAdjacentHTML(
+      "beforeend",
       `\
     <div class="\
           cookie-consent-banner-container \
           ${banner?.layout.type} \
-          ${banner?.layout.position?.join(' ')} \
-          ${showPreferencesOnly ? 'hidden' : ''} \
+          ${banner?.layout.position?.join(" ")} \
+          ${showPreferencesOnly ? "hidden" : ""} \
       "id="lb-cookie-consent-banner">\
       <div class="overlay"></div>
       <div \
@@ -315,29 +366,29 @@ const renderCookieConsent = async () => {
           </a>\
         </div>\
         <div class="buttons">\
-          ${banner.customizable ? btnCustomize : ''}\
+          ${banner.customizable ? btnCustomize : ""}\
           ${
             banner.consentType === cookieConsentTypes.acceptReject ||
             banner.consentType === cookieConsentTypes.reject
               ? btnReject
-              : ''
+              : ""
           }\
           ${
             banner.consentType === cookieConsentTypes.acceptReject ||
             banner.consentType === cookieConsentTypes.accept
               ? btnAccept
-              : ''
+              : ""
           }\
         </div>\
       </div>\
     </div>
     ${renderPreferences(banner, showPreferencesOnly)}
   `
-    )
-  }
+    );
+  };
 
   const renderPreferences = (banner, showByDefault = false) => {
-    const categories = domain.categories
+    const categories = domain.categories;
 
     const htmlDescription = `\
       <div\
@@ -346,7 +397,7 @@ const renderCookieConsent = async () => {
       >\
         ${banner?.layout?.preferences?.body}\
       </div>
-    `
+    `;
 
     const btnReject = `\
       <button\
@@ -357,7 +408,7 @@ const renderCookieConsent = async () => {
         border-color: #${banner?.layout.preferences?.rejectAllButton?.borderColor};"\
       >\
         ${banner?.layout.preferences?.rejectAllButton?.text}\
-      </button>`
+      </button>`;
 
     const btnAccept = `\
       <button\
@@ -368,7 +419,7 @@ const renderCookieConsent = async () => {
         border-color: #${banner?.layout.preferences?.acceptAllButton?.borderColor};"\
       >\
         ${banner?.layout.preferences?.acceptAllButton?.text}\
-      </button>`
+      </button>`;
 
     const btnSavePreferences = `\
       <button\
@@ -379,14 +430,14 @@ const renderCookieConsent = async () => {
         border-color: #${banner?.layout.preferences?.actionButton?.borderColor};"\
       >\
         ${banner?.layout.preferences?.actionButton?.text}\
-      </button>`
+      </button>`;
 
     const getCookieHtml = (cookie) => {
       const cookieDescription = `\
       <div class="row">\
         <div class="label">Description:</div>
         <div class="value">${cookie.description}</div>
-      </div>`
+      </div>`;
 
       return `\
           <div class="category-cookie">\
@@ -396,55 +447,70 @@ const renderCookieConsent = async () => {
             </div>
             <div class="row">\
               <div class="label">Expires:</div>
-              <div class="value">${new Date(cookie.expires).toDateString()}</div>
+              <div class="value">${new Date(
+                cookie.expires
+              ).toDateString()}</div>
             </div>
-            ${cookie.description ? cookieDescription : ''}
-          </div>`
-    }
+            ${cookie.description ? cookieDescription : ""}
+          </div>`;
+    };
 
     const getCategoryHtml = (category) => {
-      const showToggle = banner?.layout?.preferences?.category?.checkboxType === 'toggle'
+      const showToggle =
+        banner?.layout?.preferences?.category?.checkboxType === "toggle";
 
       const checkboxPayload = {
         id: category.id,
         checked: !category.optOut,
-        disabled: !category.optOut
-      }
+        disabled: !category.optOut,
+      };
 
-      const categoryCookies = domain.cookies.filter((c) => c.cookieCategoryId === category.id)
+      const categoryCookies = domain.cookies.filter(
+        (c) => c.cookieCategoryId === category.id
+      );
 
-      const htmlCaret = `<div class="icon-box">${SVG_CARET_RIGHT}</div>`
-      const htmlDescription = `<div class="row category-description">${category?.description}</div>`
+      const htmlCaret = `<div class="icon-box">${SVG_CARET_RIGHT}</div>`;
+      const htmlDescription = `<div class="row category-description">${category?.description}</div>`;
 
       const html = `\
-      <div class="category ${!category.optOut ? 'accepted' : ''}" id="${category.id}">\
+      <div class="category ${!category.optOut ? "accepted" : ""}" id="${
+        category.id
+      }">\
         <div class="row category-name">\
-            ${categoryCookies.length ? htmlCaret : ''}\
+            ${categoryCookies.length ? htmlCaret : ""}\
           <div\
             class="title"\
-            style="color: #${banner?.layout?.preferences?.category?.colorTitle};"\
+            style="color: #${
+              banner?.layout?.preferences?.category?.colorTitle
+            };"\
           >\
             ${category?.name}\
           </div>\
-          ${showToggle ? renderToggle(checkboxPayload) : renderCheckbox(checkboxPayload)}
+          ${
+            showToggle
+              ? renderToggle(checkboxPayload)
+              : renderCheckbox(checkboxPayload)
+          }
         </div>\
-        ${category?.description ? htmlDescription : ''}
+        ${category?.description ? htmlDescription : ""}
         <div class="category-cookies">\
-          ${categoryCookies?.map((c) => getCookieHtml(c))?.join('') || ''}\
+          ${categoryCookies?.map((c) => getCookieHtml(c))?.join("") || ""}\
         </div>\
       </div>\
-      `
-      return html
-    }
+      `;
+      return html;
+    };
 
     const htmlCookieCategories = `\
       <div class="cookie-categories">\
-        ${categories?.map((c) => getCategoryHtml(c))?.join('') || ''}\
-      </div>`
+        ${categories?.map((c) => getCategoryHtml(c))?.join("") || ""}\
+      </div>`;
 
     const htmlPreferences = `\
       <div \
-        class="cookie-consent-banner-preferences ${showByDefault ? '' : 'hidden'}" \
+        class="cookie-consent-banner-preferences ${
+          showByDefault ? "" : "hidden"
+        }" \
         id="cookie-consent-banner-preferences">\
         <div\
           class="banner-header"\
@@ -453,65 +519,67 @@ const renderCookieConsent = async () => {
           ${banner?.layout?.preferences?.title}\
         </div>\
         <div class="preferences-banner-body">\
-          ${banner?.layout?.preferences?.body ? htmlDescription : ''}\
-          ${categories.length ? htmlCookieCategories : ''}\
+          ${banner?.layout?.preferences?.body ? htmlDescription : ""}\
+          ${categories.length ? htmlCookieCategories : ""}\
         </div>
         <div class="buttons">
           ${
             banner.consentType === cookieConsentTypes.acceptReject ||
             banner.consentType === cookieConsentTypes.reject
               ? btnReject
-              : ''
+              : ""
           }\
           ${
             banner.consentType === cookieConsentTypes.acceptReject ||
             banner.consentType === cookieConsentTypes.accept
               ? btnAccept
-              : ''
+              : ""
           }\
           ${btnSavePreferences}\
         </div>
       </div>\
-    `
+    `;
 
-    return htmlPreferences
-  }
+    return htmlPreferences;
+  };
 
   const hideBanner = () => {
-    document.getElementById('lb-cookie-consent-banner')?.remove()
-    document.getElementById('cookie-consent-banner-preferences')?.remove()
-  }
+    document.getElementById("lb-cookie-consent-banner")?.remove();
+    document.getElementById("cookie-consent-banner-preferences")?.remove();
+  };
 
   // blockers / unblockers
   const initScriptBlocking = (domain) => {
-    const item = window.localStorage.getItem(LOCAL_STORAGE_KEY)
+    const item = window.localStorage.getItem(LOCAL_STORAGE_KEY);
     if (!item) {
-      return renderBanner(domain.banner, showPreferences === 'true')
+      return renderBanner(domain.banner, showPreferences === "true");
     }
 
-    let parsed = null
+    let parsed = null;
     try {
-      parsed = JSON.parse(item)
+      parsed = JSON.parse(item);
     } catch (e) {
-      console.log('cannot parse whitelisted domains')
+      console.log("cannot parse whitelisted domains");
     }
 
     if (parsed) {
-      const regExpArr = parsed?.whiteList.map((pattern) => new RegExp(pattern))
-      parsed?.whiteList.length ? window.yett?.unblock(regExpArr) : window.yett?.unblock()
+      const regExpArr = parsed?.whiteList.map((pattern) => new RegExp(pattern));
+      parsed?.whiteList.length
+        ? window.yett?.unblock(regExpArr)
+        : window.yett?.unblock();
     }
-  }
+  };
 
   // init
-  const essentialsWhiteList = ['^/', '^./', window.location.host]
+  const essentialsWhiteList = ["^/", "^./", window.location.host];
   if (webAppUrl) {
-    essentialsWhiteList.push(cleanUrlString(webAppUrl))
+    essentialsWhiteList.push(cleanUrlString(webAppUrl));
   }
 
-  domain = await fetchDomainInfo()
+  domain = await fetchDomainInfo();
 
   if (domain) {
-    initScriptBlocking(domain)
-    initHandlers(domain)
+    initScriptBlocking(domain);
+    initHandlers(domain);
   }
-}
+};
