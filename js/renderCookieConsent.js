@@ -283,7 +283,7 @@ var renderCookieConsent = function () {
           }
         );
 
-        postCookieConsent({ consentRejected });
+        postCookieConsent({ consentRejected: consentRejected });
         hideBanner();
       }
       if (e.target && e.target.id === "lb-cookie-consent-save-preferences") {
