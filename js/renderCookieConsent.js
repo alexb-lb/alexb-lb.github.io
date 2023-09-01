@@ -132,6 +132,37 @@ var renderCookieConsent = function () {
     return day + " " + month + " " + year + ", " + hours + ":" + minutes;
   };
 
+  var filterArray = function (array, callback) {
+    var filtered = [];
+    for (var i = 0; i < array.length; i++) {
+      if (!!callback(array[i])) {
+        filtered.push(array[i]);
+      }
+    }
+
+    return filtered;
+  };
+  var mapArray = function (array, callback) {
+    var mapped = [];
+    for (var i = 0; i < array.length; i++) {
+      var updated = callback(array[i]);
+      mapped.push(updated);
+    }
+
+    return mapped;
+  };
+  var getUniqueArray = function (array) {
+    var j = {};
+
+    array.forEach(function (v) {
+      j[v + "::" + typeof v] = v;
+    });
+
+    return Object.keys(j).map(function (v) {
+      return j[v];
+    });
+  };
+
   // API requests
   var httpRequest = function (params) {
     var method = params.method || "GET";
@@ -192,7 +223,10 @@ var renderCookieConsent = function () {
           location: getBrowserLang(),
         },
         browserVisitorId: getCookie(VISITOR_ID) || "",
-        consentInfo: { consentAccepted, consentRejected },
+        consentInfo: {
+          consentAccepted: consentAccepted,
+          consentRejected: consentRejected,
+        },
       }),
       headers,
     };
@@ -210,7 +244,7 @@ var renderCookieConsent = function () {
           JSON.stringify({ whiteList: [] })
         );
         postCookieConsent({
-          consentAccepted: domain.cookies.map(function (c) {
+          consentAccepted: mapArray(domain.cookies, function (c) {
             return c.name;
           }),
           consentRejected: [],
@@ -223,25 +257,31 @@ var renderCookieConsent = function () {
           LOCAL_STORAGE_KEY,
           JSON.stringify({ whiteList: essentialsWhiteList })
         );
-        var regExpArr = essentialsWhiteList.map(function (pattern) {
+        var regExpArr = mapArray(essentialsWhiteList, function (pattern) {
           return new RegExp(pattern);
         });
         window.yett && window.yett.unblock(regExpArr);
 
-        var consentRejected = domain.cookies
-          .filter(function (cookie) {
+        var consentRejectedFiltered = filterArray(
+          domain.cookies,
+          function (cookie) {
             var isMatch = false;
-            regExpArr.forEach(function (regExp) {
+            for (let i = 0; i < regExpArr.length; i++) {
+              const regExp = regExpArr[i];
               if (cookie.domain.match(regExp)) {
                 isMatch = true;
               }
-            });
-
+            }
             return isMatch;
-          })
-          .map(function (cookie) {
+          }
+        );
+
+        var consentRejected = mapArray(
+          consentRejectedFiltered,
+          function (cookie) {
             return cookie.name;
-          });
+          }
+        );
 
         postCookieConsent({ consentRejected });
         hideBanner();
@@ -273,12 +313,12 @@ var renderCookieConsent = function () {
               });
           });
 
-        var uniqueDomains = [...new Set(acceptedDomains)];
+        var uniqueDomains = getUniqueArray(acceptedDomains);
         window.localStorage.setItem(
           LOCAL_STORAGE_KEY,
           JSON.stringify({ whiteList: uniqueDomains })
         );
-        var regExpArr = uniqueDomains.map(function (pattern) {
+        var regExpArr = mapArray(uniqueDomains, function (pattern) {
           return new RegExp(pattern);
         });
         window.yett && window.yett.unblock(regExpArr);
@@ -444,10 +484,11 @@ var renderCookieConsent = function () {
       banner.consentType === cookieConsentTypes.acceptReject ||
       banner.consentType === cookieConsentTypes.accept;
 
-    var btnCustomize = renderActionButton({
-      ...(mainBanner.actionButton || {}),
-      id: "lb-cookie-consent-open-preferences",
-    });
+    var btnCustomize = renderActionButton(
+      Object.assign(mainBanner.actionButton, {
+        id: "lb-cookie-consent-open-preferences",
+      })
+    );
     var rejectButton = renderRejectButton(mainBanner.rejectAllButton);
     var acceptButton = renderAcceptButton(mainBanner.acceptAllButton);
 
@@ -511,11 +552,11 @@ var renderCookieConsent = function () {
     var showAccept =
       banner.consentType === cookieConsentTypes.acceptReject ||
       banner.consentType === cookieConsentTypes.accept;
-
-    var btnSavePreferences = renderActionButton({
-      ...(preferences.actionButton || {}),
-      id: "lb-cookie-consent-save-preferences",
-    });
+    var btnSavePreferences = renderActionButton(
+      Object.assign(preferences.actionButton, {
+        id: "lb-cookie-consent-save-preferences",
+      })
+    );
     var rejectButton = renderRejectButton(preferences.rejectAllButton);
     var acceptButton = renderAcceptButton(preferences.acceptAllButton);
 
@@ -568,7 +609,7 @@ var renderCookieConsent = function () {
         categorySettings && categorySettings.checkboxType === "toggle";
 
       var checkboxPayload = { id: id, checked: !optOut, disabled: !optOut };
-      var categoryCookies = domain.cookies.filter(function (c) {
+      var categoryCookies = filterArray(domain.cookies, function (c) {
         return c.cookieCategoryId === id;
       });
 
@@ -581,11 +622,9 @@ var renderCookieConsent = function () {
         <div class="category-cookies">\
         ' +
           (categoryCookies &&
-            categoryCookies
-              .map(function (c) {
-                return getCookieHtml(c);
-              })
-              .join("")) || "" + "</div>";
+            mapArray(categoryCookies, function (c) {
+              return getCookieHtml(c);
+            }).join("")) || "" + "</div>";
 
       var html =
         '\
@@ -635,11 +674,9 @@ var renderCookieConsent = function () {
       '\
       <div class="cookie-categories">\
         ' +
-        categories
-          .map(function (c) {
-            return getCategoryHtml(c);
-          })
-          .join("") ||
+        mapArray(categories, function (c) {
+          return getCategoryHtml(c);
+        }).join("") ||
       "" +
         "\
       </div>";
@@ -718,7 +755,7 @@ var renderCookieConsent = function () {
     }
 
     if (parsed && parsed.whiteList && window.yett) {
-      var regExpArr = parsed.whiteList.map(function (pattern) {
+      var regExpArr = mapArray(parsed.whiteList, function (pattern) {
         return new RegExp(pattern);
       });
       parsed.whiteList.length
