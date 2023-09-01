@@ -1,6 +1,6 @@
 var SVG_CARET_RIGHT = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#333333" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><polyline points="96 48 176 128 96 208" fill="none" stroke="#333333" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline></svg>`;
 
-var renderCookieConsent = async () => {
+var renderCookieConsent = async function () {
   var VISITOR_ID = "_lb_fp";
   var LOCAL_STORAGE_KEY = "lb-cookie-consent";
 
@@ -42,10 +42,11 @@ var renderCookieConsent = async () => {
   };
 
   // utils
-  var cleanUrlString = (domain) =>
+  var cleanUrlString = function (domain) {
     domain.replace(/https?:\/\//i, "").replace(/^(\.+)/g, "");
+  };
 
-  var getBrowserName = () => {
+  var getBrowserName = function () {
     if (!userAgent) return "";
 
     var isOpera =
@@ -86,23 +87,23 @@ var renderCookieConsent = async () => {
       : "";
   };
 
-  var isMobile = () => {
+  var isMobile = function () {
     var regex =
       /Mobi|Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i;
     return regex.test(userAgent);
   };
 
-  var getBrowserLang = () => {
+  var getBrowserLang = function () {
     return (window.navigator && window.navigator.language) || "";
   };
 
-  var getCookie = (name) => {
+  var getCookie = function (name) {
     var value = `; ${document.cookie}`;
     var parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop().split(";").shift();
   };
 
-  var getPrettyDate = (incomingDate) => {
+  var getPrettyDate = function (incomingDate) {
     if (!incomingDate) return "--";
 
     var months = [
@@ -131,7 +132,7 @@ var renderCookieConsent = async () => {
   };
 
   // API requests
-  var fetchDomainInfo = async () => {
+  var fetchDomainInfo = async function () {
     var response = await fetch(
       `${webAppUrl}/api/cookie-consent/domain?domainName=${clientDomain}`
     );
@@ -147,11 +148,11 @@ var renderCookieConsent = async () => {
     return domain;
   };
 
-  var postCookieConsent = ({
+  var postCookieConsent = function ({
     consentAccepted,
     consentRejected,
     headers = {},
-  }) => {
+  }) {
     if (!domain) return;
 
     fetch(`${webAppUrl}/api/cookie-consent/response`, {
@@ -175,7 +176,7 @@ var renderCookieConsent = async () => {
   };
 
   // DOM handlers
-  var initHandlers = () => {
+  var initHandlers = function () {
     document.addEventListener("click", function (e) {
       if (e.targe && e.target.id === "lb-cookie-consent-accept-all") {
         window.yet && window.yett.unblock();
@@ -184,7 +185,9 @@ var renderCookieConsent = async () => {
           JSON.stringify({ whiteList: [] })
         );
         postCookieConsent({
-          consentAccepted: domain.cookies.map((c) => c.name),
+          consentAccepted: domain.cookies.map(function (c) {
+            return c.name;
+          }),
           consentRejected: [],
         });
         hideBanner();
@@ -195,15 +198,15 @@ var renderCookieConsent = async () => {
           LOCAL_STORAGE_KEY,
           JSON.stringify({ whiteList: essentialsWhiteList })
         );
-        var regExpArr = essentialsWhiteList.map(
-          (pattern) => new RegExp(pattern)
-        );
+        var regExpArr = essentialsWhiteList.map(function (pattern) {
+          return new RegExp(pattern);
+        });
         window.yett && window.yett.unblock(regExpArr);
 
         var consentRejected = domain.cookies
-          .filter((cookie) => {
+          .filter(function (cookie) {
             var isMatch = false;
-            regExpArr.forEach((regExp) => {
+            regExpArr.forEach(function (regExp) {
               if (cookie.domain.match(regExp)) {
                 isMatch = true;
               }
@@ -211,7 +214,9 @@ var renderCookieConsent = async () => {
 
             return isMatch;
           })
-          .map((cookie) => cookie.name);
+          .map(function (cookie) {
+            return cookie.name;
+          });
 
         postCookieConsent({ consentRejected });
         hideBanner();
@@ -221,20 +226,22 @@ var renderCookieConsent = async () => {
         var consentAccepted = [];
         var consentRejected = [];
 
-        document.querySelectorAll(".category.accepted").forEach((elem) => {
-          domain &&
-            domain.cookies.forEach((cookie) => {
-              if (cookie.cookieCategoryId === elem.id) {
-                acceptedDomains.push(cleanUrlString(cookie.domain));
-                consentAccepted.push(cookie.name);
-              }
-            });
-        });
+        document
+          .querySelectorAll(".category.accepted")
+          .forEach(function (elem) {
+            domain &&
+              domain.cookies.forEach(function (cookie) {
+                if (cookie.cookieCategoryId === elem.id) {
+                  acceptedDomains.push(cleanUrlString(cookie.domain));
+                  consentAccepted.push(cookie.name);
+                }
+              });
+          });
         document
           .querySelectorAll(".category:not(.accepted)")
-          .forEach((elem) => {
+          .forEach(function (elem) {
             domain &&
-              domain.cookies.forEach((cookie) => {
+              domain.cookies.forEach(function (cookie) {
                 if (cookie.cookieCategoryId === elem.id) {
                   consentRejected.push(cookie.name);
                 }
@@ -246,7 +253,9 @@ var renderCookieConsent = async () => {
           LOCAL_STORAGE_KEY,
           JSON.stringify({ whiteList: uniqueDomains })
         );
-        var regExpArr = uniqueDomains.map((pattern) => new RegExp(pattern));
+        var regExpArr = uniqueDomains.map(function (pattern) {
+          return new RegExp(pattern);
+        });
         window.yett && window.yett.unblock(regExpArr);
 
         postCookieConsent({ consentAccepted, consentRejected });
@@ -295,12 +304,12 @@ var renderCookieConsent = async () => {
   };
 
   // renderers
-  var renderCheckbox = ({
+  var renderCheckbox = function ({
     id = "",
     label = "",
     checked = false,
     disabled = false,
-  }) => {
+  }) {
     return `\
       <label \
         class="lb-checkbox-container lb-switch ${disabled ? "disabled" : ""}"\
@@ -318,12 +327,12 @@ var renderCookieConsent = async () => {
       </label>`;
   };
 
-  var renderToggle = ({
+  var renderToggle = function ({
     id = "",
     label = "",
     checked = false,
     disabled = false,
-  }) => {
+  }) {
     return `\
       <div class="lb-toggle-container lb-switch" data-category-id="${id}">
         <input \
@@ -342,7 +351,7 @@ var renderCookieConsent = async () => {
       </div>`;
   };
 
-  var renderActionButton = (props) => {
+  var renderActionButton = function (props) {
     var {
       id = "",
       backgroundColor = "FFF",
@@ -363,7 +372,7 @@ var renderCookieConsent = async () => {
       </button>`;
   };
 
-  var renderRejectButton = (props) => {
+  var renderRejectButton = function (props) {
     var {
       backgroundColor = "FFF",
       color = "000",
@@ -383,7 +392,7 @@ var renderCookieConsent = async () => {
         </button>`;
   };
 
-  var renderAcceptButton = (props) => {
+  var renderAcceptButton = function (props) {
     var {
       backgroundColor = "FFF",
       color = "000",
@@ -403,7 +412,7 @@ var renderCookieConsent = async () => {
         </button>`;
   };
 
-  var renderBanner = (banner, showPreferencesOnly = false) => {
+  var renderBanner = function (banner, showPreferencesOnly = false) {
     if (!banner) return;
     var layout = banner && banner.layout;
     var mainBanner = layout && layout.banner;
@@ -472,7 +481,7 @@ var renderCookieConsent = async () => {
     );
   };
 
-  var renderPreferences = (banner, showByDefault = false) => {
+  var renderPreferences = function (banner, showByDefault = false) {
     var categories = domain.categories || [];
     if (!banner) return;
     var layout = banner && banner.layout;
@@ -504,7 +513,7 @@ var renderCookieConsent = async () => {
       </div>
     `;
 
-    var getCookieHtml = (cookie) => {
+    var getCookieHtml = function (cookie) {
       var cookieDescription = `\
       <div class="row">\
         <div class="label">Description:</div>
@@ -525,7 +534,7 @@ var renderCookieConsent = async () => {
           </div>`;
     };
 
-    var getCategoryHtml = (category) => {
+    var getCategoryHtml = function (category) {
       var {
         id = "",
         name = "",
@@ -536,9 +545,9 @@ var renderCookieConsent = async () => {
         categorySettings && categorySettings.checkboxType === "toggle";
 
       var checkboxPayload = { id, checked: !optOut, disabled: !optOut };
-      var categoryCookies = domain.cookies.filter(
-        (c) => c.cookieCategoryId === id
-      );
+      var categoryCookies = domain.cookies.filter(function (c) {
+        return c.cookieCategoryId === id;
+      });
 
       var htmlCaret = `<div class="icon-box">${SVG_CARET_RIGHT}</div>`;
       var htmlDescription = `<div class="row category-description">${description}</div>`;
@@ -547,7 +556,11 @@ var renderCookieConsent = async () => {
         <div class="category-cookies">\
           ${
             (categoryCookies &&
-              categoryCookies.map((c) => getCookieHtml(c)).join("")) ||
+              categoryCookies
+                .map(function (c) {
+                  return getCookieHtml(c);
+                })
+                .join("")) ||
             ""
           }\
         </div>`;
@@ -579,7 +592,13 @@ var renderCookieConsent = async () => {
 
     var htmlCookieCategories = `\
       <div class="cookie-categories">\
-        ${categories.map((c) => getCategoryHtml(c)).join("") || ""}\
+        ${
+          categories
+            .map(function (c) {
+              return getCategoryHtml(c);
+            })
+            .join("") || ""
+        }\
       </div>`;
 
     var htmlPreferences = `\
@@ -609,7 +628,7 @@ var renderCookieConsent = async () => {
     return htmlPreferences;
   };
 
-  var hideBanner = () => {
+  var hideBanner = function () {
     var banner = document.getElementById("lb-cookie-consent-banner");
     banner && banner.remove();
     var preferences = document.getElementById(
@@ -619,7 +638,7 @@ var renderCookieConsent = async () => {
   };
 
   // blockers / unblockers
-  var initScriptBlocking = (domain) => {
+  var initScriptBlocking = function (domain) {
     var item = window.localStorage.getItem(LOCAL_STORAGE_KEY);
     if (!item) {
       return renderBanner(domain.banner, showPreferences === "true");
@@ -633,7 +652,9 @@ var renderCookieConsent = async () => {
     }
 
     if (parsed && parsed.whiteList && window.yett) {
-      var regExpArr = parsed.whiteList.map((pattern) => new RegExp(pattern));
+      var regExpArr = parsed.whiteList.map(function (pattern) {
+        return new RegExp(pattern);
+      });
       parsed.whiteList.length
         ? window.yett.unblock(regExpArr)
         : window.yett.unblock();
