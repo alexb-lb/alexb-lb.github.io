@@ -63,20 +63,21 @@ const renderCookieConsent = async () => {
     return window.navigator?.language || "";
   };
 
-  function getCookie(name) {
+  const getCookie = (name) => {
     const value = `; ${document.cookie}`;
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop().split(";").shift();
-  }
-  function setCookie({ name = "", value = "", expires = 0 }) {
-    let expiresStr = "";
-    if (expires) {
-      const date = new Date();
-      date.setTime(date.getTime() + expires * 1000);
-      expiresStr = "; expires=" + date.toUTCString();
-    }
+  };
+  const setCookie = ({ name = "", value = "", expires = 0 }) => {
+    const expiresStr = expires
+      ? "; expires=" + new Date(expires * 1000).toUTCString()
+      : "";
     document.cookie = `${name}=${value}${expiresStr}; path=/`;
-  }
+  };
+  const deleteCookie = (name) => {
+    document.cookie =
+      name + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
+  };
 
   // API requests
   const fetchDomainInfo = async () => {
