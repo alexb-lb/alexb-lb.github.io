@@ -473,7 +473,7 @@ var renderCookieConsent = function () {
         >' + text + '</button>';
   };
 
-  var renderBanner = function (banner, showPreferencesOnly = false) {
+  var renderBanner = function (banner, showPreferencesOnly) {
     if (!banner) return;
     var layout = banner && banner.layout;
     var mainBanner = layout && layout.banner;
