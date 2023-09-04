@@ -91,16 +91,6 @@ const renderCookieConsent = async () => {
     const parts = value.split(`; ${name}=`);
     if (parts.length === 2) return parts.pop().split(";").shift();
   };
-  const setCookie = ({ name = "", value = "", expires = 0 }) => {
-    const expiresStr = expires
-      ? "; expires=" + new Date(expires * 1000).toUTCString()
-      : "";
-    document.cookie = `${name}=${value}${expiresStr}; path=/`;
-  };
-  const deleteCookie = (name) => {
-    document.cookie =
-      name + "=; Path=/; Expires=Thu, 01 Jan 1970 00:00:01 GMT;";
-  };
 
   // API requests
   const fetchDomainInfo = async () => {
@@ -146,17 +136,6 @@ const renderCookieConsent = async () => {
     });
   };
 
-  const setUpCookies = (acceptedCookies = []) => {
-    acceptedCookies
-      .filter((c) => c.cookieType === cookieTypes.manual)
-      .forEach((c) => {
-        const cookieExists = getCookie(c.name);
-        if (!cookieExists) {
-          setCookie(c);
-        }
-      });
-  };
-
   // DOM handlers
   const initHandlers = () => {
     document.addEventListener("click", function (e) {
@@ -168,7 +147,6 @@ const renderCookieConsent = async () => {
         );
         const consentAccepted = domain.cookies.map((c) => c.name);
         postCookieConsent({ consentAccepted, consentRejected: [] });
-        setUpCookies(domain.cookie);
         hideBanner();
       }
       if (e.target?.id === "lb-cookie-consent-reject-all") {
@@ -197,19 +175,16 @@ const renderCookieConsent = async () => {
         postCookieConsent({
           consentRejected: rejectedCookies.map((c) => c.name),
         });
-        setUpCookies(acceptedCookies);
         hideBanner();
       }
       if (e.target?.id === "lb-cookie-consent-save-preferences") {
         const acceptedDomains = [];
         const consentAccepted = [];
         const consentRejected = [];
-        const acceptedCookies = [];
 
         document.querySelectorAll(".category.accepted").forEach((elem) => {
           domain?.cookies.forEach((cookie) => {
             if (cookie.cookieCategoryId === elem.id) {
-              acceptedCookies.push(cookie);
               acceptedDomains.push(cleanUrlString(cookie.domain));
               consentAccepted.push(cookie.name);
             }
@@ -234,7 +209,6 @@ const renderCookieConsent = async () => {
         window.yett?.unblock(regExpArr);
 
         postCookieConsent({ consentAccepted, consentRejected });
-        setUpCookies(acceptedCookies);
         hideBanner();
       }
       if (e.target?.id === "lb-cookie-consent-open-preferences") {
