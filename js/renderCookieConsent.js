@@ -350,7 +350,7 @@ const renderCookieConsent = async () => {
       >\
         <div class="main-banner-body">\
           <div\
-            class="policy-text"\
+            class="policy-text lb-scrollbar"\
             style="color: #${banner?.layout?.banner?.bodyTextColor};"\
           >\
             ${banner?.layout.banner?.body}\
@@ -496,13 +496,13 @@ const renderCookieConsent = async () => {
     };
 
     const htmlCookieCategories = `\
-      <div class="cookie-categories">\
+      <div class="cookie-categories lb-scrollbar">\
         ${categories?.map((c) => getCategoryHtml(c))?.join("") || ""}\
       </div>`;
 
     const htmlPreferences = `\
       <div \
-        class="cookie-consent-banner-preferences ${
+        class="cookie-consent-banner-preferences lb-scrollbar ${
           showByDefault ? "" : "hidden"
         }" \
         id="cookie-consent-banner-preferences">\
