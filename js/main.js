@@ -17,6 +17,7 @@ const initCookieConsent = () => {
 
   const link = document.createElement("link");
   link.rel = "stylesheet";
+  // link.href = `${webAppUrl}/cookie_consent/assets/styles.css`
   link.href = `./assets/styles.css`;
   link.type = "text/css";
   head.appendChild(link);
@@ -25,6 +26,7 @@ const initCookieConsent = () => {
 
   const scriptRenderer = document.createElement("script");
   scriptRenderer.type = "text/javascript";
+  // scriptRenderer.src = `${webAppUrl}/cookie_consent/js/renderCookieConsent.js`
   scriptRenderer.src = `./js/renderCookieConsent.js`;
   scriptRenderer.async = true;
   head.appendChild(scriptRenderer);
