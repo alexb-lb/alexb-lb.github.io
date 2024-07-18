@@ -2,48 +2,32 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <!-- <script
-      src="./js/main.js"
-      data-web-app="https://dsr-team.lightbeam-ai.com"
-      data-domain="https://alexb-lb.github.io"
-      id="lb-cookie-consent"
-    ></script> -->
-    <script
-      src="https://dsr-team.lightbeam-ai.com/cookie_consent/js/main.js"
-      data-web-app="https://dsr-team.lightbeam-ai.com"
-      data-domain="https://alexb-lb.github.io"
-      id="lb-cookie-consent"
-    ></script>
     <script>
-      // Set a cookie named "exampleCookie" with a value of "test"
-      document.cookie =
-        "exampleCookie1=test1; expires=Sun, 17 Sep 2023 18:00:00 UTC; path=/;";
+      // Function to generate a random cookie name
+      function getRandomCookieName(index) {
+        return "cookie_" + index;
+      }
+
+      // Function to generate a random cookie value
+      function getRandomCookieValue() {
+        return (
+          Math.random().toString(36).substring(2, 15) +
+          Math.random().toString(36).substring(2, 15)
+        );
+      }
+
+      // Function to set a cookie with a random name and value
+      function setRandomCookie(index) {
+        document.cookie =
+          getRandomCookieName(index) + "=" + getRandomCookieValue();
+      }
+
+      // Add 10 random cookies
+      for (let i = 0; i < 10; i++) {
+        setRandomCookie(i);
+      }
     </script>
-    <script>
-      // Set a cookie named "exampleCookie" with a value of "test"
-      document.cookie =
-        "exampleCookie2=test2; expires=Sun, 17 Sep 2023 18:00:00 UTC; path=/;";
-    </script>
-    <script>
-      // Set a cookie named "exampleCookie" with a value of "test"
-      document.cookie =
-        "exampleCookie3=test3; expires=Sun, 17 Sep 2023 18:00:00 UTC; path=/;";
-    </script>
-    <script>
-      // Set a cookie named "exampleCookie" with a value of "test"
-      document.cookie =
-        "exampleCookie4=test4; expires=Sun, 17 Sep 2023 18:00:00 UTC; path=/;";
-    </script>
-    <script>
-      // Set a cookie named "exampleCookie" with a value of "test"
-      document.cookie =
-        "exampleCookie5=test5; expires=Sun, 17 Sep 2023 18:00:00 UTC; path=/;";
-    </script>
-    <script>
-      // Set a third-party cookie
-      document.cookie =
-        "third_party_cookie=test1; domain=.3dollarlogo.com; path=/;";
-    </script>
+
     <!-- Google Tag Manager -->
     <script>
       (function (w, d, s, l, i) {
@@ -69,16 +53,6 @@
         font-family: Arial, Helvetica, sans-serif;
       }
     </style>
-    <!-- Google Tag Manager (noscript) -->
-    <noscript
-      ><iframe
-        src="https://www.googletagmanager.com/ns.html?id=GTM-K8DSD4GS"
-        height="0"
-        width="0"
-        style="display: none; visibility: hidden"
-      ></iframe
-    ></noscript>
-    <!-- End Google Tag Manager (noscript) -->
     <h1>This is test</h1>
   </body>
 </html>
