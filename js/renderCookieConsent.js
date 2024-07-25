@@ -513,7 +513,7 @@ const renderCookieConsent = async () => {
           </a>`
       : ``;
 
-    document.querySelector("body").insertAdjacentHTML(
+    document.querySelector("body")?.insertAdjacentHTML(
       "beforeend",
       `\
     <div class="\
@@ -757,7 +757,7 @@ const renderCookieConsent = async () => {
     // return htmlPreferences
     document
       .querySelector("body")
-      .insertAdjacentHTML("beforeend", htmlPreferences);
+      ?.insertAdjacentHTML("beforeend", htmlPreferences);
   };
 
   const hideBanner = () => {
