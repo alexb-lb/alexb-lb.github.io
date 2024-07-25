@@ -775,20 +775,6 @@ const renderCookieConsent = async () => {
     if (!item) {
       return renderBanner(domain.banner, showPreferences === "true");
     }
-
-    let parsed = null;
-    try {
-      parsed = JSON.parse(item);
-    } catch (e) {
-      console.log("cannot parse whitelisted domains");
-    }
-
-    // if (parsed) {
-    //   parsed?.whiteList?.forEach((domain) => {
-    //     window.yett?.unblock(new RegExp(domain));
-    //   });
-    //   window.yett?.unblock();
-    // }
   };
 
   // init
