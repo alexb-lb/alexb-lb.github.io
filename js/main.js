@@ -38,12 +38,12 @@ const LB_LOCAL_STORAGE_PREFERENCES_KEY = "lb-preferences";
     if (!userConsents) return;
 
     if (isLbPrefCenter) {
-      window.YETT_BLACKLIST = userConsents.blackList.map(
+      window.YETT_BLACKLIST = userConsents.blackList?.map(
         (pattern) => new RegExp(pattern)
       );
     }  else {
       // if banner selected, by default everything blocked excepts web-app and current domain
-      window.YETT_WHITELIST = userConsents.whiteList.map(
+      window.YETT_WHITELIST = userConsents.whiteList?.map(
         (pattern) => new RegExp(pattern)
       );
     }
@@ -56,7 +56,8 @@ const LB_LOCAL_STORAGE_PREFERENCES_KEY = "lb-preferences";
    */
   if (!consentsRaw) {
     if (isLbPrefCenter) {
-      window.YETT_WHITELIST = []
+      window.YETT_BLACKLIST = undefined
+      window.YETT_WHITELIST = undefined
     } else {
       window.YETT_WHITELIST = essentialsWhiteList.map(
         (pattern) => new RegExp(pattern)
