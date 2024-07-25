@@ -769,7 +769,7 @@ const renderCookieConsent = async () => {
   };
 
   // blockers / unblockers
-  const initScriptBlocking = (domain) => {
+  const injectHtml = (domain) => {
     const item = window.localStorage.getItem(LB_LOCAL_STORAGE_KEY);
     renderPreferences(domain.banner, showPreferencesByDefault);
     if (!item) {
@@ -785,10 +785,8 @@ const renderCookieConsent = async () => {
     ...(webAppUrl ? [webAppUrl.replace(/https?:\/\//i, "")] : []),
   ];
 
-  domain = await fetchDomainInfo();
-
-  if (domain) {
-    initScriptBlocking(domain);
+  await fetchDomainInfo().then((domain) => {
+    injectHtml(domain);
     initHandlers(domain);
-  }
+  });
 };
