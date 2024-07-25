@@ -785,12 +785,10 @@ const renderCookieConsent = async () => {
     }
 
     if (parsed) {
-      const regExpArr = parsed?.whiteList?.map(
-        (pattern) => new RegExp(pattern)
-      );
-      parsed?.whiteList?.length
-        ? window.yett?.unblock(regExpArr)
-        : window.yett?.unblock();
+      parsed?.whiteList?.forEach((domain) => {
+        window.yett?.unblock(new RegExp(domain));
+      });
+      window.yett?.unblock();
     }
   };
 
