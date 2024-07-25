@@ -788,6 +788,7 @@ const renderCookieConsent = async () => {
   const init = () => {
     console.log("init");
     if (domain) {
+      console.log(domain);
       injectHtml(domain);
       initHandlers(domain);
     } else {
