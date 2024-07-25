@@ -81,7 +81,7 @@ const initCookieConsent = () => {
   link.type = "text/css";
   head.appendChild(link);
 
-  // window.yett?.unblock(new RegExp(webAppUrl.replace(/https?:\/\//i, "")));
+  window.yett?.unblock(new RegExp(webAppUrl.replace(/https?:\/\//i, "")));
 
   const scriptRenderer = document.createElement("script");
   scriptRenderer.type = "text/javascript";

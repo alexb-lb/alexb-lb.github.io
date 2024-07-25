@@ -784,10 +784,9 @@ const renderCookieConsent = async () => {
 
     if (parsed) {
       const regExpArr = parsed?.whiteList.map((pattern) => new RegExp(pattern));
-      console.log("regExpArr", regExpArr);
-      // parsed?.whiteList.length
-      //   ? window.yett?.unblock(regExpArr)
-      //   : window.yett?.unblock();
+      parsed?.whiteList.length
+        ? window.yett?.unblock(regExpArr)
+        : window.yett?.unblock();
     }
   };
 
