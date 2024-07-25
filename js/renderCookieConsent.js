@@ -785,8 +785,16 @@ const renderCookieConsent = async () => {
     ...(webAppUrl ? [webAppUrl.replace(/https?:\/\//i, "")] : []),
   ];
 
-  await fetchDomainInfo().then((domain) => {
-    injectHtml(domain);
-    initHandlers(domain);
-  });
+  const init = () => {
+    console.log("init");
+    if (domain) {
+      injectHtml(domain);
+      initHandlers(domain);
+    } else {
+      setTimeout(init, 100);
+    }
+  };
+
+  domain = await fetchDomainInfo();
+  init();
 };
