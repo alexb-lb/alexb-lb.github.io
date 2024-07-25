@@ -357,10 +357,10 @@ const renderCookieConsent = async () => {
       if (e.target?.id === "lb-cookie-consent-open-preferences") {
         document
           .querySelector(".cookie-consent-banner-container")
-          .classList.add("hidden");
+          ?.classList.add("hidden");
         document
           .querySelector(".cookie-consent-banner-preferences")
-          .classList.remove("hidden");
+          ?.classList.remove("hidden");
       }
       if (e.target?.classList.contains("lb-preferences-center-trigger")) {
         /* Show preferences center on click of trigger button */
