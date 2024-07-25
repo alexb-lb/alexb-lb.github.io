@@ -44,7 +44,7 @@ const LB_LOCAL_STORAGE_PREFERENCES_KEY = "lb-preferences";
     } else {
       // if banner selected, by default everything blocked excepts web-app and current domain
       if (userConsents.whiteList?.length) {
-        window.YETT_WHITELIST = userConsents.whiteList;
+        window.YETT_WHITELIST = userConsents.whiteList?.map((pattern) => new RegExp(pattern));
         console.log("window.YETT_WHITELIST", window.YETT_WHITELIST);
       } else {
         window.YETT_BLACKLIST = []
