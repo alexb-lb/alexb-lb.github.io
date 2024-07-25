@@ -56,7 +56,7 @@ const LB_LOCAL_STORAGE_PREFERENCES_KEY = "lb-preferences";
    */
   if (!consentsRaw) {
     if (isLbPrefCenter) {
-      window.YETT_BLACKLIST = [];
+      window.YETT_WHITELIST = []
     } else {
       window.YETT_WHITELIST = essentialsWhiteList.map(
         (pattern) => new RegExp(pattern)
