@@ -15,28 +15,30 @@
     <script src="https://test-cookies.tiiny.site/injectCookies.js"></script>
 
     <script>
-      function getRandomCookieName(index) {
-        return "same_domain_cookie_" + index;
-      }
+      (function () {
+        function getRandomCookieName(index) {
+          return "same_domain_cookie_" + index;
+        }
 
-      // Function to generate a random cookie value
-      function getRandomCookieValue() {
-        return (
-          Math.random().toString(36).substring(2, 15) +
-          Math.random().toString(36).substring(2, 15)
-        );
-      }
+        // Function to generate a random cookie value
+        function getRandomCookieValue() {
+          return (
+            Math.random().toString(36).substring(2, 15) +
+            Math.random().toString(36).substring(2, 15)
+          );
+        }
 
-      // Function to set a cookie with a random name and value
-      function setRandomCookie(index) {
-        document.cookie =
-          getRandomCookieName(index) + "=" + getRandomCookieValue();
-      }
+        // Function to set a cookie with a random name and value
+        function setRandomCookie(index) {
+          document.cookie =
+            getRandomCookieName(index) + "=" + getRandomCookieValue();
+        }
 
-      // Add 3 random cookies
-      for (let i = 0; i < 3; i++) {
-        setRandomCookie(i);
-      }
+        // Add 3 random cookies
+        for (let i = 0; i < 3; i++) {
+          setRandomCookie(i);
+        }
+      })();
     </script>
     <!-- Cookie banner code end-->
     <title>Test</title>
