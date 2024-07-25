@@ -761,7 +761,9 @@ const renderCookieConsent = async () => {
   };
 
   const hideBanner = () => {
-    document.getElementById("lb-cookie-consent-banner")?.remove();
+    document
+      .getElementById("lb-cookie-consent-banner")
+      ?.classList.add("hidden");
     document
       .getElementById("cookie-consent-banner-preferences")
       ?.classList.add("hidden");
@@ -783,8 +785,10 @@ const renderCookieConsent = async () => {
     }
 
     if (parsed) {
-      const regExpArr = parsed?.whiteList.map((pattern) => new RegExp(pattern));
-      parsed?.whiteList.length
+      const regExpArr = parsed?.whiteList?.map(
+        (pattern) => new RegExp(pattern)
+      );
+      parsed?.whiteList?.length
         ? window.yett?.unblock(regExpArr)
         : window.yett?.unblock();
     }
