@@ -791,7 +791,7 @@ const renderCookieConsent = async () => {
       injectHtml(domain);
       initHandlers(domain);
     } else {
-      setTimeout(init, 100);
+      setTimeout(() => init(), 100);
     }
   };
 
