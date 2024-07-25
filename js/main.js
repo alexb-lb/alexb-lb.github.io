@@ -38,11 +38,13 @@ const LB_LOCAL_STORAGE_PREFERENCES_KEY = "lb-preferences";
     if (!userConsents) return;
 
     if (isLbPrefCenter) {
-      window.YETT_BLACKLIST = new RegExp(userConsents.blackList.join('|'), 'g');
+      window.YETT_BLACKLIST = userConsents.blackList?.map(
+        (pattern) => "/" + pattern + "/"
+      );
     } else {
       // if banner selected, by default everything blocked excepts web-app and current domain
       if (userConsents.whiteList?.length) {
-        window.YETT_WHITELIST = new RegExp(userConsents.whiteList.join('|'), 'g');
+        window.YETT_WHITELIST = userConsents.whiteList?.map((pattern) => "/" + pattern + "/");
       } else {
         window.YETT_BLACKLIST = []
       }
@@ -59,7 +61,9 @@ const LB_LOCAL_STORAGE_PREFERENCES_KEY = "lb-preferences";
     if (isLbPrefCenter) {
       window.YETT_BLACKLIST = []
     } else {
-      window.YETT_WHITELIST = new RegExp(essentialsWhiteList.join('|'), 'g');
+      window.YETT_WHITELIST = essentialsWhiteList.map(
+        (pattern) => "/" + pattern + "/"
+      );
     }
   }
 })();
