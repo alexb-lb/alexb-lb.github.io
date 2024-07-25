@@ -3,10 +3,6 @@ const LB_LOCAL_STORAGE_KEY = "lb-cookie-consent";
 const LB_LOCAL_STORAGE_PREFERENCES_KEY = "lb-preferences";
 
 (function () {
-  // by default everything unblocked
-  window.YETT_BLACKLIST = [];
-  window.YETT_WHITELIST = undefined;
-
   // detect essentials that must NOT be blocked
   const root = document.getElementById("lb-cookie-consent");
   const webAppUrl = root?.getAttribute("data-web-app") || "";
@@ -45,7 +41,8 @@ const LB_LOCAL_STORAGE_PREFERENCES_KEY = "lb-preferences";
       window.YETT_BLACKLIST = userConsents.blackList.map(
         (pattern) => new RegExp(pattern)
       );
-    } else {
+    }  else {
+      // if banner selected, by default everything blocked excepts web-app and current domain
       window.YETT_WHITELIST = userConsents.whiteList.map(
         (pattern) => new RegExp(pattern)
       );
