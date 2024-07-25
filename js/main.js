@@ -89,7 +89,7 @@ const initCookieConsent = () => {
   document.head.appendChild(scriptRenderer);
 
   window.YETT_WHITELIST?.forEach((domain) => {
-    window.yett?.unblock(domain);
+    window.yett?.unblock(new RegExp(domain));
   });
 
   const timer = setInterval(() => {
