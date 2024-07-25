@@ -183,7 +183,7 @@ const renderCookieConsent = async () => {
         window.yett?.unblock();
         window.localStorage.setItem(
           LB_LOCAL_STORAGE_KEY,
-          JSON.stringify({ whiteList: [] })
+          JSON.stringify({ blackList: [] })
         );
         const consentAccepted = domain.cookies.map((c) => c.name);
         savePreferencesInStorage(
