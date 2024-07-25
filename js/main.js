@@ -88,6 +88,10 @@ const initCookieConsent = () => {
   scriptRenderer.async = true;
   document.head.appendChild(scriptRenderer);
 
+  window.YETT_WHITELIST?.forEach((domain) => {
+    window.yett?.unblock(domain);
+  });
+
   const timer = setInterval(() => {
     if (typeof renderCookieConsent === "function") {
       // eslint-disable-next-line no-undef
