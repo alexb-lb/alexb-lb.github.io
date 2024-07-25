@@ -202,10 +202,11 @@ const renderCookieConsent = async () => {
           LB_LOCAL_STORAGE_KEY,
           JSON.stringify({ whiteList: essentialsWhiteList })
         );
-        const regExpArr = essentialsWhiteList.map(
-          (pattern) => new RegExp(pattern)
-        );
-        window.yett?.unblock(regExpArr);
+        const regExpArr = essentialsWhiteList.map((domain) => {
+          const regex = new RegExp(domain);
+          window.yett?.unblock(regex);
+          return regex;
+        });
 
         const acceptedCookies = domain.cookies.filter((cookie) => {
           let isMatch = false;
@@ -337,10 +338,9 @@ const renderCookieConsent = async () => {
             blackList: uniqueDomainsRejected,
           })
         );
-        const regExpArr = uniqueDomainsAccepted.map(
-          (pattern) => new RegExp(pattern)
+        uniqueDomainsAccepted.forEach((domain) =>
+          window.yett?.unblock(new RegExp(domain))
         );
-        window.yett?.unblock(regExpArr);
 
         savePreferencesInStorage(categoriesAccepted);
         postCookieConsent({
