@@ -783,12 +783,12 @@ const renderCookieConsent = async () => {
       console.log("cannot parse whitelisted domains");
     }
 
-    if (parsed) {
-      parsed?.whiteList?.forEach((domain) => {
-        window.yett?.unblock(new RegExp(domain));
-      });
-      window.yett?.unblock();
-    }
+    // if (parsed) {
+    //   parsed?.whiteList?.forEach((domain) => {
+    //     window.yett?.unblock(new RegExp(domain));
+    //   });
+    //   window.yett?.unblock();
+    // }
   };
 
   // init
