@@ -279,10 +279,9 @@ const renderCookieConsent = async () => {
             blackList: uniqueDomainsRejected,
           })
         );
-        const regExpArr = uniqueDomainsAccepted.map(
-          (pattern) => new RegExp(pattern)
+        uniqueDomainsAccepted.forEach((domain) =>
+          window.yett?.unblock(new RegExp(domain))
         );
-        window.yett?.unblock(regExpArr);
 
         savePreferencesInStorage(categoriesAccepted);
         postCookieConsent({
