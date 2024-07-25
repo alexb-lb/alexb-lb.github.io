@@ -76,19 +76,17 @@ const initCookieConsent = () => {
   const root = document.getElementById("lb-cookie-consent");
   const webAppUrl = root?.getAttribute("data-web-app") || "";
 
-  var head = document.getElementsByTagName("head")[0];
-
   const link = document.createElement("link");
   link.rel = "stylesheet";
   link.href = `${webAppUrl}/assets/styles.css`;
   link.type = "text/css";
-  head.appendChild(link);
+  document.head.appendChild(link);
 
   const scriptRenderer = document.createElement("script");
   scriptRenderer.type = "text/javascript";
   scriptRenderer.src = `${webAppUrl}/js/renderCookieConsent.js`;
   scriptRenderer.async = true;
-  head.appendChild(scriptRenderer);
+  document.head.appendChild(scriptRenderer);
 
   const timer = setInterval(() => {
     if (typeof renderCookieConsent === "function") {
@@ -99,4 +97,6 @@ const initCookieConsent = () => {
   }, 100);
 };
 
-initCookieConsent();
+document.addEventListener('DOMContentLoaded', () => {
+  initCookieConsent();
+});

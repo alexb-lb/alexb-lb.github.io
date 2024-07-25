@@ -21,11 +21,6 @@ const renderCookieConsent = async () => {
     acceptReject: "accept-reject",
   };
 
-  const cookieTypes = {
-    system: "system",
-    manual: "manual",
-  };
-
   // utils
   const cleanUrlString = (domain) =>
     domain.replace(/https?:\/\//i, "").replace(/^(\.+)/g, "");
@@ -784,9 +779,7 @@ const renderCookieConsent = async () => {
   ];
 
   const init = () => {
-    console.log("init");
     if (domain) {
-      console.log(domain);
       injectHtml(domain);
       initHandlers(domain);
     } else {
