@@ -41,11 +41,14 @@ const LB_LOCAL_STORAGE_PREFERENCES_KEY = "lb-preferences";
       window.YETT_BLACKLIST = userConsents.blackList?.map(
         (pattern) => new RegExp(pattern)
       );
-    }  else {
+    } else {
       // if banner selected, by default everything blocked excepts web-app and current domain
-      window.YETT_WHITELIST = userConsents.whiteList?.map(
-        (pattern) => new RegExp(pattern)
-      );
+      if (userConsents.whiteList?.length) {
+        window.YETT_WHITELIST = userConsents.whiteList?.map((pattern) => new RegExp(pattern));
+      } else {
+        window.YETT_BLACKLIST = []
+      }
+
     }
   }
 
