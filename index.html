@@ -15,9 +15,26 @@
     <script src="https://test-cookies.tiiny.site/injectCookies.js"></script>
 
     <script>
-      document.cookie = "same_domain_cookie_1=some_value_1;";
-      document.cookie = "same_domain_cookie_2=some_value_2;";
-      document.cookie = "same_domain_cookie_3=some_value_3;";
+      (function () {
+        const oneDayExpire = new Date(Date.now() + 86400 * 1000).toUTCString();
+
+        document.cookie =
+          "same_domain_cookie_1=local_value_1; expires=" +
+          oneDayExpire +
+          ";path=/;";
+        document.cookie =
+          "same_domain_cookie2=local_value_2; expires=" +
+          oneDayExpire +
+          ";path=/;";
+        document.cookie =
+          "same_domain_cookie3=local_value_3; expires=" +
+          oneDayExpire +
+          ";path=/;";
+        document.cookie =
+          "same_domain_cookie4=local_value_4; expires=" +
+          oneDayExpire +
+          ";path=/;";
+      })();
     </script>
     <!-- Cookie banner code end-->
     <title>Test</title>
