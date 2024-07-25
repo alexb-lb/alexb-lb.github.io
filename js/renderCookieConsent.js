@@ -368,7 +368,7 @@ const renderCookieConsent = async () => {
           .getElementById("cookie-consent-banner-preferences")
           ?.classList.remove("hidden");
       }
-      if (e.target?.classList.contains("lb-preferences-banner-close-icon")) {
+      if (e.target?.closest("lb-preferences-banner-close-icon")) {
         /* Hide preferences center on click of close button */
         document
           .getElementById("cookie-consent-banner-preferences")
