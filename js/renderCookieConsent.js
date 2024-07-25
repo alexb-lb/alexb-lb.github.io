@@ -366,13 +366,13 @@ const renderCookieConsent = async () => {
         /* Show preferences center on click of trigger button */
         document
           .getElementById("cookie-consent-banner-preferences")
-          .classList.remove("hidden");
+          ?.classList.remove("hidden");
       }
       if (e.target?.classList.contains("lb-preferences-banner-close-icon")) {
         /* Hide preferences center on click of close button */
         document
           .getElementById("cookie-consent-banner-preferences")
-          .classList.add("hidden");
+          ?.classList.add("hidden");
       }
 
       if (e.target?.closest(".category.accepted")) {
