@@ -37,26 +37,29 @@ const LB_LOCAL_STORAGE_PREFERENCES_KEY = "lb-preferences";
 
     if (!userConsents) return;
 
-    if (isLbPrefCenter) {
-      if(userConsents.blackList?.length) {
-        window.YETT_BLACKLIST = userConsents.blackList?.map(
-          (pattern) => new RegExp(pattern, 'g')
-        );
-      } else {
-        // user selected to reject everything
-        const whiteList = userConsents.whiteList?.length ? userConsents.whiteList : essentialsWhiteList
-        window.YETT_WHITELIST = whiteList?.map((pattern) => new RegExp(pattern, 'g'));
-      }
-      
+    if (userConsents.whiteList?.length) {
+      // user rejected all, or accepted only some categories
+      window.YETT_WHITELIST = userConsents.whiteList?.map((pattern) => new RegExp(pattern, 'g'));
     } else {
-      // if banner selected, by default everything blocked excepts web-app and current domain
-      if (userConsents.whiteList?.length) {
-        window.YETT_WHITELIST = userConsents.whiteList?.map((pattern) => new RegExp(pattern, 'g'));
-      } else {
-        window.YETT_BLACKLIST = []
-      }
-
+      // user accepted all
+      window.YETT_BLACKLIST = []
     }
+
+    // if (isLbPrefCenter) {
+    //   if(userConsents.whiteList?.length) {
+    //     // user rejected all
+    //     window.YETT_WHITELIST = userConsents.whiteList?.map((pattern) => new RegExp(pattern, 'g'));
+    //   } else {
+    //     // user accepted all or accepted some preferences
+    //     const whiteList = userConsents.whiteList?.length ? userConsents.whiteList : essentialsWhiteList
+    //     window.YETT_WHITELIST = whiteList?.map((pattern) => new RegExp(pattern, 'g'));
+    //   }
+      
+    // } else {
+    //   // rejected all, block everything excepts whitelist
+
+
+    // }
   }
 
   /**
