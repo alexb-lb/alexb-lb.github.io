@@ -22,11 +22,7 @@ const LB_LOCAL_STORAGE_PREFERENCES_KEY = "lb-preferences";
 
   const consentsRaw = window.localStorage.getItem(LB_LOCAL_STORAGE_KEY);
 
-  /**
-   * User already added preferences:
-   * - if preferences only: allow everything excepts domains from saved blacklist
-   * - if banner: block everything excepts domains from saved whitelist
-   */
+
   if (consentsRaw) {
     let userConsents = null;
     try {
@@ -37,29 +33,15 @@ const LB_LOCAL_STORAGE_PREFERENCES_KEY = "lb-preferences";
 
     if (!userConsents) return;
 
+  /**
+   * User already added preferences:
+   * saved whitelist means user rejected all or accepted only some categories
+   */
     if (userConsents.whiteList?.length) {
-      // user rejected all, or accepted only some categories
       window.YETT_WHITELIST = userConsents.whiteList?.map((pattern) => new RegExp(pattern, 'g'));
     } else {
-      // user accepted all
       window.YETT_BLACKLIST = []
     }
-
-    // if (isLbPrefCenter) {
-    //   if(userConsents.whiteList?.length) {
-    //     // user rejected all
-    //     window.YETT_WHITELIST = userConsents.whiteList?.map((pattern) => new RegExp(pattern, 'g'));
-    //   } else {
-    //     // user accepted all or accepted some preferences
-    //     const whiteList = userConsents.whiteList?.length ? userConsents.whiteList : essentialsWhiteList
-    //     window.YETT_WHITELIST = whiteList?.map((pattern) => new RegExp(pattern, 'g'));
-    //   }
-      
-    // } else {
-    //   // rejected all, block everything excepts whitelist
-
-
-    // }
   }
 
   /**
@@ -97,10 +79,6 @@ const initCookieConsent = () => {
   scriptRenderer.src = `${webAppUrl}/js/renderCookieConsent.js`;
   scriptRenderer.async = true;
   document.head.appendChild(scriptRenderer);
-
-  window.YETT_WHITELIST?.forEach((domain) => {
-    window.yett?.unblock(new RegExp(domain));
-  });
 
   const timer = setInterval(() => {
     if (typeof renderCookieConsent === "function") {
