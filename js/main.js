@@ -43,7 +43,7 @@ const LB_LOCAL_STORAGE_PREFERENCES_KEY = "lb-preferences";
           (pattern) => new RegExp(pattern, 'g')
         );
       } else {
-        window.YETT_BLACKLIST = []
+        window.YETT_WHITELIST = userConsents.whiteList?.map((pattern) => new RegExp(pattern, 'g'));
       }
       
     } else {
