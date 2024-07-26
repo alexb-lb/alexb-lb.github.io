@@ -38,9 +38,14 @@ const LB_LOCAL_STORAGE_PREFERENCES_KEY = "lb-preferences";
     if (!userConsents) return;
 
     if (isLbPrefCenter) {
-      window.YETT_BLACKLIST = userConsents.blackList?.map(
-        (pattern) => new RegExp(pattern, 'g')
-      );
+      if(userConsents.blackList?.length) {
+        window.YETT_BLACKLIST = userConsents.blackList?.map(
+          (pattern) => new RegExp(pattern, 'g')
+        );
+      } else {
+        window.YETT_BLACKLIST = []
+      }
+      
     } else {
       // if banner selected, by default everything blocked excepts web-app and current domain
       if (userConsents.whiteList?.length) {
