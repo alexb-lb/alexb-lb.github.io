@@ -4,68 +4,352 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <!-- data-preferences-only="true" -->
-    <!-- Cookie banner code start-->
-    <script
-      src="https://playground-master-privacy-ops.lightbeamsecurity.com/cookie_consent/js/main.js"
-      data-web-app="https://playground-master-privacy-ops.lightbeamsecurity.com"
-      data-domain="https://alexb-lb.github.io"
-      id="lb-cookie-consent"
-    ></script>
-    <!-- Cookie banner code end-->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cedarville+Cursive&family=Delicious+Handrawn&family=Poppins:wght@200;300;400;600&display=swap"
+      rel="stylesheet"
+    />
+    <link href="./styles.css" rel="stylesheet" />
 
-    <!-- alert from external script -->
-    <script src="https://test-cookies.tiiny.site/show_alert.js"></script>
-
-    <script>
-      (function () {
-        const oneDayExpire = new Date(Date.now() + 86400 * 1000).toUTCString();
-
-        document.cookie =
-          "same_domain_cookie_1=local_value_1; expires=" +
-          oneDayExpire +
-          ";path=/;";
-        document.cookie =
-          "same_domain_cookie2=local_value_2; expires=" +
-          oneDayExpire +
-          ";path=/;";
-        document.cookie =
-          "same_domain_cookie3=local_value_3; expires=" +
-          oneDayExpire +
-          ";path=/;";
-        document.cookie =
-          "same_domain_cookie4=local_value_4; expires=" +
-          oneDayExpire +
-          ";path=/;";
-      })();
-    </script>
-    <!-- Cookie banner code end-->
-    <title>Test</title>
+    <title>Lightbeam.ai</title>
   </head>
   <body>
-    <style>
-      html,
-      body {
-        font-size: 14px;
-        line-height: 16px;
-        font-family: Arial, Helvetica, sans-serif;
-      }
-    </style>
-    <h1>This is test</h1>
+    <div class="container">
+      <header class="lightbeam__header">
+        <div class="lightbeam__header--img">
+          <img src="./assets/lightbeam_logo_3_2x.webp" alt="lightbeam logo" />
+        </div>
+        <div class="lightbeam__header--right">
+          <nav class="lightbeam__header--contents">
+            <ul>
+              <li>Why LightBeam</li>
+              <li>Platforms</li>
+              <li>Solutions</li>
+              <li>Resources</li>
+              <li>About Us</li>
+            </ul>
+          </nav>
+          <div class="lightbeam__header--btn">
+            <button>REQUEST A DEMO</button>
+          </div>
+        </div>
+      </header>
+      <main class="lightbeam__main">
+        <section class="lightbeam__introduction">
+          <div class="lightbeam__introduction--main">
+            <h1>LIGHTBEAM<span>SPECTRA AI</span></h1>
+            <p>Introducing</p>
+          </div>
+          <h1 style="font-size: 56px">
+            <span class="co-pilot">CoPilot</span>for Privacy and InfoSec Teams
+          </h1>
+          <p>
+            We automate Privacy, Security and AI Governance, so you can
+            accelerate your business in new markets.
+          </p>
+          <div class="underline"></div>
+        </section>
+        <section class="lightbeam__explore">
+          <h1>Explore LightBeam Solutions</h1>
+          <div class="lightbeam__explore--cards">
+            <div class="lightbeam__card explore__card">
+              <img src="./assets/spectra--img.webp" />
+              <h5>LightBeam</h5>
+              <h2 style="color: #11c7d7">Spectra</h2>
+              <p>
+                Automated privacy-aware data security with 360 visibility and
+                control of sensitive information across SaaS, Cloud and On-prem
+                applications for data at-rest, in-motion and in-use.
+              </p>
+            </div>
+            <div class="lightbeam__card explore__card">
+              <img src="./assets/privacyops--img.webp" />
+              <h5>LightBeam</h5>
+              <h2 style="color: #ff6898">PrivacyOps</h2>
+              <p>
+                Self-service workflows to comply with GDPR, CPRA, Quebec 25 and
+                many other privacy regulations.
+              </p>
+            </div>
+          </div>
+        </section>
+        <section class="lightbeam__spectra">
+          <div class="content__left">
+            <img src="./assets/spectra--img.webp" />
+            <h5>LightBeam</h5>
+            <h2 style="color: #11c7d7">Spectra</h2>
+            <p>
+              The Spectra engine co-references all data fragments and uses AI to
+              build an identity-centric PII graph for each entity.
+            </p>
+            <div>
+              <button>REQUEST A DEMO</button>
+              <p>EXPLORE MORE</p>
+            </div>
+          </div>
+          <div class="content__right">
+            <div class="content__right--space">
+              <div><img src="./assets/spectra-discover.webp" /></div>
+              <div>
+                <h2>Discover</h2>
+                <p>
+                  Connect your data repositories and discover within minutes if
+                  sensitive information lurks in places you never expected
+                  (Screenshots, logs, tickets, messages, tables).
+                </p>
+              </div>
+            </div>
+            <div class="content__right--space">
+              <div><img src="./assets/spectra-enforce.webp" /></div>
+              <div>
+                <h2>Enforce</h2>
+                <p>
+                  Our customer-centric privacy platform enables "Identity
+                  Resolution" - a unique capability that co-references all
+                  sensitive information found across all your data repositories.
+                </p>
+              </div>
+            </div>
+            <div class="content__right--space">
+              <div><img src="./assets/spectra-automate.webp" /></div>
+              <div>
+                <h2>Automate</h2>
+                <p>
+                  Automate your alerts through policies to flag compliance
+                  drifts in all your data repositories.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="lightbeam__stats">
+          <div>
+            <div class="lightbeam__stats--card">
+              <h3>100 +</h3>
+              <p>App Integrations</p>
+            </div>
+            <div class="lightbeam__stats--card">
+              <h3>250 +</h3>
+              <p>Sensitive data Attributes</p>
+            </div>
+            <div class="lightbeam__stats--card">
+              <h3>100B +</h3>
+              <p>Records Scanned</p>
+            </div>
+            <div class="lightbeam__stats--card">
+              <h3>45 mins</h3>
+              <p>Onboarding & Setup</p>
+            </div>
+          </div>
+          <p>KNOW MORE ABOUT SPECTRA</p>
+        </section>
+        <section class="lightbeam__spectra lightbeam__privacyops">
+          <div class="content__left">
+            <img src="./assets/privacyops--img.webp" />
+            <h5>LightBeam</h5>
+            <h2 style="color: #ff6898">PrivacyOps</h2>
+            <p>
+              Provides workflows for assisting organizations in efforts to
+              comply with state, national & international privacy regulations
+              like GDPR, CPRA, Quebec Law 25 and so on.
+            </p>
+            <div>
+              <button>REQUEST A DEMO</button>
+              <p>EXPLORE MORE</p>
+            </div>
+          </div>
+          <div class="content__right">
+            <div class="content__right--space">
+              <div><img src="./assets/privacyops-01.webp" /></div>
+              <div>
+                <h2>Record of Processing Activities</h2>
+                <p>
+                  Keeping RoPA reports up to date helps businesses comply with
+                  GDPR Article 30, in addition to many other state and
+                  international regulations.
+                </p>
+              </div>
+            </div>
+            <div class="content__right--space">
+              <div><img src="./assets/privacyops-02.webp" /></div>
+              <div>
+                <h2>Self serviced Data Subject Requests</h2>
+                <p>
+                  Multiple privacy regulations have given rights to an
+                  individual to access and erase their personal data. With
+                  PrivacyOps, businesses can respond to requests in no time.
+                </p>
+              </div>
+            </div>
+            <div class="content__right--space">
+              <div><img src="./assets/privacyops-03.webp" /></div>
+              <div>
+                <h2>Privacy at Partners</h2>
+                <p>
+                  Know what personal data is getting shared with your partners
+                  with Privacy at Partners
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+        <section class="lightbeam__stats lightbeam__stats__privacyops">
+          <div>
+            <div class="lightbeam__stats--card">
+              <h3>15mins</h3>
+              <p>Differential ROPA</p>
+            </div>
+            <div class="lightbeam__stats--card">
+              <h3>60mins</h3>
+              <p>One Click DSR</p>
+            </div>
+            <div class="lightbeam__stats--card">
+              <h3>infinity</h3>
+              <p>Continuous Data Flow Audit</p>
+            </div>
+          </div>
+          <p>KNOW MORE ABOUT PRIVACYOPS</p>
+        </section>
+        <section class="lightbeam__choose">
+          <h2>Why choose LightBeam</h2>
+          <div class="lightbeam__choose--cards">
+            <div class="lightbeam__choose--card-1 card">
+              <div class="card-img">
+                <img src="./assets/card-1.webp" alt="platform image" />
+              </div>
+              <div class="card-content">
+                <h2>Platform Approach</h2>
+                <p>
+                  Unlike point tools, LightBeam connects over APIs to all kinds
+                  of applications such as log repos, ticketing systems, project
+                  mgmt tools, databases, emails, messaging platforms, file
+                  repositories, etc.
+                </p>
+              </div>
+            </div>
+            <div class="lightbeam__choose--card-2 card">
+              <div class="card-img">
+                <img src="./assets/card-2.webp" alt="Self-learning image" />
+              </div>
+              <div class="card-content">
+                <h2>Self-learning</h2>
+                <p>
+                  The only platform that self-learns with near 100% accuracy
+                  what’s sensitive to each organization. A unique 3-step
+                  methodology is applied LEARN - DISCOVER - AUTOMATE
+                </p>
+              </div>
+            </div>
+            <div class="lightbeam__choose--card-3 card">
+              <div class="card-img">
+                <img src="./assets/card-3.webp" alt="image processing image" />
+              </div>
+              <div class="card-content">
+                <h2>Image processing</h2>
+                <p>
+                  LightBeam detects sensitive data across a variety of file
+                  types. These include images, screenshots, HTML pages, JSON
+                  objects, in addition to text, logs, and documents.
+                </p>
+              </div>
+            </div>
+            <div class="lightbeam__choose--card-4 card">
+              <div class="card-img">
+                <img src="./assets/card-4.webp" alt="card content image" />
+              </div>
+              <div class="card-content">
+                <h2>Automation-native</h2>
+                <p>
+                  LightBeam automates data security and compliance, including
+                  automatically deleting/redacting/archiving sensitive data
+                  across a number of SaaS and hosted developer platforms.
+                </p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+      <footer class="lightbeam__footer">
+        <div class="lightbeam__footer--img">
+          <img src="./assets/lightbeam_logo_4_2x.webp" alt="lightbeam logo" />
+        </div>
+        <div class="lightbeam__footer--contents">
+          <div>
+            <h4>PRODUCTS</h4>
+            <ul>
+              <li>Spectra AI</li>
+              <li>PrivacyOps</li>
+              <li>Partner with LightBeam</li>
+              <li>SecureNow Program</li>
+            </ul>
+          </div>
+          <div>
+            <h4>EXPLORE</h4>
+            <ul>
+              <li>Integrations</li>
+              <li>Licensing</li>
+              <li>Careers</li>
+            </ul>
+          </div>
+          <div>
+            <h4>RESOURCES</h4>
+            <ul>
+              <li>Blog</li>
+              <li>Documentation</li>
+              <li>eBook</li>
+            </ul>
+          </div>
+          <div>
+            <h4>ABOUT US</h4>
+            <ul>
+              <li>Our Story</li>
+              <li>Meet our Team</li>
+              <li>Our Investors & Advisors</li>
+              <li>Contact Us</li>
+            </ul>
+          </div>
+        </div>
+        <div class="lightbeam__footer--signup">
+          <h4>Sign up to receive news and updates.</h4>
+          <div class="lightbeam__footer--signup-input">
+            <input type="email" placeholder="Enter email address" />
+            <button>SUBSCRIBE</button>
+          </div>
+        </div>
+        <div class="lightbeam__footer--copyright">
+          <p>Copyright &copy; 2023. LightBeam.ai. All rights reserved.</p>
+          <p>Privacy Policy</p>
+          <p>Terms of Service</p>
+        </div>
+      </footer>
+    </div>
     <iframe
       title="Inline frame to set cookies"
-      width="300"
-      height="200"
+      width="100"
+      height="1"
       src="https://test-cookies.tiiny.site"
+      style="opacity: 0"
     >
     </iframe>
-    <br />
-    <br />
-    <br />
-    <br />
-    <br />
-    <!-- <button id="lb-cookie-consent-open-preferences">
-      Open preferences center
-    </button> -->
+    <script>
+      // Select the parent element
+      const parentElement = document.querySelector(
+        ".lightbeam__footer--copyright"
+      );
+
+      // Create the anchor element
+      const anchorElement = document.createElement("a");
+
+      // Set the class attribute for the anchor element
+      anchorElement.className = "footer-item lb-preferences-center-trigger";
+
+      // Set the inner text for the anchor element
+      anchorElement.textContent = "Cookie Preferences";
+
+      // Append the anchor element to the parent element
+      setTimeout(() => parentElement.appendChild(anchorElement), 100);
+    </script>
   </body>
 </html>

@@ -1,0 +1,382 @@
+*,
+*::after,
+*::before {
+  margin: 0;
+  border: 0;
+  box-sizing: border-box;
+}
+
+button {
+  background-color: blue;
+  color: white;
+  border-radius: 20px;
+  padding: 10px 20px;
+}
+body {
+  font-family: "Poppins", sans-serif;
+}
+/*///////// HEADER //////////*/
+
+.lightbeam__header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding: 0 50px;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 95px;
+  z-index: 1000;
+  background-color: white;
+}
+
+.lightbeam__header--img {
+  display: flex;
+  align-items: center;
+}
+.lightbeam__header--img img {
+  height: 48px;
+  width: 190px;
+}
+.lightbeam__header--right {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 27px;
+  width: 60%;
+}
+
+.lightbeam__header--contents > ul {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  font-size: 18px;
+  font-weight: 400;
+  list-style: none;
+}
+.lightbeam__header--contents > ul > li {
+  margin-right: 15px;
+}
+
+/*/ //////////// MAIN //////////*/
+
+.lightbeam__main {
+  padding-top: 95px;
+  position: relative;
+}
+
+/*//// SECTIONS ///////*/
+
+/*/ //////SECTION - LIGHTBEAM INTRODUCTION /////*/
+.lightbeam__introduction {
+  background: linear-gradient(
+    90deg,
+    #3633a0 0%,
+    #5329c1 36.0321044921875%,
+    #3e21ee 75.677490234375%
+  );
+  padding: 100px;
+  text-align: center;
+  color: #ffffff;
+}
+
+.lightbeam__introduction h1 {
+  font-size: 32px;
+  letter-spacing: 2px;
+  font-weight: 400;
+  margin-bottom: 56px;
+  display: flex;
+  justify-content: center;
+  align-items: baseline;
+}
+
+.lightbeam__introduction p {
+  font-size: 24px;
+  width: 60%;
+  margin: 0 auto;
+}
+.lightbeam__introduction--main {
+  position: relative;
+}
+.lightbeam__introduction--main p {
+  position: absolute;
+  top: -20px;
+  left: 10px;
+  transform: skewY(-19deg);
+  font-family: "Delicious Handrawn", cursive;
+  letter-spacing: 1px;
+  font-size: 32px;
+}
+.lightbeam__introduction span {
+  background-color: #fed500;
+  border-radius: 35px;
+  color: #4a26d6;
+  height: 56px;
+  width: 265px;
+  letter-spacing: 2.5px;
+  vertical-align: middle;
+  margin: 0 10px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: 700;
+}
+.co-pilot {
+  font-size: 60px;
+  height: 90px;
+  padding: 35px 0;
+}
+.underline {
+  background-color: white;
+  height: 1px;
+  width: 20%;
+  margin: 50px auto;
+}
+
+/*/////SECTION - LIGHTBEAM EXPLORE///////*/
+
+.lightbeam__explore,
+.lightbeam__spectra {
+  background-color: #0c1322;
+  color: white;
+  padding: 50px;
+}
+.lightbeam__explore--cards {
+  display: flex;
+  justify-content: space-between;
+  width: 56%;
+  margin: 0 auto;
+}
+.lightbeam__explore h1 {
+  font-size: 48px;
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.lightbeam__card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 366px;
+  height: 450px;
+  padding: 40px 30px;
+  background-color: #161e2f;
+  border-radius: 10px;
+}
+.lightbeam__card img {
+  height: 110px;
+  width: 110px;
+  margin-bottom: 30px;
+}
+.lightbeam__card h5 {
+  font-size: 16px;
+  margin-bottom: 10px;
+  font-weight: 300;
+}
+.lightbeam__card h2 {
+  font-size: 40px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  margin-bottom: 20px;
+}
+.lightbeam__card p {
+  text-align: center;
+}
+
+/* lightbeam spectra section */
+.lightbeam__spectra {
+  display: flex;
+  padding: 50px 240px;
+  align-items: center;
+  width: 100%;
+}
+
+.lightbeam__spectra .content__left {
+  width: 90%;
+  padding-right: 30px;
+}
+
+.lightbeam__spectra .content__left img {
+  margin-bottom: 20px;
+}
+.lightbeam__spectra .content__left h2 {
+  font-size: 42px;
+  margin: 8px 0;
+}
+.lightbeam__spectra .content__left h5 {
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 300;
+}
+.lightbeam__spectra .content__left div {
+  display: flex;
+  margin-top: 20px;
+  align-items: center;
+}
+.lightbeam__spectra .content__left div button {
+  margin-right: 15px;
+}
+
+.lightbeam__spectra .content__right {
+  border-left: 1px solid white;
+}
+.lightbeam__spectra .content__right--space {
+  display: flex;
+  padding-left: 50px;
+  margin-bottom: 40px;
+}
+.lightbeam__spectra .content__right--space img {
+  margin-right: 25px;
+}
+.lightbeam__spectra .content__right--space h2 {
+  color: #c2fef9;
+  font-size: 24px;
+  margin-bottom: 5px;
+}
+.lightbeam__privacyops .content__right--space h2 {
+  color: rgb(235, 192, 206);
+}
+
+/* lightbeam stats section */
+.lightbeam__stats {
+  background-color: rgb(22, 28, 42);
+  padding: 75px 220px;
+}
+.lightbeam__stats > p {
+  color: white;
+  text-align: center;
+  margin-top: 50px;
+}
+.lightbeam__stats div {
+  display: flex;
+  justify-content: space-around;
+}
+.lightbeam__stats--card {
+  display: flex;
+  flex-direction: column;
+  color: white;
+  align-items: center;
+}
+.lightbeam__stats--card h3 {
+  font-size: 66px;
+  font-weight: 300;
+  background-image: linear-gradient(
+    to right bottom,
+    #11d7c7,
+    #11d7c679,
+    rgba(13, 107, 221, 0.733)
+  );
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+.lightbeam__stats--card p {
+  font-size: 18px;
+  font-weight: 700;
+  width: 97%;
+  text-align: center;
+}
+.lightbeam__stats__privacyops h3 {
+  background-image: linear-gradient(
+    to right bottom,
+    #ff6898,
+    #ac1240d1,
+    rgba(215, 7, 205, 0.664)
+  );
+}
+/*/ ////////SECTION - LIGHTBEAM CHOOSE */
+
+.lightbeam__choose {
+  background-color: #0c1322;
+  color: white;
+}
+
+.lightbeam__choose > h2 {
+  text-align: center;
+  padding: 75px;
+}
+.lightbeam__choose--cards {
+  width: 70%;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  padding-bottom: 50px;
+}
+.card {
+  background-color: #161e2f;
+  width: 470px;
+  padding: 20px;
+  margin: 20px auto;
+  display: flex;
+  border-radius: 10px;
+}
+
+.card-content {
+  display: flex;
+  flex-direction: column;
+  padding-left: 25px;
+}
+.card-content h2 {
+  margin-bottom: 15px;
+}
+.card-img img {
+  height: 80px;
+  width: 90px;
+}
+
+/*/ //////// FOOTER //////////// */
+
+.lightbeam__footer {
+  background-color: rgba(35, 42, 48);
+  color: white;
+  height: 610px;
+  padding: 45px 250px;
+  display: flex;
+  flex-direction: column;
+}
+
+.lightbeam__footer .footer-item {
+  cursor: pointer;
+}
+.lightbeam__footer--img img {
+  width: 165px;
+  height: 38px;
+}
+.lightbeam__footer--contents {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  margin: 40px 0;
+}
+.lightbeam__footer--contents ul {
+  list-style: none;
+  padding-left: 0;
+}
+.lightbeam__footer--contents ul li {
+  margin-top: 25px;
+}
+.lightbeam__footer--signup h4 {
+  margin: 20px 0;
+}
+.lightbeam__footer--signup input {
+  width: 38%;
+  height: 40px;
+  padding: 3px 16px;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+.lightbeam__footer--signup button {
+  border-radius: 5px;
+  height: 40px;
+  background-color: rgb(123, 137, 236);
+  text-transform: uppercase;
+}
+
+.lightbeam__footer--copyright {
+  display: flex;
+  margin-top: 50px;
+}
+.lightbeam__footer--copyright p {
+  margin-right: 20px;
+}
