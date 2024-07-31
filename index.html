@@ -380,8 +380,10 @@
       const anchorElement = document.createElement("a");
 
       // Set the class attribute for the anchor element
-      anchorElement.className =
-        "footer-item lb-cookie-consent-open-preferences";
+      anchorElement.className = "footer-item lb-preferences-center-trigger";
+
+      // Set the ID for the anchor element
+      anchorElement.id = "lb-cookie-consent-open-preference";
 
       // Set the inner text for the anchor element
       anchorElement.textContent = "Cookie Preferences";
