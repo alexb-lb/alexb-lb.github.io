@@ -14,11 +14,8 @@ const LB_LOCAL_STORAGE_PREFERENCES_KEY = "lb-preferences";
   ];
 
   // check whether show both banner and pref center or pref center only
-  const isPrefCenterDefaultOpen =
-    (root?.getAttribute("data-preferences-default-open") || "") === "true";
-  const isPrefCenterOnly =
+  const isLbPrefCenter =
     (root?.getAttribute("data-preferences-only") || "") === "true";
-  const isLbPrefCenter = isPrefCenterOnly || isPrefCenterDefaultOpen;
 
   const consentsRaw = window.localStorage.getItem(LB_LOCAL_STORAGE_KEY);
 
@@ -66,7 +63,8 @@ const LB_LOCAL_STORAGE_PREFERENCES_KEY = "lb-preferences";
 
 const initCookieConsent = () => {
   const root = document.getElementById("lb-cookie-consent");
-  const webAppUrl = root?.getAttribute("data-web-app") || "";
+  // const webAppUrl = root?.getAttribute("data-web-app") || "";
+  const webAppUrl =  "";
 
   const link = document.createElement("link");
   link.rel = "stylesheet";

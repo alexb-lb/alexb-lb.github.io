@@ -1,17 +1,10 @@
-const SVG_CARET_RIGHT = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#333333" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><polyline points="96 48 176 128 96 208" fill="none" stroke="#333333" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline></svg>`;
+var SVG_CARET_RIGHT = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#333333" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><polyline points="96 48 176 128 96 208" fill="none" stroke="#333333" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline></svg>`;
 
-const renderCookieConsent = async () => {
+var renderCookieConsent = async () => {
   const root = document.getElementById("lb-cookie-consent");
   const webAppUrl = root?.getAttribute("data-web-app") || "";
   const clientDomain = root?.getAttribute("data-domain") || "";
   const showPreferences = root?.getAttribute("data-preferences-only") || "";
-  /**
-   * Show preferences by default if
-   * `data-preferences-default-open` is present
-   *  on the script element with value `true`.
-   */
-  const showPreferencesByDefault =
-    (root?.getAttribute("data-preferences-default-open") || "") === "true";
   const VISITOR_ID = "_lb_fp";
   let domain;
 
@@ -99,7 +92,7 @@ const renderCookieConsent = async () => {
   // API requests
   const fetchDomainInfo = async () => {
     const response = await fetch(
-      `${"https://lightbeam-qa-dsr.lightbeamsecurity.com"}/api/cookie-consent/domain?domainName=${clientDomain}`
+      `${"https://playground-master-privacy-ops.lightbeamsecurity.com"}/api/cookie-consent/domain?domainName=${clientDomain}`
     );
     const domain = await response.json();
     domain.banner = domain.banner || {};
@@ -116,7 +109,7 @@ const renderCookieConsent = async () => {
   /* API to GET saved preferences */
   const fetchPreferences = async () => {
     const response = await fetch(
-      `${"https://lightbeam-qa-dsr.lightbeamsecurity.com"}/api/cookie-consent/response`,
+      `${"https://playground-master-privacy-ops.lightbeamsecurity.com"}/api/cookie-consent/response`,
       {
         credentials: "include",
       }
@@ -144,7 +137,7 @@ const renderCookieConsent = async () => {
     if (!domain) return;
 
     fetch(
-      `${"https://lightbeam-qa-dsr.lightbeamsecurity.com"}/api/cookie-consent/response`,
+      `${"https://playground-master-privacy-ops.lightbeamsecurity.com"}/api/cookie-consent/response`,
       {
         method: "POST",
         credentials: "include",
@@ -257,7 +250,9 @@ const renderCookieConsent = async () => {
           }
         });
 
-        const uniqueDomainsAccepted = [...new Set(domainsAccepted)];
+        const uniqueDomainsAccepted = [
+          ...new Set([...domainsAccepted, ...essentialsWhiteList]),
+        ];
         const uniqueDomainsRejected = [
           ...new Set(
             domainsRejected.filter(
@@ -315,7 +310,9 @@ const renderCookieConsent = async () => {
             });
           });
 
-        const uniqueDomainsAccepted = [...new Set(domainsAccepted)];
+        const uniqueDomainsAccepted = [
+          ...new Set([...domainsAccepted, ...essentialsWhiteList]),
+        ];
         const uniqueDomainsRejected = [
           ...new Set(
             domainsRejected.filter(
@@ -558,6 +555,8 @@ const renderCookieConsent = async () => {
   const renderPreferences = async (banner, showPreferencesOnly) => {
     const categories = domain.categories;
 
+    console.log("renderPreferences");
+
     /* Check if saved preferences present in Local Storage */
     let savedPreferences = JSON.parse(
       window.localStorage.getItem(LB_LOCAL_STORAGE_PREFERENCES_KEY)
@@ -764,9 +763,9 @@ const renderCookieConsent = async () => {
   // blockers / unblockers
   const injectHtml = (domain) => {
     const item = window.localStorage.getItem(LB_LOCAL_STORAGE_KEY);
-    renderPreferences(domain.banner, showPreferencesByDefault);
+    renderPreferences(domain.banner);
     if (!item) {
-      return renderBanner(domain.banner, showPreferences === "true");
+      renderBanner(domain.banner, showPreferences);
     }
   };
 
@@ -779,6 +778,7 @@ const renderCookieConsent = async () => {
   ];
 
   const init = () => {
+    console.log("init renderCookieConsent");
     if (domain) {
       injectHtml(domain);
       initHandlers(domain);
