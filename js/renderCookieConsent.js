@@ -89,12 +89,112 @@ var renderCookieConsent = async () => {
     if (parts.length === 2) return parts.pop().split(";").shift();
   };
 
+  const getUnique = (data = [], key = "") => {
+    let unique = [];
+
+    if (key) {
+      data.forEach((elem) => {
+        if (!unique.find((uniqueElem) => uniqueElem[key] === elem[key])) {
+          unique.push(elem);
+        }
+      });
+    } else {
+      unique = [...new Set([...data])];
+    }
+
+    return unique;
+  };
+
+  const getAcceptedData = (isDoNotSell = false) => {
+    // get mandatory that must be accepted (optOut disabled)
+    const categoriesAccepted = domain.categories?.filter((c) => !c.optOut);
+
+    let domainsAccepted = essentialsWhiteList || [];
+    const domainsAcceptedRegExp = domainsAccepted.map((domain) => {
+      const regex = new RegExp(domain);
+      window.yett?.unblock(regex);
+      return regex;
+    });
+
+    const cookiesAccepted = domain?.cookies.filter((cookie) => {
+      const isMandatory = categoriesAccepted.includes(cookie.categoryId);
+
+      let isInEssentialDomains = false;
+      domainsAcceptedRegExp.forEach((regExp) => {
+        if (cookie.domain.match(regExp)) {
+          isInEssentialDomains = true;
+        }
+      });
+
+      const isAccepted = isMandatory || isInEssentialDomains;
+
+      if (isAccepted) {
+        domainsAccepted.push(cookie.domain);
+      }
+
+      return isAccepted;
+    });
+
+    // get optional accepted by user
+    if (isDoNotSell) {
+      // accept categories which is not selling user data
+      domain?.categories.forEach((category) => {
+        if (!category.doNotSell) {
+          categoriesAccepted.push(category);
+
+          domain?.cookies.forEach((cookie) => {
+            if (cookie.cookieCategoryId === category.id) {
+              cookiesAccepted.push(cookie);
+              domainsAccepted.push(cleanUrlString(cookie.domain));
+            }
+          });
+        }
+      });
+    } else {
+      // accept categories that user marked as "allowed"
+      document.querySelectorAll(".category.accepted").forEach((elem) => {
+        const category = domain?.categories?.find((c) => c.id === elem.id);
+        category && categoriesAccepted.push(category);
+        domain?.cookies.forEach((cookie) => {
+          if (cookie.cookieCategoryId === elem.id) {
+            domainsAccepted.push(cleanUrlString(cookie.domain));
+            cookiesAccepted.push(cookie);
+          }
+        });
+      });
+    }
+
+    // calculate rejected data
+    const cookiesRejected = domain.cookies.filter(
+      (c) => !cookiesAccepted.find((accepted) => accepted.id === c.id)
+    );
+
+    const categoriesRejected = domain.categories.filter(
+      (c) => !categoriesAccepted.find((accepted) => accepted.id === c.id)
+    );
+
+    const domainsRejected = domain.cookies
+      .filter((c) => !cookiesAccepted.find((accepted) => accepted.id === c.id))
+      .map((cookie) => cookie.domain);
+
+    // return unique data
+    return {
+      categoriesAccepted: getUnique(categoriesAccepted, "id"),
+      categoriesRejected: getUnique(categoriesRejected, "id"),
+      cookiesAccepted: getUnique(cookiesAccepted, "name"),
+      cookiesRejected: getUnique(cookiesRejected, "name"),
+      domainsAccepted: getUnique(domainsAccepted),
+      domainsRejected: getUnique(domainsRejected),
+    };
+  };
+
   // API requests
   const fetchDomainInfo = async () => {
-    const response = await fetch(
-      `${"https://playground-master-privacy-ops.lightbeamsecurity.com"}/api/cookie-consent/domain?domainName=${clientDomain}`
-    );
-    const domain = await response.json();
+    // const response = await fetch(
+    //   `${"https://playground-master-privacy-ops.lightbeamsecurity.com"}/api/cookie-consent/domain?domainName=${clientDomain}`
+    // );
+    // const domain = await response.json();
+    const domain = mockResponse;
     domain.banner = domain.banner || {};
     domain.banner.layout = {};
     try {
@@ -136,32 +236,39 @@ var renderCookieConsent = async () => {
   }) => {
     if (!domain) return;
 
-    fetch(
-      `${"https://playground-master-privacy-ops.lightbeamsecurity.com"}/api/cookie-consent/response`,
-      {
-        method: "POST",
-        credentials: "include",
-        body: JSON.stringify({
-          status: "active",
-          domain: clientDomain,
-          networkIP: "",
-          networkFamily: "",
-          browserFingerprint: {
-            device: isMobile() ? "mobile" : "desktop",
-            browser: getBrowserName(),
-            location: getBrowserLang(),
-          },
-          browserVisitorId: getCookie(VISITOR_ID) || "",
-          consentInfo: {
-            consentAccepted,
-            consentRejected,
-            categoriesAccepted,
-            categoriesRejected,
-          },
-        }),
-        headers,
-      }
-    );
+    console.log({
+      consentAccepted,
+      consentRejected,
+      categoriesAccepted,
+      categoriesRejected,
+    });
+
+    // fetch(
+    //   `${"https://playground-master-privacy-ops.lightbeamsecurity.com"}/api/cookie-consent/response`,
+    //   {
+    //     method: "POST",
+    //     credentials: "include",
+    //     body: JSON.stringify({
+    //       status: "active",
+    //       domain: clientDomain,
+    //       networkIP: "",
+    //       networkFamily: "",
+    //       browserFingerprint: {
+    //         device: isMobile() ? "mobile" : "desktop",
+    //         browser: getBrowserName(),
+    //         location: getBrowserLang(),
+    //       },
+    //       browserVisitorId: getCookie(VISITOR_ID) || "",
+    //       consentInfo: {
+    //         consentAccepted,
+    //         consentRejected,
+    //         categoriesAccepted,
+    //         categoriesRejected,
+    //       },
+    //     }),
+    //     headers,
+    //   }
+    // );
   };
 
   // DOM handlers
@@ -186,162 +293,85 @@ var renderCookieConsent = async () => {
         hideBanner();
       }
       if (e.target?.id === "lb-cookie-consent-reject-all") {
+        const {
+          cookiesAccepted,
+          cookiesRejected,
+          categoriesAccepted,
+          categoriesRejected,
+          domainsAccepted,
+        } = getAcceptedData();
+
         window.localStorage.setItem(
           LB_LOCAL_STORAGE_KEY,
-          JSON.stringify({ whiteList: essentialsWhiteList })
+          JSON.stringify({ whiteList: domainsAccepted })
         );
-        const regExpArr = essentialsWhiteList.map((domain) => {
-          const regex = new RegExp(domain);
-          window.yett?.unblock(regex);
-          return regex;
-        });
 
-        const acceptedCookies = domain.cookies.filter((cookie) => {
-          let isMatch = false;
-          regExpArr.forEach((regExp) => {
-            if (cookie.domain.match(regExp)) {
-              isMatch = true;
-            }
-          });
-
-          return isMatch;
-        });
-        const rejectedCookies = domain.cookies.filter(
-          (c) => !acceptedCookies.find((accepted) => accepted.id === c.id)
-        );
         savePreferencesInStorage([]);
         postCookieConsent({
-          consentAccepted: acceptedCookies.map((c) => c.name),
-          consentRejected: rejectedCookies.map((c) => c.name),
-          categoriesAccepted: [],
-          categoriesRejected: domain.categories.map((category) => category.id),
+          consentAccepted: cookiesAccepted.map((c) => c.name),
+          consentRejected: cookiesRejected.map((c) => c.name),
+          categoriesAccepted: categoriesAccepted.map((c) => c.id),
+          categoriesRejected: categoriesRejected.map((c) => c.id),
         });
         hideBanner();
       }
       if (e.target?.id === "lb-cookie-consent-do-not-sell") {
-        const domainsAccepted = [];
-        const domainsRejected = [];
-        const consentAccepted = [];
-        const consentRejected = [];
-        const categoriesAccepted = [];
-        const categoriesRejected = [];
+        const {
+          cookiesAccepted,
+          cookiesRejected,
+          categoriesAccepted,
+          categoriesRejected,
+          domainsAccepted,
+          domainsRejected,
+        } = getAcceptedData((isDoNotSell = true));
 
-        domain?.categories.forEach((category) => {
-          if (category.doNotSell) {
-            // rejected categories, consents and domains
-            categoriesRejected.push(category.id);
-
-            domain?.cookies.forEach((cookie) => {
-              if (cookie.cookieCategoryId === category.id) {
-                domainsRejected.push(cleanUrlString(cookie.domain));
-                consentRejected.push(cookie.name);
-              }
-            });
-          } else {
-            // allowed categories, consents and domains
-            categoriesAccepted.push(category.id);
-
-            domain?.cookies.forEach((cookie) => {
-              if (cookie.cookieCategoryId === category.id) {
-                domainsAccepted.push(cleanUrlString(cookie.domain));
-                consentAccepted.push(cookie.name);
-              }
-            });
-          }
-        });
-
-        const uniqueDomainsAccepted = [
-          ...new Set([...domainsAccepted, ...essentialsWhiteList]),
-        ];
-        const uniqueDomainsRejected = [
-          ...new Set(
-            domainsRejected.filter(
-              (d) =>
-                !essentialsWhiteList.find((essentials) =>
-                  d.includes(essentials)
-                )
-            )
-          ),
-        ];
         window.localStorage.setItem(
           LB_LOCAL_STORAGE_KEY,
           JSON.stringify({
-            whiteList: uniqueDomainsAccepted,
-            blackList: uniqueDomainsRejected,
+            whiteList: domainsAccepted,
+            blackList: domainsRejected,
           })
         );
-        uniqueDomainsAccepted.forEach((domain) =>
+        domainsAccepted.forEach((domain) =>
           window.yett?.unblock(new RegExp(domain))
         );
 
-        savePreferencesInStorage(categoriesAccepted);
+        savePreferencesInStorage(categoriesAccepted.map((c) => c.id));
         postCookieConsent({
-          consentAccepted,
-          consentRejected,
-          categoriesAccepted,
-          categoriesRejected,
+          consentAccepted: cookiesAccepted.map((c) => c.name),
+          consentRejected: cookiesRejected.map((c) => c.name),
+          categoriesAccepted: categoriesAccepted.map((c) => c.id),
+          categoriesRejected: categoriesRejected.map((c) => c.id),
         });
         hideBanner();
       }
       if (e.target?.id === "lb-cookie-consent-save-preferences") {
-        const domainsAccepted = [];
-        const domainsRejected = [];
-        const consentAccepted = [];
-        const consentRejected = [];
-        const categoriesAccepted = [];
+        const {
+          cookiesAccepted,
+          cookiesRejected,
+          categoriesAccepted,
+          categoriesRejected,
+          domainsAccepted,
+          domainsRejected,
+        } = getAcceptedData();
 
-        document.querySelectorAll(".category.accepted").forEach((elem) => {
-          categoriesAccepted.push(elem.id);
-          domain?.cookies.forEach((cookie) => {
-            if (cookie.cookieCategoryId === elem.id) {
-              domainsAccepted.push(cleanUrlString(cookie.domain));
-              consentAccepted.push(cookie.name);
-            }
-          });
-        });
-        document
-          .querySelectorAll(".category:not(.accepted)")
-          .forEach((elem) => {
-            domain?.cookies.forEach((cookie) => {
-              if (cookie.cookieCategoryId === elem.id) {
-                domainsRejected.push(cleanUrlString(cookie.domain));
-                consentRejected.push(cookie.name);
-              }
-            });
-          });
-
-        const uniqueDomainsAccepted = [
-          ...new Set([...domainsAccepted, ...essentialsWhiteList]),
-        ];
-        const uniqueDomainsRejected = [
-          ...new Set(
-            domainsRejected.filter(
-              (d) =>
-                !essentialsWhiteList.find((essentials) =>
-                  d.includes(essentials)
-                )
-            )
-          ),
-        ];
         window.localStorage.setItem(
           LB_LOCAL_STORAGE_KEY,
           JSON.stringify({
-            whiteList: uniqueDomainsAccepted,
-            blackList: uniqueDomainsRejected,
+            whiteList: domainsAccepted,
+            blackList: domainsRejected,
           })
         );
-        uniqueDomainsAccepted.forEach((domain) =>
+        domainsAccepted.forEach((domain) =>
           window.yett?.unblock(new RegExp(domain))
         );
 
-        savePreferencesInStorage(categoriesAccepted);
+        savePreferencesInStorage(categoriesAccepted.map((c) => c.id));
         postCookieConsent({
-          consentAccepted,
-          consentRejected,
-          categoriesAccepted,
-          categoriesRejected: domain.categories
-            .filter((c) => !categoriesAccepted.includes(c.id))
-            .map((c) => c.id),
+          consentAccepted: cookiesAccepted.map((c) => c.name),
+          consentRejected: cookiesRejected.map((c) => c.name),
+          categoriesAccepted: categoriesAccepted.map((c) => c.id),
+          categoriesRejected: categoriesRejected.map((c) => c.id),
         });
         hideBanner();
       }
@@ -555,8 +585,6 @@ var renderCookieConsent = async () => {
   const renderPreferences = async (banner, showPreferencesOnly) => {
     const categories = domain.categories;
 
-    console.log("renderPreferences");
-
     /* Check if saved preferences present in Local Storage */
     let savedPreferences = JSON.parse(
       window.localStorage.getItem(LB_LOCAL_STORAGE_PREFERENCES_KEY)
@@ -651,7 +679,8 @@ var renderCookieConsent = async () => {
       const payload = {
         id: category.id,
         checked:
-          savedPreferences?.categoriesAccepted?.includes(category.id) ?? true,
+          savedPreferences?.categoriesAccepted?.includes(category.id) ||
+          !category.optOut,
         disabled: !category.optOut,
       };
 
@@ -770,15 +799,15 @@ var renderCookieConsent = async () => {
   };
 
   // init
+  const webAppDomainName = webAppUrl?.replace(/https?:\/\//i, "") || "";
   const essentialsWhiteList = [
     "^/",
     "^./",
     window.location.host,
-    ...(webAppUrl ? [webAppUrl.replace(/https?:\/\//i, "")] : []),
+    ...(webAppDomainName ? [webAppDomainName] : []),
   ];
 
   const init = () => {
-    console.log("init renderCookieConsent");
     if (domain) {
       injectHtml(domain);
       initHandlers(domain);

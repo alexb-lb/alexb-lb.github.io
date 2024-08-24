@@ -68,13 +68,15 @@ const initCookieConsent = () => {
 
   const link = document.createElement("link");
   link.rel = "stylesheet";
-  link.href = `${webAppUrl}/assets/styles.css`;
+  // link.href = `${webAppUrl}/assets/styles.css`;
+  link.href = `http://127.0.0.1:8080/assets/styles.css`;
   link.type = "text/css";
   document.head.appendChild(link);
 
   const scriptRenderer = document.createElement("script");
   scriptRenderer.type = "text/javascript";
-  scriptRenderer.src = `${webAppUrl}/js/renderCookieConsent.js`;
+  // scriptRenderer.src = `${webAppUrl}/js/renderCookieConsent.js`;
+  scriptRenderer.src = `http://127.0.0.1:8080/js/renderCookieConsent.js`;
   scriptRenderer.async = true;
   document.head.appendChild(scriptRenderer);
 
