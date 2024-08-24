@@ -1,3 +1,351 @@
+const mockResponse = {
+  id: "cf093918-d120-4e1f-96be-d2b4b6406f45",
+  domain: "https://alexb-lb.github.io",
+  subDomains: [],
+  banner: {
+    consentType: "accept-reject",
+    createdBy: null,
+    customizable: true,
+    description: null,
+    id: "993521f6-200d-42f8-898c-4ca72fff8329",
+    linkDoNotSell: true,
+    name: "Banner do not sell",
+    rawJSON:
+      '{"banner":{"acceptAllButton":{"backgroundColor":"001529","borderColor":"001529","color":"FFFFFF","text":"Accept All"},"actionButton":{"backgroundColor":"FFFFFF","borderColor":"001529","color":"001529","text":"Manage Preferences"},"backgroundColor":"FFFFFF","body":"\\u003cp\\u003eThis website uses cookies to ensure you get the best experience on our website.\\u003c/p\\u003e","bodyTextColor":"001529","borderColor":"FFFFFF","doNotSellButton":{"backgroundColor":"FFFFFF","borderColor":"001529","color":"001529","text":"Do not sell my data"},"policy":"Privacy policy","policyTextColor":"0000EE","policyUrl":"","rejectAllButton":{"backgroundColor":"1B2229","borderColor":"001529","color":"FFFFFF","text":"Reject All"}},"enableLightbeamBranding":true,"position":["bottom","left"],"preferences":{"acceptAllButton":{"backgroundColor":"FFFFFF","borderColor":"001529","color":"001529","text":"Accept All"},"actionButton":{"backgroundColor":"001529","borderColor":"001529","color":"FFFFFF","text":"Save Preferences"},"body":"\\u003cp\\u003eWe use cookies to help you navigate efficiently and perform certain functions. You will find detailed information about all cookies under each consent category below. The cookies that are categorized as \\"Necessary\\" are stored on your browser as they are essential for enabling the basic functionalities of the site. We also use third-party cookies that help us analyze how you use this website, store your preferences, and provide the content and advertisements that are relevant to you. These cookies will only be stored in your browser with your prior consent. You can choose to enable or disable some or all of these cookies but disabling some of them may affect your browsing experience.\\u003c/p\\u003e","bodyTextColor":"333333","category":{"checkboxCheckMarkColor":"D1D5DA","checkboxColorAlwaysOn":"D1D5DA","checkboxColorOff":"6E7191","checkboxColorOn":"1B2229","checkboxType":"checkbox","colorDescription":"1B2229","colorTitle":"1B2229","showCookies":true},"doNotSellButton":{"backgroundColor":"FFFFFF","borderColor":"001529","color":"001529","text":"Do not sell my data"},"rejectAllButton":{"backgroundColor":"FFFFFF","borderColor":"001529","color":"001529","text":"Reject All"},"title":"Customize","titleTextColor":"333333"},"type":"classic"}',
+    regulationType: "Others",
+    updatedBy: null,
+  },
+  cookies: [
+    {
+      cookieCategoryId: "f6711231-aac9-4fde-8964-0a3783565299",
+      cookieType: "manual",
+      createdAt: "2024-08-15T14:27:21.966Z",
+      createdBy: null,
+      description:
+        '<p><strong>Cookie Title</strong></p>\n<p><em>Cookie description </em><span style="color: rgb(27,29,33);background-color: rgb(255,255,255);font-size: 14px;font-family: Ampersand, Archivo, -apple-system, BlinkMacSystemFont, Inter, sans-serif;"><em>Cookie description Cookie description Cookie description Cookie description Cookie description Cookie description Cookie description Cookie description Cookie description Cookie description </em></span></p>\n',
+      domain: "http://lol.com",
+      domainId: "cf093918-d120-4e1f-96be-d2b4b6406f45",
+      expires: "1724284800",
+      httpOnly: null,
+      id: "11b6ddc6-472c-4f39-a7b5-99250bc78337",
+      name: "Cookie 2 edited",
+      optOut: null,
+      path: null,
+      priority: null,
+      sameParty: null,
+      sameSite: null,
+      secure: null,
+      session: null,
+      size: null,
+      sourcePort: null,
+      sourceScheme: null,
+      updatedAt: "2024-08-15T15:01:44.478Z",
+      updatedBy: null,
+      value: "Cookie 2",
+    },
+    {
+      cookieCategoryId: "f6711231-aac9-4fde-8964-0a3783565299",
+      cookieType: "manual",
+      createdAt: "2024-08-15T13:18:24.614Z",
+      createdBy: null,
+      description:
+        '<p><strong>Some cookie title</strong></p>\n<p><em>Description blah blah </em><span style="color: rgb(27,29,33);background-color: rgb(255,255,255);font-size: 14px;font-family: Ampersand, Archivo, -apple-system, BlinkMacSystemFont, Inter, sans-serif;"><em>Description blah blah Description blah blah Description blah blah Description blah blah Description blah blah Description blah blah </em></span></p>\n',
+      domain: "https://google.com",
+      domainId: "cf093918-d120-4e1f-96be-d2b4b6406f45",
+      expires: "1724803200",
+      httpOnly: null,
+      id: "3612a47e-01bd-4808-b12c-583589f2f280",
+      name: "Cookie 1",
+      optOut: null,
+      path: null,
+      priority: null,
+      sameParty: null,
+      sameSite: null,
+      secure: null,
+      session: null,
+      size: null,
+      sourcePort: null,
+      sourceScheme: null,
+      updatedAt: "2024-08-15T14:48:24.070Z",
+      updatedBy: null,
+      value: "Value 1",
+    },
+    {
+      cookieCategoryId: "7b88504a-2a88-4963-be50-f3bb23ca38bf",
+      cookieType: "system",
+      createdAt: "2024-08-06T07:25:00.910Z",
+      createdBy: null,
+      description: null,
+      domain: "playground-master-privacy-ops.lightbeamsecurity.com",
+      domainId: "cf093918-d120-4e1f-96be-d2b4b6406f45",
+      expires: "1738481052",
+      httpOnly: true,
+      id: "ceacf333-c8aa-4cd0-992d-7241aa20fb87",
+      name: "_lb_fp",
+      optOut: null,
+      path: "/",
+      priority: "Medium",
+      sameParty: false,
+      sameSite: "None",
+      secure: true,
+      session: false,
+      size: 42,
+      sourcePort: 443,
+      sourceScheme: "Secure",
+      updatedAt: "2024-08-07T13:31:12.309Z",
+      updatedBy: null,
+      value: "d8217dd3-5f12-47e1-99d8-bc94483825fa",
+    },
+    {
+      cookieCategoryId: "a936cb80-f6d7-4eb3-9378-c8543b499690",
+      cookieType: "system",
+      createdAt: "2024-07-31T14:10:15.712Z",
+      createdBy: null,
+      description: null,
+      domain: "test-cookies.tiiny.site",
+      domainId: "cf093918-d120-4e1f-96be-d2b4b6406f45",
+      expires: "1722521349",
+      httpOnly: false,
+      id: "5e3a77ad-402a-44dc-a9df-0413d11c574a",
+      name: "external_cookie_4",
+      optOut: null,
+      path: "/",
+      priority: "Medium",
+      sameParty: false,
+      sameSite: "None",
+      secure: true,
+      session: false,
+      size: 33,
+      sourcePort: 443,
+      sourceScheme: "Secure",
+      updatedAt: "2024-07-31T14:44:57.261Z",
+      updatedBy: null,
+      value: "external_value_4",
+    },
+    {
+      cookieCategoryId: "a936cb80-f6d7-4eb3-9378-c8543b499690",
+      cookieType: "system",
+      createdAt: "2024-07-31T14:10:15.712Z",
+      createdBy: null,
+      description: null,
+      domain: "test-cookies.tiiny.site",
+      domainId: "cf093918-d120-4e1f-96be-d2b4b6406f45",
+      expires: "1722521349",
+      httpOnly: false,
+      id: "a713b75c-ae0d-4e71-ba8e-090fd1a51b13",
+      name: "external_cookie_3",
+      optOut: null,
+      path: "/",
+      priority: "Medium",
+      sameParty: false,
+      sameSite: "None",
+      secure: true,
+      session: false,
+      size: 33,
+      sourcePort: 443,
+      sourceScheme: "Secure",
+      updatedAt: "2024-07-31T14:10:15.712Z",
+      updatedBy: null,
+      value: "external_value_3",
+    },
+    {
+      cookieCategoryId: "a936cb80-f6d7-4eb3-9378-c8543b499690",
+      cookieType: "system",
+      createdAt: "2024-07-31T14:10:15.712Z",
+      createdBy: null,
+      description: null,
+      domain: "test-cookies.tiiny.site",
+      domainId: "cf093918-d120-4e1f-96be-d2b4b6406f45",
+      expires: "1722521349",
+      httpOnly: false,
+      id: "8564e431-4dd0-49b5-9ff5-3a222da4197d",
+      name: "external_cookie_2",
+      optOut: null,
+      path: "/",
+      priority: "Medium",
+      sameParty: false,
+      sameSite: "None",
+      secure: true,
+      session: false,
+      size: 33,
+      sourcePort: 443,
+      sourceScheme: "Secure",
+      updatedAt: "2024-07-31T14:10:15.712Z",
+      updatedBy: null,
+      value: "external_value_2",
+    },
+    {
+      cookieCategoryId: "a936cb80-f6d7-4eb3-9378-c8543b499690",
+      cookieType: "system",
+      createdAt: "2024-07-31T14:10:15.712Z",
+      createdBy: null,
+      description: null,
+      domain: "test-cookies.tiiny.site",
+      domainId: "cf093918-d120-4e1f-96be-d2b4b6406f45",
+      expires: "1722521349",
+      httpOnly: false,
+      id: "90a0b918-5f6b-4840-8c18-34263bd9c603",
+      name: "external_cookie_1",
+      optOut: null,
+      path: "/",
+      priority: "Medium",
+      sameParty: false,
+      sameSite: "None",
+      secure: true,
+      session: false,
+      size: 33,
+      sourcePort: 443,
+      sourceScheme: "Secure",
+      updatedAt: "2024-07-31T14:10:15.712Z",
+      updatedBy: null,
+      value: "external_value_1",
+    },
+    {
+      cookieCategoryId: "7b88504a-2a88-4963-be50-f3bb23ca38bf",
+      cookieType: "system",
+      createdAt: "2024-07-31T14:10:15.712Z",
+      createdBy: null,
+      description: null,
+      domain: "alexb-lb.github.io",
+      domainId: "cf093918-d120-4e1f-96be-d2b4b6406f45",
+      expires: "1722521348",
+      httpOnly: false,
+      id: "b2b97e77-1509-4439-a59a-96484a026566",
+      name: "same_domain_cookie4",
+      optOut: null,
+      path: "/",
+      priority: "Medium",
+      sameParty: false,
+      sameSite: null,
+      secure: false,
+      session: false,
+      size: 32,
+      sourcePort: 443,
+      sourceScheme: "Secure",
+      updatedAt: "2024-07-31T14:10:15.712Z",
+      updatedBy: null,
+      value: "local_value_4",
+    },
+    {
+      cookieCategoryId: "7b88504a-2a88-4963-be50-f3bb23ca38bf",
+      cookieType: "system",
+      createdAt: "2024-07-31T14:10:15.712Z",
+      createdBy: null,
+      description: null,
+      domain: "alexb-lb.github.io",
+      domainId: "cf093918-d120-4e1f-96be-d2b4b6406f45",
+      expires: "1722521348",
+      httpOnly: false,
+      id: "428718f6-d54e-42f8-9c32-a33c1c57441d",
+      name: "same_domain_cookie3",
+      optOut: null,
+      path: "/",
+      priority: "Medium",
+      sameParty: false,
+      sameSite: null,
+      secure: false,
+      session: false,
+      size: 32,
+      sourcePort: 443,
+      sourceScheme: "Secure",
+      updatedAt: "2024-07-31T14:10:15.712Z",
+      updatedBy: null,
+      value: "local_value_3",
+    },
+    {
+      cookieCategoryId: "7b88504a-2a88-4963-be50-f3bb23ca38bf",
+      cookieType: "system",
+      createdAt: "2024-07-31T14:10:15.712Z",
+      createdBy: null,
+      description: null,
+      domain: "alexb-lb.github.io",
+      domainId: "cf093918-d120-4e1f-96be-d2b4b6406f45",
+      expires: "1722521348",
+      httpOnly: false,
+      id: "749b56cf-7d4b-4419-bb86-c0890be89d42",
+      name: "same_domain_cookie2",
+      optOut: null,
+      path: "/",
+      priority: "Medium",
+      sameParty: false,
+      sameSite: null,
+      secure: false,
+      session: false,
+      size: 32,
+      sourcePort: 443,
+      sourceScheme: "Secure",
+      updatedAt: "2024-07-31T14:10:15.712Z",
+      updatedBy: null,
+      value: "local_value_2",
+    },
+    {
+      cookieCategoryId: "7b88504a-2a88-4963-be50-f3bb23ca38bf",
+      cookieType: "system",
+      createdAt: "2024-07-31T14:10:15.712Z",
+      createdBy: null,
+      description: null,
+      domain: "alexb-lb.github.io",
+      domainId: "cf093918-d120-4e1f-96be-d2b4b6406f45",
+      expires: "1722521348",
+      httpOnly: false,
+      id: "4483b183-beb9-4674-9ffa-c21d694a0e2d",
+      name: "same_domain_cookie_1",
+      optOut: null,
+      path: "/",
+      priority: "Medium",
+      sameParty: false,
+      sameSite: null,
+      secure: false,
+      session: false,
+      size: 33,
+      sourcePort: 443,
+      sourceScheme: "Secure",
+      updatedAt: "2024-07-31T14:10:15.712Z",
+      updatedBy: null,
+      value: "local_value_1",
+    },
+  ],
+  categories: [
+    {
+      createdAt: "2024-07-31T14:10:15.484Z",
+      createdBy: null,
+      description: null,
+      doNotSell: true,
+      domainId: "cf093918-d120-4e1f-96be-d2b4b6406f45",
+      id: "7b88504a-2a88-4963-be50-f3bb23ca38bf",
+      name: "Essential",
+      optOut: true,
+      updatedAt: "2024-07-31T14:10:15.484Z",
+      updatedBy: null,
+    },
+    {
+      createdAt: "2024-07-31T14:09:10.805Z",
+      createdBy: null,
+      description: "",
+      doNotSell: false,
+      domainId: "cf093918-d120-4e1f-96be-d2b4b6406f45",
+      id: "a936cb80-f6d7-4eb3-9378-c8543b499690",
+      name: "Marketing",
+      optOut: false,
+      updatedAt: "2024-07-31T14:11:36.080Z",
+      updatedBy: null,
+    },
+    {
+      createdAt: "2024-08-06T07:24:59.905Z",
+      createdBy: null,
+      description:
+        '<p><strong>Category title</strong></p>\n<p><em>category description </em><span style="color: rgb(27,29,33);background-color: rgb(255,255,255);font-size: 14px;font-family: Ampersand, Archivo, -apple-system, BlinkMacSystemFont, Inter, sans-serif;"><em>category description category description category description category description category description category description category description category description </em></span></p>\n',
+      doNotSell: true,
+      domainId: "cf093918-d120-4e1f-96be-d2b4b6406f45",
+      id: "f6711231-aac9-4fde-8964-0a3783565299",
+      name: "Other",
+      optOut: true,
+      updatedAt: "2024-08-15T15:09:23.965Z",
+      updatedBy: null,
+    },
+  ],
+};
+
 var SVG_CARET_RIGHT = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#333333" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><polyline points="96 48 176 128 96 208" fill="none" stroke="#333333" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline></svg>`;
 
 var renderCookieConsent = async () => {
@@ -12,6 +360,44 @@ var renderCookieConsent = async () => {
     accept: "accept",
     reject: "reject",
     acceptReject: "accept-reject",
+    doNotSell: "do-not-sell",
+    acceptDoNotSell: "accept-do-not-sell",
+    rejectDoNotSell: "reject-do-not-sell",
+  };
+
+  /**
+   * buttonName: "accept" | "reject" | "doNotSell"
+   * consentType: cookieConsentTypes
+   */
+  const showButton = ({ buttonName = "", consentType = "" }) => {
+    if (
+      buttonName === "accept" &&
+      (consentType === cookieConsentTypes.accept ||
+        consentType === cookieConsentTypes.acceptReject ||
+        consentType === cookieConsentTypes.acceptDoNotSell)
+    ) {
+      return true;
+    }
+
+    if (
+      buttonName === "reject" &&
+      (consentType === cookieConsentTypes.reject ||
+        consentType === cookieConsentTypes.acceptReject ||
+        consentType === cookieConsentTypes.rejectDoNotSell)
+    ) {
+      return true;
+    }
+
+    if (
+      buttonName === "doNotSell" &&
+      (consentType === cookieConsentTypes.doNotSell ||
+        consentType === cookieConsentTypes.acceptDoNotSell ||
+        consentType === cookieConsentTypes.rejectDoNotSell)
+    ) {
+      return true;
+    }
+
+    return false;
   };
 
   // utils
@@ -208,12 +594,9 @@ var renderCookieConsent = async () => {
 
   /* API to GET saved preferences */
   const fetchPreferences = async () => {
-    const response = await fetch(
-      `${"https://playground-master-privacy-ops.lightbeamsecurity.com"}/api/cookie-consent/response`,
-      {
-        credentials: "include",
-      }
-    );
+    const response = await fetch(`${webAppUrl}/api/cookie-consent/response`, {
+      credentials: "include",
+    });
     const savedPreferences = await response.json();
     savePreferencesInStorage(savedPreferences?.consentInfo?.categoriesAccepted);
     return savedPreferences.consentInfo;
@@ -236,39 +619,29 @@ var renderCookieConsent = async () => {
   }) => {
     if (!domain) return;
 
-    console.log({
-      consentAccepted,
-      consentRejected,
-      categoriesAccepted,
-      categoriesRejected,
+    fetch(`${webAppUrl}/api/cookie-consent/response`, {
+      method: "POST",
+      credentials: "include",
+      body: JSON.stringify({
+        status: "active",
+        domain: clientDomain,
+        networkIP: "",
+        networkFamily: "",
+        browserFingerprint: {
+          device: isMobile() ? "mobile" : "desktop",
+          browser: getBrowserName(),
+          location: getBrowserLang(),
+        },
+        browserVisitorId: getCookie(VISITOR_ID) || "",
+        consentInfo: {
+          consentAccepted,
+          consentRejected,
+          categoriesAccepted,
+          categoriesRejected,
+        },
+      }),
+      headers,
     });
-
-    // fetch(
-    //   `${"https://playground-master-privacy-ops.lightbeamsecurity.com"}/api/cookie-consent/response`,
-    //   {
-    //     method: "POST",
-    //     credentials: "include",
-    //     body: JSON.stringify({
-    //       status: "active",
-    //       domain: clientDomain,
-    //       networkIP: "",
-    //       networkFamily: "",
-    //       browserFingerprint: {
-    //         device: isMobile() ? "mobile" : "desktop",
-    //         browser: getBrowserName(),
-    //         location: getBrowserLang(),
-    //       },
-    //       browserVisitorId: getCookie(VISITOR_ID) || "",
-    //       consentInfo: {
-    //         consentAccepted,
-    //         consentRejected,
-    //         categoriesAccepted,
-    //         categoriesRejected,
-    //       },
-    //     }),
-    //     headers,
-    //   }
-    // );
   };
 
   // DOM handlers
@@ -458,7 +831,10 @@ var renderCookieConsent = async () => {
     disabled = false,
   }) => {
     return `\
-      <div class="lb-toggle-container lb-switch" data-category-id="${id}">
+      <div class="lb-toggle-container lb-switch" \
+          data-category-id="${id}" \
+          ${disabled ? `title="This category cannot be opted out of."` : ""}\
+      >
         <input \
           class="lb-toggle-input lb-switch-input"
           type="checkbox" \
@@ -541,8 +917,10 @@ var renderCookieConsent = async () => {
           cookie-consent-banner-container \
           ${banner?.layout.type} \
           ${banner?.layout.position?.join(" ")} \
-          ${showPreferencesOnly ? "hidden" : ""} \
-      "id="lb-cookie-consent-banner">\
+          ${showPreferencesOnly ? " hidden" : ""} \
+          ${isMobile() ? " mobile-view" : ""} \
+      "
+      id="lb-cookie-consent-banner">\
       <div class="overlay"></div>
       <div \
         class="main-banner"\
@@ -562,15 +940,19 @@ var renderCookieConsent = async () => {
         <div class="buttons">\
           ${banner.customizable ? btnCustomize : ""}\
           ${
-            banner.consentType === cookieConsentTypes.acceptReject ||
-            banner.consentType === cookieConsentTypes.reject
+            showButton({
+              buttonName: "reject",
+              consentType: banner.consentType,
+            })
               ? btnReject
               : ""
           }\
           ${!!banner.linkDoNotSell ? btnDoNotSell : ""}\
           ${
-            banner.consentType === cookieConsentTypes.acceptReject ||
-            banner.consentType === cookieConsentTypes.accept
+            showButton({
+              buttonName: "accept",
+              consentType: banner.consentType,
+            })
               ? btnAccept
               : ""
           }\
@@ -721,11 +1103,13 @@ var renderCookieConsent = async () => {
         ${categories?.map((c) => getCategoryHtml(c))?.join("") || ""}\
       </div>`;
 
+    let cssClasses = "cookie-consent-banner-preferences lb-scrollbar ";
+    if (!showPreferencesOnly) cssClasses += " hidden";
+    if (isMobile()) cssClasses += " mobile-view";
+
     const htmlPreferences = `\
       <div \
-        class="cookie-consent-banner-preferences lb-scrollbar ${
-          showPreferencesOnly ? "" : "hidden"
-        }" \
+        class="${cssClasses}" \
         id="cookie-consent-banner-preferences">\
           <div class="overlay"></div>\
           <div class="cookie-consent-banner-preferences-wrapper">
@@ -750,14 +1134,18 @@ var renderCookieConsent = async () => {
             </div>
             <div class="buttons">
               ${
-                banner.consentType === cookieConsentTypes.acceptReject ||
-                banner.consentType === cookieConsentTypes.reject
+                showButton({
+                  buttonName: "reject",
+                  consentType: banner.consentType,
+                })
                   ? btnReject
                   : ""
               }\
               ${
-                banner.consentType === cookieConsentTypes.acceptReject ||
-                banner.consentType === cookieConsentTypes.accept
+                showButton({
+                  buttonName: "accept",
+                  consentType: banner.consentType,
+                })
                   ? btnAccept
                   : ""
               }\
