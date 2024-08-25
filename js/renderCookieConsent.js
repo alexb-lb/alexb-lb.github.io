@@ -576,11 +576,10 @@ var renderCookieConsent = async () => {
 
   // API requests
   const fetchDomainInfo = async () => {
-    // const response = await fetch(
-    //   `${"https://playground-master-privacy-ops.lightbeamsecurity.com"}/api/cookie-consent/domain?domainName=${clientDomain}`
-    // );
-    // const domain = await response.json();
-    const domain = mockResponse;
+    const response = await fetch(
+      `${"https://playground-master-privacy-ops.lightbeamsecurity.com"}/api/cookie-consent/domain?domainName=${clientDomain}`
+    );
+    const domain = await response.json();
     domain.banner = domain.banner || {};
     domain.banner.layout = {};
     try {
