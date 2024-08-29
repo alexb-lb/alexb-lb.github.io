@@ -491,7 +491,13 @@ var renderCookieConsent = async () => {
     return unique;
   };
 
-  const getAcceptedData = (isDoNotSell = false) => {
+  /**
+   * Calculates user accepted/rejected consents taking into account mandatory essentials
+   * @param {props} { isDoNotSell?: boolean, isSavePreferences?: boolean }
+   * @returns
+   */
+  const getConsentData = (props = {}) => {
+    const { isDoNotSell = false, isSavePreferences = false } = props;
     // get mandatory that must be accepted (optOut disabled)
     const categoriesAccepted = domain.categories?.filter((c) => !c.optOut);
 
@@ -536,7 +542,9 @@ var renderCookieConsent = async () => {
           });
         }
       });
-    } else {
+    }
+
+    if (isSavePreferences) {
       // accept categories that user marked as "allowed"
       document.querySelectorAll(".category.accepted").forEach((elem) => {
         const category = domain?.categories?.find((c) => c.id === elem.id);
@@ -671,7 +679,7 @@ var renderCookieConsent = async () => {
           categoriesAccepted,
           categoriesRejected,
           domainsAccepted,
-        } = getAcceptedData();
+        } = getConsentData();
 
         window.localStorage.setItem(
           LB_LOCAL_STORAGE_KEY,
@@ -695,7 +703,7 @@ var renderCookieConsent = async () => {
           categoriesRejected,
           domainsAccepted,
           domainsRejected,
-        } = getAcceptedData((isDoNotSell = true));
+        } = getConsentData({ isDoNotSell: true });
 
         window.localStorage.setItem(
           LB_LOCAL_STORAGE_KEY,
@@ -725,7 +733,7 @@ var renderCookieConsent = async () => {
           categoriesRejected,
           domainsAccepted,
           domainsRejected,
-        } = getAcceptedData();
+        } = getConsentData({ isSavePreferences: true });
 
         window.localStorage.setItem(
           LB_LOCAL_STORAGE_KEY,
