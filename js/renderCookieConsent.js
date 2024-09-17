@@ -470,6 +470,14 @@ var renderCookieConsent = async () => {
   };
 
   /**
+   * Unblocks both scripts and iframes
+   */
+  const unblockSources = (regexp = "") => {
+    window.yett?.unblock(regexp);
+    window.lbIframeHandle?.unblock(regexp);
+  };
+
+  /**
    * Calculates user accepted/rejected consents taking into account mandatory essentials
    * @param {props} { isDoNotSell?: boolean, isSavePreferences?: boolean }
    * @returns
@@ -482,7 +490,7 @@ var renderCookieConsent = async () => {
     let domainsAccepted = essentialsWhiteList || [];
     const domainsAcceptedRegExp = domainsAccepted.map((domain) => {
       const regex = new RegExp(domain);
-      window.yett?.unblock(regex);
+      unblockSources(regex);
       return regex;
     });
 
@@ -635,7 +643,7 @@ var renderCookieConsent = async () => {
   const initHandlers = () => {
     document.addEventListener("click", function (e) {
       if (e.target?.id === "lb-cookie-consent-accept-all") {
-        window.yett?.unblock();
+        unblockSources();
         setLbCookies({
           name: LB_LOCAL_STORAGE_KEY,
           value: { blackList: [] },
@@ -690,9 +698,7 @@ var renderCookieConsent = async () => {
           value: { whiteList: domainsAccepted, blackList: domainsRejected },
           shareCookies: domain.shareConsent,
         });
-        domainsAccepted.forEach((domain) =>
-          window.yett?.unblock(new RegExp(domain))
-        );
+        domainsAccepted.forEach((domain) => unblockSources(new RegExp(domain)));
 
         savePreferencesInStorage(categoriesAccepted.map((c) => c.id));
         postCookieConsent({
@@ -718,9 +724,7 @@ var renderCookieConsent = async () => {
           value: { whiteList: domainsAccepted, blackList: domainsRejected },
           shareCookies: domain.shareConsent,
         });
-        domainsAccepted.forEach((domain) =>
-          window.yett?.unblock(new RegExp(domain))
-        );
+        domainsAccepted.forEach((domain) => unblockSources(new RegExp(domain)));
 
         savePreferencesInStorage(categoriesAccepted.map((c) => c.id));
         postCookieConsent({
@@ -1016,18 +1020,18 @@ var renderCookieConsent = async () => {
 
     const getCookieHtml = (cookie) => {
       const cookieDescription = `\
-      <div class="row">\
+      <div class="lb-row">\
         <div class="label">Description:</div>
         <div class="value">${cookie.description}</div>
       </div>`;
 
       return `\
           <div class="category-cookie">\
-            <div class="row">\
+            <div class="lb-row">\
               <div class="label">Cookie name:</div>
               <div class="value">${cookie.name}</div>
             </div>
-            <div class="row">\
+            <div class="lb-row">\
               <div class="label">Expires:</div>
               <div class="value">${getPrettyExpires(cookie.expires)}</div>
             </div>

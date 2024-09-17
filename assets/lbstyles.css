@@ -14,7 +14,7 @@
   }
 }
 
-.row {
+.lb-row {
   display: flex;
   flex-flow: row nowrap;
 }
@@ -364,7 +364,7 @@
   .category
   .category-cookies
   .category-cookie
-  .row:not(:first-of-type) {
+  .lb-row:not(:first-of-type) {
   margin-top: 10px;
 }
 
