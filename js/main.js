@@ -100,6 +100,7 @@ window.lbIframeHandle = {
     iframe.dataset.lbTag = dataTag;
     iframe.src = '';
     iframe.style.display = "none";
+    iframe.setAttribute("sandbox", "");
   },
   
   unblock: function(regexp = '') {
@@ -113,6 +114,7 @@ window.lbIframeHandle = {
         lbIframeHandle.blockedIframes.filter(blocked => blocked.src === iframe.src)
         iframe.src = blockedItem.src
         iframe.style = blockedItem.style
+        iframe.removeAttribute("sandbox", "");
       }
     })
   },
@@ -148,8 +150,8 @@ const initCookieConsent = () => {
 
   const link = document.createElement("link");
   link.rel = "stylesheet";
-  // link.href = `${webAppUrl}/assets/styles.css`;
-  link.href = `http://example.com:8080/assets/styles.css`;
+  // link.href = `${webAppUrl}/assets/lbstyles.css`;
+  link.href = `http://example.com:8080/assets/lbstyles.css`;
   link.type = "text/css";
   document.head.appendChild(link);
 
