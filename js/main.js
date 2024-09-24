@@ -6,22 +6,22 @@ const LB_LOCAL_STORAGE_KEY = "lb-cookie-consent";
 const LB_LOCAL_STORAGE_PREFERENCES_KEY = "lb-preferences";
 
 var getLbMainDomain = () => {
-  if (window.psl === undefined) return window.location.hostname
-  return psl?.get(window.location.hostname) || window.location.hostname
-}
+  if (window.psl === undefined) return window.location.hostname;
+  return psl?.get(window.location.hostname) || window.location.hostname;
+};
 
 var getLbCookies = (name) => {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
 
-  if(parts.length !== 2) return
+  if (parts.length !== 2) return;
   
   const consentsRaw = parts.pop().split(";").shift();
 
   try {
     return JSON.parse(consentsRaw);
   } catch (e) {
-    console.log("cannot parse saved cookies settings");
+    console.error("LB Error: cannot parse saved cookies settings");
   }
 };
 
@@ -34,8 +34,6 @@ var setLbCookies = ({ name, value = "", shareCookies = false }) => {
 
   document.cookie = `${name}=${valueJson}${expires}${domainName}; path=/`;
 };
-
-
 
 (function () {
   // detect essentials that must NOT be blocked
@@ -145,19 +143,19 @@ window.lbIframeHandle?.init()
 
 const initCookieConsent = () => {
   const root = document.getElementById("lb-cookie-consent");
-  // const webAppUrl = root?.getAttribute("data-web-app") || "";
-  const webAppUrl =  "";
+  // const S3BUcket = root?.getAttribute("data-s3-bucket") || "";
+  const S3BUcket = ""
 
   const link = document.createElement("link");
   link.rel = "stylesheet";
-  // link.href = `${webAppUrl}/assets/lbstyles.css`;
+  // link.href = `${S3BUcket}/static/css/cc_lbstyles.css`;
   link.href = `http://example.com:8080/assets/lbstyles.css`;
   link.type = "text/css";
   document.head.appendChild(link);
 
   const scriptRenderer = document.createElement("script");
   scriptRenderer.type = "text/javascript";
-  // scriptRenderer.src = `${webAppUrl}/js/renderCookieConsent.js`;
+  // scriptRenderer.src = `${S3BUcket}/static/js/renderCookieConsent.js`;
   scriptRenderer.src = `http://example.com:8080/js/renderCookieConsent.js`;
   scriptRenderer.async = true;
   document.head.appendChild(scriptRenderer);
