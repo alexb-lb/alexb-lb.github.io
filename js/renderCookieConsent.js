@@ -343,6 +343,13 @@ var renderCookieConsent = async () => {
     rejectDoNotSell: "reject-do-not-sell",
   };
 
+  const apiEventTypes = {
+    accept: "accept-all",
+    reject: "reject-all",
+    doNotSell: "do-not-sell",
+    customize: "customize",
+  };
+
   /**
    * buttonName: "accept" | "reject" | "doNotSell"
    * consentType: cookieConsentTypes
@@ -610,6 +617,7 @@ var renderCookieConsent = async () => {
     consentRejected,
     categoriesAccepted,
     categoriesRejected,
+    eventType,
     headers = {},
   }) => {
     if (!domain) return;
@@ -634,6 +642,7 @@ var renderCookieConsent = async () => {
           categoriesAccepted,
           categoriesRejected,
         },
+        eventType,
       }),
       headers,
     });
@@ -658,6 +667,7 @@ var renderCookieConsent = async () => {
           consentRejected: [],
           categoriesAccepted: domain.categories.map((category) => category.id),
           categoriesRejected: [],
+          eventType: apiEventTypes.accept,
         });
         hideBanner();
       }
@@ -681,6 +691,7 @@ var renderCookieConsent = async () => {
           consentRejected: cookiesRejected.map((c) => c.name),
           categoriesAccepted: categoriesAccepted.map((c) => c.id),
           categoriesRejected: categoriesRejected.map((c) => c.id),
+          eventType: apiEventTypes.reject,
         });
         hideBanner();
       }
@@ -706,6 +717,7 @@ var renderCookieConsent = async () => {
           consentRejected: cookiesRejected.map((c) => c.name),
           categoriesAccepted: categoriesAccepted.map((c) => c.id),
           categoriesRejected: categoriesRejected.map((c) => c.id),
+          eventType: apiEventTypes.doNotSell,
         });
         hideBanner();
       }
@@ -732,6 +744,7 @@ var renderCookieConsent = async () => {
           consentRejected: cookiesRejected.map((c) => c.name),
           categoriesAccepted: categoriesAccepted.map((c) => c.id),
           categoriesRejected: categoriesRejected.map((c) => c.id),
+          eventType: apiEventTypes.customize,
         });
         hideBanner();
       }
