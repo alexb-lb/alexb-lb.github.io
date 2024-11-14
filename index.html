@@ -103,6 +103,11 @@
           "same_domain_cookie4=local_value_4; expires=" +
           oneDayExpire +
           ";path=/;";
+
+        document.cookie =
+          "test_cookie__1=local_value_4; expires=" + oneDayExpire + ";path=/;";
+        document.cookie =
+          "test_cookie__2=local_value_4; expires=" + oneDayExpire + ";path=/;";
       })();
     </script>
     <!-- TrustBox script -->
