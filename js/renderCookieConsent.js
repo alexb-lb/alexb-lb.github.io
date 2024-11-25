@@ -256,7 +256,7 @@ var renderCookieConsent = async () => {
     const controller = new AbortController();
     const webAppResponse = await Promise.race([
       fetch(
-        `${dataScriptHost}/cookie_consent_${ccVersion}/${domainId}/domain_config_${domainHash}.json`,
+        `${dataWebApp}/api/cookie-consent/domain?domainName=${dataDomain}`,
         { signal: controller.signal }
       ),
       new Promise((resolve) => {
