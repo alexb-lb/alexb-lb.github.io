@@ -111,7 +111,7 @@ const initCookieConsent = () => {
   const scriptRenderer = document.createElement("script");
   scriptRenderer.type = "text/javascript";
   // scriptRenderer.src = `${dataScriptHost}/cookie_consent_${ccVersion}/${domainId}/renderCookieConsent_${jsHash}.js`;
-  scriptRenderer.src = `https://cookie-consent.lightbeamsecurity.com/assets/lbstyles.css/js/renderCookieConsent.js`;
+  scriptRenderer.src = `https://cookie-consent.lightbeamsecurity.com/js/renderCookieConsent.js`;
   scriptRenderer.async = true;
   document.head.appendChild(scriptRenderer);
 
