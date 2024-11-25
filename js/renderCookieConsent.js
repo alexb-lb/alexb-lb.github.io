@@ -1,335 +1,7 @@
-const mockResponse = {
-  id: "a29b004b-0a07-4dd8-9f37-c0e5d3a6f70a",
-  domain: "https://alexb-lb.github.io",
-  subdomains: [],
-  bannerId: null,
-  emailIds: [],
-  inclusionList: [
-    {
-      key: "page",
-      value: "https://alexb-lb.github.io/",
-    },
-    {
-      key: "subdomain",
-      value: "https://alexb-lb.github.io/",
-    },
-  ],
-  exclusionList: [
-    {
-      key: "page",
-      value: "https://lightbeamai.github.io/website/",
-    },
-    {
-      key: "subdomain",
-      value: "sub.lightbeamai.github.io",
-    },
-  ],
-  shareConsent: true,
-  regionBannerIds: [],
-  createdAt: "2024-08-29T14:30:46.445Z",
-  updatedAt: "2024-08-29T14:32:43.061Z",
-  banner: {
-    consentType: "accept-reject",
-    createdBy: null,
-    customizable: true,
-    description: null,
-    id: "993521f6-200d-42f8-898c-4ca72fff8329",
-    linkDoNotSell: true,
-    name: "Banner do not sell",
-    rawJSON:
-      '{"banner":{"acceptAllButton":{"backgroundColor":"001529","borderColor":"001529","color":"FFFFFF","text":"Accept All"},"actionButton":{"backgroundColor":"FFFFFF","borderColor":"001529","color":"001529","text":"Manage Preferences"},"backgroundColor":"FFFFFF","body":"\\u003cp\\u003eThis website uses cookies to ensure you get the best experience on our website.\\u003c/p\\u003e","bodyTextColor":"001529","borderColor":"FFFFFF","doNotSellButton":{"backgroundColor":"FFFFFF","borderColor":"001529","color":"001529","text":"Do not sell my data"},"policy":"Privacy policy","policyTextColor":"0000EE","policyUrl":"","rejectAllButton":{"backgroundColor":"1B2229","borderColor":"001529","color":"FFFFFF","text":"Reject All"}},"enableLightbeamBranding":true,"position":["bottom","left"],"preferences":{"acceptAllButton":{"backgroundColor":"FFFFFF","borderColor":"001529","color":"001529","text":"Accept All"},"actionButton":{"backgroundColor":"001529","borderColor":"001529","color":"FFFFFF","text":"Save Preferences"},"body":"\\u003cp\\u003eWe use cookies to help you navigate efficiently and perform certain functions. You will find detailed information about all cookies under each consent category below. The cookies that are categorized as \\"Necessary\\" are stored on your browser as they are essential for enabling the basic functionalities of the site. We also use third-party cookies that help us analyze how you use this website, store your preferences, and provide the content and advertisements that are relevant to you. These cookies will only be stored in your browser with your prior consent. You can choose to enable or disable some or all of these cookies but disabling some of them may affect your browsing experience.\\u003c/p\\u003e","bodyTextColor":"333333","category":{"checkboxCheckMarkColor":"D1D5DA","checkboxColorAlwaysOn":"D1D5DA","checkboxColorOff":"6E7191","checkboxColorOn":"1B2229","checkboxType":"checkbox","colorDescription":"1B2229","colorTitle":"1B2229","showCookies":true},"doNotSellButton":{"backgroundColor":"FFFFFF","borderColor":"001529","color":"001529","text":"Do not sell my data"},"rejectAllButton":{"backgroundColor":"FFFFFF","borderColor":"001529","color":"001529","text":"Reject All"},"title":"Customize","titleTextColor":"333333"},"type":"classic"}',
-    regulationType: "Others",
-    updatedBy: null,
-  },
-  cookies: [
-    {
-      id: "974ebb44-492b-41eb-8dc8-f3fb85414f67",
-      name: "_lb_fp",
-      description: null,
-      value: "e773a872-05e6-44a0-9e02-a3885f4fd5fb",
-      path: "/",
-      domain: "playground-master-privacy-ops.lightbeamsecurity.com",
-      expires: "1740493868",
-      size: 42,
-      optOut: null,
-      httpOnly: true,
-      secure: true,
-      session: false,
-      sameSite: "None",
-      priority: "Medium",
-      sameParty: false,
-      sourcePort: 443,
-      sourceScheme: "Secure",
-      createdBy: null,
-      updatedBy: null,
-      domainId: "a29b004b-0a07-4dd8-9f37-c0e5d3a6f70a",
-      cookieCategoryId: "cc4b48e5-eaa7-4dd5-9d9f-a83e3b14c1b2",
-      cookieType: "system",
-      createdAt: "2024-08-29T14:32:44.169Z",
-      updatedAt: "2024-08-29T14:32:44.169Z",
-    },
-    {
-      id: "cc5c2e46-1a1a-44a2-ae4b-7d3b337f32c4",
-      name: "same_domain_cookie_1",
-      description: null,
-      value: "local_value_1",
-      path: "/",
-      domain: "alexb-lb.github.io",
-      expires: "1725028268",
-      size: 33,
-      optOut: null,
-      httpOnly: false,
-      secure: false,
-      session: false,
-      sameSite: null,
-      priority: "Medium",
-      sameParty: false,
-      sourcePort: 443,
-      sourceScheme: "Secure",
-      createdBy: null,
-      updatedBy: null,
-      domainId: "a29b004b-0a07-4dd8-9f37-c0e5d3a6f70a",
-      cookieCategoryId: "6c8cd5a9-3472-4374-97cd-c5f9e425048a",
-      cookieType: "system",
-      createdAt: "2024-08-29T14:32:44.169Z",
-      updatedAt: "2024-08-29T14:32:44.169Z",
-    },
-    {
-      id: "a0202906-c00d-4d56-9f9a-f8cc74305d0c",
-      name: "same_domain_cookie2",
-      description: null,
-      value: "local_value_2",
-      path: "/",
-      domain: "alexb-lb.github.io",
-      expires: "1725028268",
-      size: 32,
-      optOut: null,
-      httpOnly: false,
-      secure: false,
-      session: false,
-      sameSite: null,
-      priority: "Medium",
-      sameParty: false,
-      sourcePort: 443,
-      sourceScheme: "Secure",
-      createdBy: null,
-      updatedBy: null,
-      domainId: "a29b004b-0a07-4dd8-9f37-c0e5d3a6f70a",
-      cookieCategoryId: "6c8cd5a9-3472-4374-97cd-c5f9e425048a",
-      cookieType: "system",
-      createdAt: "2024-08-29T14:32:44.169Z",
-      updatedAt: "2024-08-29T14:32:44.169Z",
-    },
-    {
-      id: "45702c31-7710-4e82-a907-6df3d0298a09",
-      name: "same_domain_cookie3",
-      description: null,
-      value: "local_value_3",
-      path: "/",
-      domain: "alexb-lb.github.io",
-      expires: "1725028268",
-      size: 32,
-      optOut: null,
-      httpOnly: false,
-      secure: false,
-      session: false,
-      sameSite: null,
-      priority: "Medium",
-      sameParty: false,
-      sourcePort: 443,
-      sourceScheme: "Secure",
-      createdBy: null,
-      updatedBy: null,
-      domainId: "a29b004b-0a07-4dd8-9f37-c0e5d3a6f70a",
-      cookieCategoryId: "6c8cd5a9-3472-4374-97cd-c5f9e425048a",
-      cookieType: "system",
-      createdAt: "2024-08-29T14:32:44.169Z",
-      updatedAt: "2024-08-29T14:32:44.169Z",
-    },
-    {
-      id: "fc7ccd5f-82d8-42bb-8a12-59e8a05b412c",
-      name: "same_domain_cookie4",
-      description: null,
-      value: "local_value_4",
-      path: "/",
-      domain: "alexb-lb.github.io",
-      expires: "1725028268",
-      size: 32,
-      optOut: null,
-      httpOnly: false,
-      secure: false,
-      session: false,
-      sameSite: null,
-      priority: "Medium",
-      sameParty: false,
-      sourcePort: 443,
-      sourceScheme: "Secure",
-      createdBy: null,
-      updatedBy: null,
-      domainId: "a29b004b-0a07-4dd8-9f37-c0e5d3a6f70a",
-      cookieCategoryId: "6c8cd5a9-3472-4374-97cd-c5f9e425048a",
-      cookieType: "system",
-      createdAt: "2024-08-29T14:32:44.169Z",
-      updatedAt: "2024-08-29T14:32:44.169Z",
-    },
-    {
-      id: "9ba5ba78-e79c-4bce-80f8-b25f049cd092",
-      name: "external_cookie_1",
-      description: null,
-      value: "external_value_1",
-      path: "/",
-      domain: "test-cookies.tiiny.site",
-      expires: "1725028268",
-      size: 33,
-      optOut: null,
-      httpOnly: false,
-      secure: true,
-      session: false,
-      sameSite: "None",
-      priority: "Medium",
-      sameParty: false,
-      sourcePort: 443,
-      sourceScheme: "Secure",
-      createdBy: null,
-      updatedBy: null,
-      domainId: "a29b004b-0a07-4dd8-9f37-c0e5d3a6f70a",
-      cookieCategoryId: "9b51f41e-e35b-4c54-8b91-3a3b71aef064",
-      cookieType: "system",
-      createdAt: "2024-08-29T14:32:44.169Z",
-      updatedAt: "2024-08-29T14:32:44.169Z",
-    },
-    {
-      id: "370bfc16-ceba-4035-8d4d-799c7b2aa2c9",
-      name: "external_cookie_2",
-      description: null,
-      value: "external_value_2",
-      path: "/",
-      domain: "test-cookies.tiiny.site",
-      expires: "1725028268",
-      size: 33,
-      optOut: null,
-      httpOnly: false,
-      secure: true,
-      session: false,
-      sameSite: "None",
-      priority: "Medium",
-      sameParty: false,
-      sourcePort: 443,
-      sourceScheme: "Secure",
-      createdBy: null,
-      updatedBy: null,
-      domainId: "a29b004b-0a07-4dd8-9f37-c0e5d3a6f70a",
-      cookieCategoryId: "9b51f41e-e35b-4c54-8b91-3a3b71aef064",
-      cookieType: "system",
-      createdAt: "2024-08-29T14:32:44.169Z",
-      updatedAt: "2024-08-29T14:32:44.169Z",
-    },
-    {
-      id: "f1e4063a-cde7-42e5-a4e0-864278a18cc1",
-      name: "external_cookie_3",
-      description: null,
-      value: "external_value_3",
-      path: "/",
-      domain: "test-cookies.tiiny.site",
-      expires: "1725028268",
-      size: 33,
-      optOut: null,
-      httpOnly: false,
-      secure: true,
-      session: false,
-      sameSite: "None",
-      priority: "Medium",
-      sameParty: false,
-      sourcePort: 443,
-      sourceScheme: "Secure",
-      createdBy: null,
-      updatedBy: null,
-      domainId: "a29b004b-0a07-4dd8-9f37-c0e5d3a6f70a",
-      cookieCategoryId: "cc4b48e5-eaa7-4dd5-9d9f-a83e3b14c1b2",
-      cookieType: "system",
-      createdAt: "2024-08-29T14:32:44.169Z",
-      updatedAt: "2024-08-29T14:32:44.169Z",
-    },
-    {
-      id: "8b03986c-eb20-4ace-8006-003cb87fbf51",
-      name: "external_cookie_4",
-      description: null,
-      value: "external_value_4",
-      path: "/",
-      domain: "test-cookies.tiiny.site",
-      expires: "1725028268",
-      size: 33,
-      optOut: null,
-      httpOnly: false,
-      secure: true,
-      session: false,
-      sameSite: "None",
-      priority: "Medium",
-      sameParty: false,
-      sourcePort: 443,
-      sourceScheme: "Secure",
-      createdBy: null,
-      updatedBy: null,
-      domainId: "a29b004b-0a07-4dd8-9f37-c0e5d3a6f70a",
-      cookieCategoryId: "cc4b48e5-eaa7-4dd5-9d9f-a83e3b14c1b2",
-      cookieType: "system",
-      createdAt: "2024-08-29T14:32:44.169Z",
-      updatedAt: "2024-08-29T14:32:44.169Z",
-    },
-  ],
-  categories: [
-    {
-      id: "cc4b48e5-eaa7-4dd5-9d9f-a83e3b14c1b2",
-      name: "Other",
-      description: null,
-      optOut: true,
-      createdBy: null,
-      updatedBy: null,
-      domainId: "a29b004b-0a07-4dd8-9f37-c0e5d3a6f70a",
-      doNotSell: false,
-      createdAt: "2024-08-29T14:32:43.886Z",
-      updatedAt: "2024-08-29T14:32:43.886Z",
-    },
-    {
-      id: "9b51f41e-e35b-4c54-8b91-3a3b71aef064",
-      name: "Marketing",
-      description: "<p>Test</p>\n",
-      optOut: true,
-      createdBy: null,
-      updatedBy: null,
-      domainId: "a29b004b-0a07-4dd8-9f37-c0e5d3a6f70a",
-      doNotSell: true,
-      createdAt: "2024-08-29T14:32:43.662Z",
-      updatedAt: "2024-08-29T14:32:43.662Z",
-    },
-    {
-      id: "6c8cd5a9-3472-4374-97cd-c5f9e425048a",
-      name: "Essential",
-      description: null,
-      optOut: true,
-      createdBy: null,
-      updatedBy: null,
-      domainId: "a29b004b-0a07-4dd8-9f37-c0e5d3a6f70a",
-      doNotSell: false,
-      createdAt: "2024-08-29T14:32:43.602Z",
-      updatedAt: "2024-08-29T14:32:43.602Z",
-    },
-  ],
-  jobs: [
-    {
-      status: "success",
-      createdAt: "2024-08-29T14:31:01.427Z",
-    },
-  ],
-  isScanning: false,
-};
-
 var SVG_CARET_RIGHT = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" fill="#333333" viewBox="0 0 256 256"><rect width="256" height="256" fill="none"></rect><polyline points="96 48 176 128 96 208" fill="none" stroke="#333333" stroke-linecap="round" stroke-linejoin="round" stroke-width="24"></polyline></svg>`;
 
 var renderCookieConsent = async () => {
   const root = document.getElementById("lb-cookie-consent");
-  const webAppUrl = root?.getAttribute("data-web-app") || "";
-  const clientDomain = root?.getAttribute("data-domain") || "";
   const showPreferences = root?.getAttribute("data-preferences-only") || "";
   const VISITOR_ID = "_lb_fp";
   let domain;
@@ -477,14 +149,6 @@ var renderCookieConsent = async () => {
   };
 
   /**
-   * Unblocks both scripts and iframes
-   */
-  const unblockSources = (regexp = "") => {
-    window.yett?.unblock(regexp);
-    window.lbIframeHandle?.unblock(regexp);
-  };
-
-  /**
    * Calculates user accepted/rejected consents taking into account mandatory essentials
    * @param {props} { isDoNotSell?: boolean, isSavePreferences?: boolean }
    * @returns
@@ -497,7 +161,7 @@ var renderCookieConsent = async () => {
     let domainsAccepted = essentialsWhiteList || [];
     const domainsAcceptedRegExp = domainsAccepted.map((domain) => {
       const regex = new RegExp(domain);
-      unblockSources(regex);
+      window.yett?.unblock(regex);
       return regex;
     });
 
@@ -577,11 +241,10 @@ var renderCookieConsent = async () => {
 
   // API requests
   const fetchDomainInfo = async () => {
-    // const response = await fetch(
-    //   `${"https://playground-master-privacy-ops.lightbeamsecurity.com"}/api/cookie-consent/domain?domainName=${clientDomain}`
-    // );
-    // const domain = await response.json();
-    const domain = mockResponse;
+    const response = await fetch(
+      `${dataScriptHost}/cookie_consent_${ccVersion}/${domainId}/domain_config_${domainHash}.json`
+    );
+    const domain = await response.json();
     domain.banner = domain.banner || {};
     domain.banner.layout = {};
     try {
@@ -595,7 +258,7 @@ var renderCookieConsent = async () => {
 
   /* API to GET saved preferences */
   const fetchPreferences = async () => {
-    const response = await fetch(`${webAppUrl}/api/cookie-consent/response`, {
+    const response = await fetch(`${dataWebApp}/api/cookie-consent/response`, {
       credentials: "include",
     });
     const savedPreferences = await response.json();
@@ -622,12 +285,12 @@ var renderCookieConsent = async () => {
   }) => {
     if (!domain) return;
 
-    fetch(`${webAppUrl}/api/cookie-consent/response`, {
+    fetch(`${dataWebApp}/api/cookie-consent/response`, {
       method: "POST",
       credentials: "include",
       body: JSON.stringify({
         status: "active",
-        domain: clientDomain,
+        domain: dataDomain,
         networkIP: "",
         networkFamily: "",
         browserFingerprint: {
@@ -652,7 +315,7 @@ var renderCookieConsent = async () => {
   const initHandlers = () => {
     document.addEventListener("click", function (e) {
       if (e.target?.id === "lb-cookie-consent-accept-all") {
-        unblockSources();
+        window.yett?.unblock();
         setLbCookies({
           name: LB_LOCAL_STORAGE_KEY,
           value: { blackList: [] },
@@ -709,7 +372,9 @@ var renderCookieConsent = async () => {
           value: { whiteList: domainsAccepted, blackList: domainsRejected },
           shareCookies: domain.shareConsent,
         });
-        domainsAccepted.forEach((domain) => unblockSources(new RegExp(domain)));
+        domainsAccepted.forEach((domain) =>
+          window.yett?.unblock(new RegExp(domain))
+        );
 
         savePreferencesInStorage(categoriesAccepted.map((c) => c.id));
         postCookieConsent({
@@ -736,7 +401,9 @@ var renderCookieConsent = async () => {
           value: { whiteList: domainsAccepted, blackList: domainsRejected },
           shareCookies: domain.shareConsent,
         });
-        domainsAccepted.forEach((domain) => unblockSources(new RegExp(domain)));
+        domainsAccepted.forEach((domain) =>
+          window.yett?.unblock(new RegExp(domain))
+        );
 
         savePreferencesInStorage(categoriesAccepted.map((c) => c.id));
         postCookieConsent({
@@ -1185,11 +852,13 @@ var renderCookieConsent = async () => {
   };
 
   // init
-  const webAppDomainName = webAppUrl?.replace(/https?:\/\//i, "") || "";
+  const webAppDomainName = dataWebApp?.replace(/https?:\/\//i, "") || "";
+  const s3DomainName = dataScriptHost?.replace(/https?:\/\//i, "") || "";
   const essentialsWhiteList = [
     "^/",
     "^./",
     window.location.host,
+    ...(s3DomainName ? [s3DomainName] : []),
     ...(webAppDomainName ? [webAppDomainName] : []),
   ];
 
