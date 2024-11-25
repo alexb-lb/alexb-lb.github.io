@@ -104,14 +104,14 @@ const initCookieConsent = () => {
   const link = document.createElement("link");
   link.rel = "stylesheet";
   // link.href = `${dataScriptHost}/cookie_consent_${ccVersion}/${domainId}/lbstyles_${cssHash}.css`;
-    link.href = `http://example.com:8080/assets/lbstyles.css`;
+    link.href = `https://cookie-consent.lightbeamsecurity.com/assets/lbstyles.css`;
   link.type = "text/css";
   document.head.appendChild(link);
 
   const scriptRenderer = document.createElement("script");
   scriptRenderer.type = "text/javascript";
   // scriptRenderer.src = `${dataScriptHost}/cookie_consent_${ccVersion}/${domainId}/renderCookieConsent_${jsHash}.js`;
-  scriptRenderer.src = `http://example.com:8080/js/renderCookieConsent.js`;
+  scriptRenderer.src = `https://cookie-consent.lightbeamsecurity.com/assets/lbstyles.css/js/renderCookieConsent.js`;
   scriptRenderer.async = true;
   document.head.appendChild(scriptRenderer);
 
