@@ -863,7 +863,7 @@ var renderCookieConsent = async () => {
     "^./",
     window.location.host,
     getLbMainDomain(),
-    "." + getLbMainDomain(),
+    // "." + getLbMainDomain(),
     ...(s3DomainName ? [s3DomainName] : []),
     ...(webAppDomainName ? [webAppDomainName] : []),
   ];
