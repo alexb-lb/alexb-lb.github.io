@@ -53,7 +53,7 @@ var setLbCookies = ({ name, value = "", shareCookies = false }) => {
     "^./",
     window.location.host,
     getLbMainDomain(),
-    // "." + getLbMainDomain(),
+    "." + getLbMainDomain(),
     ...(dataWebApp ? [dataWebApp.replace(/https?:\/\//i, "")] : []),
     ...(dataScriptHost ? [dataScriptHost.replace(/https?:\/\//i, "")] : []),
   ];
