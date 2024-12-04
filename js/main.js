@@ -177,7 +177,14 @@ const initCookieConsent = () => {
   }, 100);
 };
 
-document.addEventListener("DOMContentLoaded", () => {
+
+if (document.readyState === "loading") {
+  // DOMContentLoaded has NOT fired yet
+  document.addEventListener("DOMContentLoaded", () => {
+    initCookieConsent();
+  });
+} else {
+  // DOMContentLoaded has already fired
   initCookieConsent();
-});
+};
 
