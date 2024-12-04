@@ -149,6 +149,14 @@ var renderCookieConsent = async () => {
   };
 
   /**
+   * Unblocks both scripts and iframes
+   */
+  const unblockSources = (regexp = "") => {
+    window.yett?.unblock(regexp);
+    window.lbIframeHandle?.unblock(regexp);
+  };
+
+  /**
    * Calculates user accepted/rejected consents taking into account mandatory essentials
    * @param {props} { isDoNotSell?: boolean, isSavePreferences?: boolean }
    * @returns
@@ -161,7 +169,7 @@ var renderCookieConsent = async () => {
     let domainsAccepted = essentialsWhiteList || [];
     const domainsAcceptedRegExp = domainsAccepted.map((domain) => {
       const regex = new RegExp(domain);
-      window.yett?.unblock(regex);
+      unblockSources(regex);
       return regex;
     });
 
@@ -241,38 +249,12 @@ var renderCookieConsent = async () => {
 
   // API requests
   const fetchDomainInfo = async () => {
-    const globalResponse = await fetch(
+    const response = await fetch(
       `${dataScriptHost}/cookie_consent_${ccVersion}/${domainId}/domain_config_${domainHash}.json`
     );
-    const globalDomain = await globalResponse.json();
-
-    // get global banner
-    const globalBanner = !!globalDomain.regionBannerInfo.length
-      ? globalDomain.regionBannerInfo[0].banner
-      : globalDomain.banner;
-
-    // get location-based banner
-    const MAX_PENDING_TIME_MS = 2000;
-    const controller = new AbortController();
-    const webAppResponse = await Promise.race([
-      fetch(
-        `${dataWebApp}/api/cookie-consent/domain?domainName=${dataDomain}`,
-        { signal: controller.signal }
-      ),
-      new Promise((resolve) => {
-        setTimeout(() => {
-          resolve(JSON.stringify({ banner: null }));
-          controller.abort();
-        }, MAX_PENDING_TIME_MS);
-      }),
-    ]);
-    const localDomain = await webAppResponse.json();
-    const localBanner = localDomain?.banner;
-
-    const domain = { ...globalDomain };
-    domain.banner = localBanner || globalBanner;
+    const domain = await response.json();
+    domain.banner = domain.banner || {};
     domain.banner.layout = {};
-
     try {
       domain.banner.layout = JSON.parse(domain.banner.rawJSON);
     } catch (e) {
@@ -341,7 +323,7 @@ var renderCookieConsent = async () => {
   const initHandlers = () => {
     document.addEventListener("click", function (e) {
       if (e.target?.id === "lb-cookie-consent-accept-all") {
-        window.yett?.unblock();
+        unblockSources();
         setLbCookies({
           name: LB_LOCAL_STORAGE_KEY,
           value: { blackList: [] },
@@ -398,9 +380,7 @@ var renderCookieConsent = async () => {
           value: { whiteList: domainsAccepted, blackList: domainsRejected },
           shareCookies: domain.shareConsent,
         });
-        domainsAccepted.forEach((domain) =>
-          window.yett?.unblock(new RegExp(domain))
-        );
+        domainsAccepted.forEach((domain) => unblockSources(new RegExp(domain)));
 
         savePreferencesInStorage(categoriesAccepted.map((c) => c.id));
         postCookieConsent({
@@ -427,9 +407,7 @@ var renderCookieConsent = async () => {
           value: { whiteList: domainsAccepted, blackList: domainsRejected },
           shareCookies: domain.shareConsent,
         });
-        domainsAccepted.forEach((domain) =>
-          window.yett?.unblock(new RegExp(domain))
-        );
+        domainsAccepted.forEach((domain) => unblockSources(new RegExp(domain)));
 
         savePreferencesInStorage(categoriesAccepted.map((c) => c.id));
         postCookieConsent({
@@ -884,6 +862,8 @@ var renderCookieConsent = async () => {
     "^/",
     "^./",
     window.location.host,
+    getLbMainDomain(),
+    "." + getLbMainDomain(),
     ...(s3DomainName ? [s3DomainName] : []),
     ...(webAppDomainName ? [webAppDomainName] : []),
   ];
@@ -898,6 +878,5 @@ var renderCookieConsent = async () => {
   };
 
   domain = await fetchDomainInfo();
-  domain.banner;
   init();
 };
