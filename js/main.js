@@ -25,7 +25,6 @@ const getLbEssentialsWhiteList = () => {
     "^./",
     window.location.host,
     getLbMainDomain(),
-    "." + getLbMainDomain(),
     ...(dataWebApp ? [dataWebApp.replace(/https?:\/\//i, "")] : []),
     ...(dataScriptHost ? [dataScriptHost.replace(/https?:\/\//i, "")] : []),
   ];
