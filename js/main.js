@@ -161,7 +161,7 @@ const initCookieConsent = () => {
   const link = document.createElement("link");
   link.rel = "stylesheet";
   // link.href = `${dataScriptHost}/cookie_consent_${ccVersion}/${domainId}/lbstyles_${cssHash}.css`;
-    link.href = `https://cookie-consent.lightbeamsecurity.com/assets/lbstyles.css`;
+  link.href = `https://cookie-consent.lightbeamsecurity.com/assets/lbstyles.css`;
   link.type = "text/css";
   document.head.appendChild(link);
 
