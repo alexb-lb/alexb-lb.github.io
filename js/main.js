@@ -19,6 +19,18 @@ var getLbMainDomain = () => {
   return psl?.get(window.location.hostname) || window.location.hostname;
 };
 
+const getLbEssentialsWhiteList = () => {
+  return [
+    "^/",
+    "^./",
+    window.location.host,
+    getLbMainDomain(),
+    "." + getLbMainDomain(),
+    ...(dataWebApp ? [dataWebApp.replace(/https?:\/\//i, "")] : []),
+    ...(dataScriptHost ? [dataScriptHost.replace(/https?:\/\//i, "")] : []),
+  ];
+}
+
 var getLbCookies = (name) => {
   const value = `; ${document.cookie}`;
   const parts = value.split(`; ${name}=`);
@@ -48,15 +60,7 @@ var setLbCookies = ({ name, value = "", shareCookies = false }) => {
   // detect essentials that must NOT be blocked
   const root = document.getElementById("lb-cookie-consent");
   
-  const essentialsWhiteList = [
-    "^/",
-    "^./",
-    window.location.host,
-    getLbMainDomain(),
-    "." + getLbMainDomain(),
-    ...(dataWebApp ? [dataWebApp.replace(/https?:\/\//i, "")] : []),
-    ...(dataScriptHost ? [dataScriptHost.replace(/https?:\/\//i, "")] : []),
-  ];
+  const essentialsWhiteList = getLbEssentialsWhiteList();
 
   // check whether show both banner and pref center or pref center only
   const isLbPrefCenter =
