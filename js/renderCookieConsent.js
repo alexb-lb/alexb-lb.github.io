@@ -311,10 +311,6 @@ var renderCookieConsent = async () => {
       banner: { ...banner, layout: {} },
     };
 
-    console.log("globalBanner", globalBanner);
-    console.log("localBanner", localBanner);
-    console.log("banner", banner);
-
     let layout = {};
 
     try {
@@ -695,7 +691,7 @@ var renderCookieConsent = async () => {
             ${banner?.layout.type} \
             ${banner?.layout.position?.join(" ")} \
             ${
-              banner.showBanner === false || showPreferencesOnly
+              !banner.showBanner || showPreferencesOnly
                 ? " hidden"
                 : ""
             } \
