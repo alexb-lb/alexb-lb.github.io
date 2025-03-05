@@ -22,6 +22,11 @@ var renderCookieConsent = async () => {
     customize: "customize",
   };
 
+  const defaultConsentModes = {
+    reject: "reject-all",
+    accept: "accept-all",
+  };
+
   /**
    * buttonName: "accept" | "reject" | "doNotSell"
    * consentType: cookieConsentTypes
@@ -160,6 +165,11 @@ var renderCookieConsent = async () => {
    * Unblock essentials after page change
    */
   const enableEssentials = () => {
+    if (domain.banner.defaultConsentMode === defaultConsentModes.accept) {
+      unblockSources();
+      return;
+    }
+
     let domainsAccepted = getLbEssentialsWhiteList();
     domainsAccepted.forEach((domain) => {
       const regex = new RegExp(domain);
@@ -277,6 +287,9 @@ var renderCookieConsent = async () => {
     globalBanner.showBanner = !!globalDomain?.regionBannerInfo.length
       ? globalDomain?.regionBannerInfo[0].showBanner
       : true;
+    globalBanner.defaultConsentMode = !!globalDomain?.regionBannerInfo.length
+      ? globalDomain?.regionBannerInfo[0].defaultConsentMode
+      : defaultConsentModes.reject;
 
     // get location-based banner
     let localBanner;
@@ -690,11 +703,7 @@ var renderCookieConsent = async () => {
             cookie-consent-banner-container \
             ${banner?.layout.type} \
             ${banner?.layout.position?.join(" ")} \
-            ${
-              !banner.showBanner || showPreferencesOnly
-                ? " hidden"
-                : ""
-            } \
+            ${!banner.showBanner || showPreferencesOnly ? " hidden" : ""} \
             ${isMobile() ? " mobile-view" : ""} \
         "
         id="lb-cookie-consent-banner">\
