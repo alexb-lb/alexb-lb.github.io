@@ -153,6 +153,23 @@ var renderCookieConsent = async () => {
     return unique;
   };
 
+  /** Save accepted categories (only) in local storage */
+  const savePreferencesInStorage = (categoriesAccepted) => {
+    setLbCookies({
+      name: LB_LOCAL_STORAGE_PREFERENCES_KEY,
+      value: { categoriesAccepted },
+      shareCookies: domain.shareConsent,
+    });
+  };
+
+  /** Save accepted categories (only) in local storage */
+  const saveScriptSettingsInStorage = (scriptSettings) => {
+    setLbCookies({
+      name: LB_LOCAL_STORAGE_SCRIPT_SETTINGS_KEY,
+      value: scriptSettings,
+    });
+  };
+
   /**
    * Unblocks both scripts and iframes
    */
@@ -336,7 +353,6 @@ var renderCookieConsent = async () => {
     return domainFinal;
   };
 
-  /* API to GET saved preferences */
   const fetchPreferences = async () => {
     const response = await fetch(`${dataWebApp}/api/cookie-consent/response`, {
       credentials: "include",
@@ -344,15 +360,6 @@ var renderCookieConsent = async () => {
     const savedPreferences = await response.json();
     savePreferencesInStorage(savedPreferences?.consentInfo?.categoriesAccepted);
     return savedPreferences.consentInfo;
-  };
-
-  /** Save accepted categories (only) in local storage */
-  const savePreferencesInStorage = (categoriesAccepted) => {
-    setLbCookies({
-      name: LB_LOCAL_STORAGE_PREFERENCES_KEY,
-      value: { categoriesAccepted },
-      shareCookies: domain.shareConsent,
-    });
   };
 
   const postCookieConsent = ({
@@ -432,6 +439,45 @@ var renderCookieConsent = async () => {
       }),
       headers,
     });
+  };
+
+  const postScriptSettings = (settings) => {
+    fetch(`${dataWebApp}/api/cookie-consent/script-settings`, {
+      method: "POST",
+      credentials: "include",
+      body: JSON.stringify(settings),
+    });
+  };
+
+  const updateScriptSettings = (domain) => {
+    const settings = {
+      domainId: domain.id,
+      domain: domain.domain,
+      bannerId: domain.banner.id,
+      subdomains: domain.subDomains,
+      shareConsent: domain.shareConsent,
+      googleConsentModeEnabled: !!window.lbCookieConsent?.isGcmOn,
+      websiteIntegratedScriptVersion: ccVersion,
+      websiteIntegrationMode: lbCookieConsent.isLoadedViaGtm
+        ? "GTM"
+        : "WebScript",
+    };
+
+    const settingsFromStorage = getLbCookies(
+      LB_LOCAL_STORAGE_SCRIPT_SETTINGS_KEY
+    );
+
+    const isSameSettings =
+      settings.domainId === settingsFromStorage?.domainId &&
+      settings.websiteIntegratedScriptVersion ===
+        settingsFromStorage?.websiteIntegratedScriptVersion &&
+      settings.websiteIntegrationMode ===
+        settingsFromStorage?.websiteIntegrationMode;
+
+    if (!isSameSettings) {
+      saveScriptSettingsInStorage(settings);
+      postScriptSettings(settings);
+    }
   };
 
   // DOM handlers
@@ -1038,6 +1084,7 @@ var renderCookieConsent = async () => {
       injectHtml(domain);
       initHandlers(domain);
       enableEssentials(); // unblock essentials on page change
+      updateScriptSettings(domain);
     } else {
       setTimeout(() => init(), 100);
     }
