@@ -153,7 +153,6 @@ var renderCookieConsent = async () => {
     return unique;
   };
 
-  /** Save accepted categories (only) in local storage */
   const savePreferencesInStorage = (categoriesAccepted) => {
     setLbCookies({
       name: LB_LOCAL_STORAGE_PREFERENCES_KEY,
@@ -162,7 +161,6 @@ var renderCookieConsent = async () => {
     });
   };
 
-  /** Save accepted categories (only) in local storage */
   const saveScriptSettingsInStorage = (scriptSettings) => {
     setLbCookies({
       name: LB_LOCAL_STORAGE_SCRIPT_SETTINGS_KEY,
@@ -214,7 +212,7 @@ var renderCookieConsent = async () => {
     });
 
     const cookiesAccepted = domain?.cookies.filter((cookie) => {
-      const isMandatory = categoriesAccepted.includes(cookie.categoryId);
+      const isMandatory = !!categoriesAccepted.find((cat) => cat.id === cookie.cookieCategoryId)
 
       let isInEssentialDomains = false;
       domainsAcceptedRegExp.forEach((regExp) => {
@@ -1007,14 +1005,16 @@ var renderCookieConsent = async () => {
     }
   };
 
-  const renderFloatingButton = (isVisible = false) => {
+  const renderFloatingButton = (isVisible = false, domain) => {
+    if (!domain.floatingButtonEnabled) return;
+
     const button = `\
       <button class="lb-floating-btn ${
         isVisible ? "" : "hidden"
-      }" id="lb-floating-btn">\
-        <div class="lb-icon-box">
-          ${SVG_LB_LOGO}
-        </div>
+      } lb-floating-btn--${domain?.floatingButtonConfig?.style}" style="${
+      domain?.floatingButtonConfig?.position === "left" ? "left" : "right"
+    }: 60px" id="lb-floating-btn">\
+        ${domain?.floatingButtonConfig?.icon}
       </button>`;
 
     document.body.insertAdjacentHTML("beforeend", button);
@@ -1037,7 +1037,9 @@ var renderCookieConsent = async () => {
     document.getElementById("lb-floating-btn")?.classList.remove("hidden");
   };
 
-  const setCSSVariables = (banner) => {
+  const setCSSVariables = (domain) => {
+    const banner = domain.banner;
+
     document.documentElement.setAttribute(
       "style",
       `--lb-checkbox-color-always-on: #${
@@ -1055,18 +1057,29 @@ var renderCookieConsent = async () => {
       };
       `
     );
+
+    if (domain.floatingButtonEnabled) {
+      document.documentElement.setAttribute(
+        "style",
+        `--lb-floating-btn-color: #${
+          domain?.floatingButtonConfig?.color || "000000"
+        };
+        `
+      );
+    }
   };
 
   // blockers / unblockers
   const injectHtml = (domain) => {
     const item = getLbCookies(LB_LOCAL_STORAGE_KEY);
-    setCSSVariables(domain.banner);
+    setCSSVariables(domain);
     renderPreferences(domain.banner);
 
     // render floating pref center button if script loaded via GTM
     if (lbCookieConsent.isLoadedViaGtm) {
       renderFloatingButton(
-        (isVisible = !!(item || lbCookieConsent.isPrefCenterOnly))
+        (isVisible = !!(item || lbCookieConsent.isPrefCenterOnly)),
+        domain
       );
     }
 
