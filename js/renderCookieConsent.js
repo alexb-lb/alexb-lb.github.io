@@ -212,7 +212,13 @@ var renderCookieConsent = async () => {
     });
 
     const cookiesAccepted = domain?.cookies.filter((cookie) => {
-      const isMandatory = !!categoriesAccepted.find((cat) => cat.id === cookie.cookieCategoryId)
+      const isMandatory = !!categoriesAccepted.find(
+        (cat) => cat.id === cookie.cookieCategoryId
+      );
+      console.log("isMandatory", isMandatory);
+      if (isMandatory) {
+        categoriesAccepted.find((cat) => cat.id === cookie.cookieCategoryId);
+      }
 
       let isInEssentialDomains = false;
       domainsAcceptedRegExp.forEach((regExp) => {
@@ -229,6 +235,8 @@ var renderCookieConsent = async () => {
 
       return isAccepted;
     });
+
+    console.log("cookiesAccepted", cookiesAccepted);
 
     // get optional accepted by user
     if (isDoNotSell) {
