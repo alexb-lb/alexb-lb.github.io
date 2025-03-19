@@ -189,7 +189,7 @@ var initCookieConsent = () => {
   const link = document.createElement("link");
   link.rel = "stylesheet";
   // link.href = `${hostingUrlBase}/lbstyles_${cssHash}.css`;
-  link.href = `https://cookie-consent.lightbeamsecurity.com/assets/lbstyles.css`;
+  link.href = `/assets/lbstyles.css`;
   link.type = "text/css";
   document.head.appendChild(link);
 
